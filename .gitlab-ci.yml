@@ -1,0 +1,30 @@
+stages:
+  - containerization
+  - deployment
+
+variables:
+  APPLICATION_NAME: food-manager
+  DOCKER_IMAGE: ${DOCKER_HUB_USERNAME}/${APPLICATION_NAME}
+  CERTIFICATE_DOMAIN: api.food.home.maximemoreillon.com
+
+containerization:
+  stage: containerization
+  tags:
+    - moreillon
+  script:
+    - echo "${DOCKER_HUB_PASSWORD}" | docker login --username ${DOCKER_HUB_USERNAME} --password-stdin
+    - docker build -t ${DOCKER_IMAGE} .
+    - docker push ${DOCKER_IMAGE}
+    - docker image rm ${DOCKER_IMAGE}
+
+deployment:
+  stage: deployment
+  tags:
+    - moreillon
+  script:
+    - envsubst < kubernetes_manifest.yml | kubectl apply -f -
+    - kubectl rollout restart deployment/${APPLICATION_NAME}
+  environment:
+    name: production
+    kubernetes:
+      namespace: ${KUBERNETES_NAMESPACE}
