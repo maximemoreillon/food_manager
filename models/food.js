@@ -10,6 +10,7 @@ const { Schema, model } = require('mongoose')
    protein: Number,
    fat: Number,
    carbohydrates: Number,
+   image: String,
 
  })
 
