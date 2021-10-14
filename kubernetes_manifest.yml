@@ -1,3 +1,13 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: ${APPLICATION_NAME}
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 50Gi
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -23,6 +33,13 @@ spec:
         envFrom:
         - secretRef:
            name: environment-variables
+        volumeMounts:
+        - mountPath: "/usr/src/app/uploads"
+          name: ${APPLICATION_NAME}
+      volumes:
+      - name: ${APPLICATION_NAME}
+        persistentVolumeClaim:
+          claimName: ${APPLICATION_NAME}
 ---
 apiVersion: v1
 kind: Service
