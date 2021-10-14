@@ -2,7 +2,7 @@ const Food = require('../models/food.js')
 const {error_handling} = require('../utils.js')
 const sharp = require('sharp')
 const path = require('path')
-
+const {uploads_directory} = require('../config.js')
 
 const get_thumbnail_filename = (original_filename) => {
   return original_filename.replace(/(\.[\w\d_-]+)$/i, '_thumbnail$1')
@@ -65,7 +65,7 @@ exports.read_food_image = async (req,res) => {
   try {
     const {_id} = req.params
     const food = await Food.findOne({_id})
-    const image_absolute_path = path.join(__dirname, '../uploads', food.image)
+    const image_absolute_path = path.join(__dirname, `../${uploads_directory}`, food.image)
     res.sendFile(image_absolute_path)
   } catch (error) {
     error_handling(error,res)
@@ -79,6 +79,7 @@ exports.upload_food_image = async (req,res) => {
     await create_image_thumbnail(req)
     const result = await Food.findOneAndUpdate({_id}, {image})
     res.send('OK')
+    console.log(`Image of food${_id} uploaded`)
   } catch (error) {
     error_handling(error,res)
   }
@@ -89,7 +90,7 @@ exports.read_food_thumbnail = async (req,res) => {
     const {_id} = req.params
     const food = await Food.findOne({_id})
     const thumbnail_filename = get_thumbnail_filename(food.image)
-    const image_absolute_path = path.join(__dirname, '../uploads', thumbnail_filename)
+    const image_absolute_path = path.join(__dirname, `../${uploads_directory}`, thumbnail_filename)
     res.sendFile(image_absolute_path)
     console.log(`Thumbnail of food ${_id} queried`)
   } catch (error) {

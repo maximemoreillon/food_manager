@@ -8,6 +8,7 @@ const db = require('./db.js')
 const food_router = require('./routes/foods.js')
 const mealplan_router = require('./routes/mealplans.js')
 const auth = require('@moreillon/express_identification_middleware')
+const {uploads_directory} = require('./config.js')
 
 dotenv.config()
 
@@ -32,6 +33,7 @@ app.get('/', (req, res) => {
       db: db.db,
       connected: db.get_connected(),
     },
+    uploads_directory,
   })
 })
 

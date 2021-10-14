@@ -2,11 +2,12 @@ const {Router} = require('express')
 const controller = require('../controllers/foods.js')
 const path = require('path')
 const multer  = require('multer')
+const {uploads_directory} = require('../config.js')
 
 const router = Router()
 
 const storage = multer.diskStorage({
-  destination:  (req, file, cb) => { cb(null, 'uploads') },
+  destination:  (req, file, cb) => { cb(null, uploads_directory) },
   filename:  (req, file, cb) => { cb(null, file.originalname) }
 })
 
