@@ -61,16 +61,7 @@ exports.update_food = async (req,res) => {
   }
 }
 
-exports.read_food_image = async (req,res) => {
-  try {
-    const {_id} = req.params
-    const food = await Food.findOne({_id})
-    const image_absolute_path = path.join(__dirname, `../${uploads_directory}`, food.image)
-    res.sendFile(image_absolute_path)
-  } catch (error) {
-    error_handling(error,res)
-  }
-}
+
 
 exports.upload_food_image = async (req,res) => {
   try {
@@ -78,8 +69,19 @@ exports.upload_food_image = async (req,res) => {
     const {originalname: image} = req.file
     await create_image_thumbnail(req)
     const result = await Food.findOneAndUpdate({_id}, {image})
-    res.send('OK')
+    res.send(result)
     console.log(`Image of food${_id} uploaded`)
+  } catch (error) {
+    error_handling(error,res)
+  }
+}
+
+exports.read_food_image = async (req,res) => {
+  try {
+    const {_id} = req.params
+    const food = await Food.findOne({_id})
+    const image_absolute_path = path.join(__dirname, `../${uploads_directory}`, food.image)
+    res.sendFile(image_absolute_path)
   } catch (error) {
     error_handling(error,res)
   }
