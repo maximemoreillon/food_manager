@@ -24,6 +24,7 @@ router.route('/')
 router.route('/:_id')
   .get(controller.read_food)
   .patch(controller.update_food)
+  .delete(controller.delete_food)
 
 router.route('/:_id/image')
   .get(controller.read_food_image)

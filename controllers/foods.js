@@ -56,6 +56,18 @@ exports.update_food = async (req,res) => {
     const {_id} = req.params
     const result = await Food.findOneAndUpdate({_id}, req.body)
     res.send(result)
+    console.log(`Food ${_id} updated`)
+  } catch (error) {
+    error_handling(error,res)
+  }
+}
+
+exports.delete_food = async (req,res) => {
+  try {
+    const {_id} = req.params
+    const result = await Food.findOneAndDelete({_id})
+    res.send(result)
+    console.log(`Food ${_id} deleted`)
   } catch (error) {
     error_handling(error,res)
   }
