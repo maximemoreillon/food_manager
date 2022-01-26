@@ -10,6 +10,13 @@ const mealPlanSchema = new Schema({
   name: String,
   date: Date,
   foods: [foodSchema],
+
+  calories: Number,
+  protein: Number,
+  fat: Number,
+  carbohydrates: Number,
+
+
  })
 
  const MealPlan = model('MealPlan', mealPlanSchema)
