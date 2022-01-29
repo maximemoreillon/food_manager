@@ -7,11 +7,14 @@ const { Schema, model } = require('mongoose')
    vendor: String,
    price_per_serving: Number,
    keto_friendly: Boolean,
+
    protein: Number,
    fat: Number,
    carbohydrates: Number,
+   
    image: String,
    user_id: String,
+   hidden: Boolean,
 
  })
 
