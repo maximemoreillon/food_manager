@@ -11,6 +11,7 @@ const { Schema, model } = require('mongoose')
    fat: Number,
    carbohydrates: Number,
    image: String,
+   user_id: String,
 
  })
 

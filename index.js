@@ -8,13 +8,18 @@ const db = require('./db.js')
 const food_router = require('./routes/foods.js')
 const mealplan_router = require('./routes/mealplans.js')
 const auth = require('@moreillon/express_identification_middleware')
+const user_configurations_router = require('./routes/user_configurations.js')
 const {uploads_directory} = require('./config.js')
 
 dotenv.config()
 
 
-const app_port = process.env.APP_PORT ?? 80
-const auth_options = { url: `${process.env.AUTHENTICATION_API_URL}/v2/whoami` }
+const {
+  APP_PORT = 80,
+  AUTHENTICATION_API_URL
+} = process.env
+
+const auth_options = { url: `${AUTHENTICATION_API_URL}/v3/whoami` }
 
 
 
@@ -39,10 +44,10 @@ app.get('/', (req, res) => {
 
 app.use('/foods', auth(auth_options), food_router)
 app.use('/meal_plans', auth(auth_options), mealplan_router)
-
+app.use('/settings', auth(auth_options), user_configurations_router)
 
 
 // Start server
-app.listen(app_port, () => {
-  console.log(`Food manager API v${version} listening on port ${app_port}`);
+app.listen(APP_PORT, () => {
+  console.log(`Food manager API v${version} listening on port ${APP_PORT}`);
 })

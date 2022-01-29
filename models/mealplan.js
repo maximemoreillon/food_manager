@@ -15,6 +15,8 @@ const mealPlanSchema = new Schema({
   protein: Number,
   fat: Number,
   carbohydrates: Number,
+  
+  user_id: String,
 
 
  })

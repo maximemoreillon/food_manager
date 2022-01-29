@@ -3,8 +3,8 @@ const dotenv = require('dotenv')
 
 dotenv.config()
 
-const mongodb_db = process.env.MONGODB_DB ?? 'food_manager'
 const mongodb_url = process.env.MONGODB_URL ?? 'mongodb://mongo'
+const mongodb_db = process.env.MONGODB_DB ?? 'food_manager'
 
 const mongodb_options = {
    useUnifiedTopology: true,
