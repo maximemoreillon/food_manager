@@ -3,7 +3,10 @@ const { Schema, model } = require('mongoose')
 
  const schema = new Schema({
    calories_target: Number,
-   user_id: String,
+   user_id: {
+     type: String,
+     unique: true,
+   },
 
  })
 

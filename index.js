@@ -49,5 +49,5 @@ app.use('/settings', auth(auth_options), user_configurations_router)
 
 // Start server
 app.listen(APP_PORT, () => {
-  console.log(`Food manager API v${version} listening on port ${APP_PORT}`);
+  console.log(`[Express] Food manager API v${version} listening on port ${APP_PORT}`);
 })
