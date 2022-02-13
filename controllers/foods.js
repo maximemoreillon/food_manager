@@ -47,7 +47,7 @@ exports.read_food = async (req,res) => {
 exports.create_food = async (req,res) => {
   try {
     const user_id = res.locals.user._id
-    const new_food = Food.create({user_id, ...req.body})
+    const new_food = await Food.create({user_id, ...req.body})
     res.send(new_food)
     console.log(`Food ${new_food._id} created`)
   }
