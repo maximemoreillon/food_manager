@@ -7,8 +7,8 @@ exports.read_all = async (req,res) => {
   try {
     const user_id = res.locals.user._id
     const items = await MealPlan.find({user_id})
-    res.send(items)
     console.log(`Queried all meal plans`)
+    res.send(items)
   }
   catch (error) {
     error_handling(error,res)
@@ -18,8 +18,10 @@ exports.read_all = async (req,res) => {
 exports.read = async (req,res) => {
   try {
     const user_id = res.locals.user._id
-    const _id = req.params._id
-    const item = await MealPlan.findOne({_id,user_id})
+    const {_id} = req.params
+    const item = await MealPlan
+      .findOne({_id,user_id})
+      //.populate({path: 'foods', populate: {path: 'food'}})
     console.log(`Meal plan ${item._id} queried`)
     res.send(item)
   }
