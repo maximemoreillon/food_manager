@@ -1,36 +1,47 @@
 const MealPlan = require('../models/mealplan.js')
-const {error_handling} = require('../utils.js')
 
 
 
-exports.read_all = async (req,res) => {
+exports.read_all = async (req,res,next) => {
   try {
     const user_id = res.locals.user._id
-    const items = await MealPlan.find({user_id})
-    console.log(`Queried all meal plans`)
-    res.send(items)
+    const { skip = 0, limit = 10 } = req.query
+    const query = {user_id}
+    
+    const items = await MealPlan
+      .find(query)
+      .skip(Number(skip))
+      .sort({date: -1})
+      .limit(Math.max(Number(limit), 0))
+
+    const total = await MealPlan.countDocuments(query)
+
+    const response = { total, skip, limit, items }
+
+    console.log(`Queried meal plans of user ${user_id}`)
+
+    res.send(response)
   }
   catch (error) {
-    error_handling(error,res)
+    next(error)
   }
 }
 
-exports.read = async (req,res) => {
+exports.read = async (req,res,next) => {
   try {
     const user_id = res.locals.user._id
     const {_id} = req.params
     const item = await MealPlan
       .findOne({_id,user_id})
-      //.populate({path: 'foods', populate: {path: 'food'}})
-    console.log(`Meal plan ${item._id} queried`)
+    console.log(`Meal plan ${_id} queried`)
     res.send(item)
   }
   catch (error) {
-    error_handling(error,res)
+    next(error)
   }
 }
 
-exports.create = async (req,res) => {
+exports.create = async (req,res,next) => {
   try {
     const user_id = res.locals.user._id
     const new_item = new MealPlan({
@@ -43,11 +54,11 @@ exports.create = async (req,res) => {
     console.log(`Meal plan ${saved_item._id} created`)
   }
   catch (error) {
-    error_handling(error,res)
+    next(error,res)
   }
 }
 
-exports.update = async (req,res) => {
+exports.update = async (req,res,next) => {
   try {
     const user_id = res.locals.user._id
     const _id = req.params._id
@@ -56,11 +67,11 @@ exports.update = async (req,res) => {
     console.log(`Meal plan ${_id} updated`)
   }
   catch (error) {
-    error_handling(error,res)
+    next(error)
   }
 }
 
-exports.delete = async (req,res) => {
+exports.delete = async (req,res,next) => {
   try {
     const user_id = res.locals.user._id
     const _id = req.params._id
@@ -68,6 +79,6 @@ exports.delete = async (req,res) => {
     res.send(result)
   }
   catch (error) {
-    error_handling(error,res)
+    next(error)
   }
 }

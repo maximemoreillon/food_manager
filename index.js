@@ -46,6 +46,13 @@ app.use('/foods', auth(auth_options), food_router)
 app.use('/meal_plans', auth(auth_options), mealplan_router)
 app.use('/settings', auth(auth_options), user_configurations_router)
 
+// Express error handling
+app.use((error, req, res, next) => {
+  console.error(error)
+  let { statusCode = 500, message = error } = error
+  if(isNaN(statusCode) || statusCode > 600) statusCode = 500
+  res.status(statusCode).send(message)
+})
 
 // Start server
 app.listen(APP_PORT, () => {

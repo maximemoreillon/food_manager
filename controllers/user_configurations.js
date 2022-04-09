@@ -1,8 +1,6 @@
 const UserConfiguration = require('../models/user_configuration.js')
-const {error_handling} = require('../utils.js')
 
-
-exports.read_config = async (req,res) => {
+exports.read_config = async (req,res,next) => {
   try {
     const user_id = res.locals.user._id
     const config = await UserConfiguration.findOne({user_id})
@@ -10,12 +8,12 @@ exports.read_config = async (req,res) => {
     res.send(config)
   }
   catch (error) {
-    error_handling(error,res)
+    next(error)
   }
 }
 
 
-exports.update_config = async (req,res) => {
+exports.update_config = async (req,res,next) => {
   try {
     const user_id = res.locals.user._id
     const options = {upsert: true, new: true}
@@ -24,6 +22,6 @@ exports.update_config = async (req,res) => {
     res.send(result)
   }
   catch (error) {
-    error_handling(error,res)
+    next(error)
   }
 }

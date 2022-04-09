@@ -1,5 +1,4 @@
 const Food = require('../models/food.js')
-const {error_handling} = require('../utils.js')
 const sharp = require('sharp')
 const path = require('path')
 const {uploads_directory} = require('../config.js')
@@ -14,25 +13,36 @@ const create_image_thumbnail = async (req) => {
   const thumbnail_path = path.resolve(req.file.destination,thumbnail_filename)
 
   await sharp(req.file.path, { failOnError: true })
-      .resize(128, 128)
-      .withMetadata()
-      .toFile(thumbnail_path)
+    .resize(128, 128)
+    .withMetadata()
+    .toFile(thumbnail_path)
 }
 
 
-exports.read_all_foods = async (req,res) => {
+exports.read_all_foods = async (req,res, next) => {
   try {
+    const { skip = 0, limit = 0 } = req.query
     const user_id = res.locals.user._id
-    const foods = await Food.find({user_id})
+    const query = {user_id}
+
+    const items = await Food
+      .find(query)
+      .skip(Number(skip))
+      .limit(Math.max(Number(limit), 0))
+
+    const total = await Food.countDocuments(query)
+
+    const response = { total, skip, limit, items }
+
     console.log(`Queried foods of user ${user_id}`)
-    res.send(foods)
+    res.send(response)
   }
   catch (error) {
-    error_handling(error,res)
+    next(error)
   }
 }
 
-exports.read_food = async (req,res) => {
+exports.read_food = async (req,res, next) => {
   try {
     const {_id} = req.params
     const food = await Food.findOne({_id})
@@ -40,11 +50,11 @@ exports.read_food = async (req,res) => {
     console.log(`Food ${food._id} queried`)
   }
   catch (error) {
-    error_handling(error,res)
+    next(error)
   }
 }
 
-exports.create_food = async (req,res) => {
+exports.create_food = async (req,res, next) => {
   try {
     const user_id = res.locals.user._id
     const new_food = await Food.create({user_id, ...req.body})
@@ -52,11 +62,11 @@ exports.create_food = async (req,res) => {
     console.log(`Food ${new_food._id} created`)
   }
   catch (error) {
-    error_handling(error,res)
+    next(error)
   }
 }
 
-exports.update_food = async (req,res) => {
+exports.update_food = async (req,res, next) => {
   try {
     const user_id = res.locals.user._id
     const _id = req.params._id
@@ -65,11 +75,11 @@ exports.update_food = async (req,res) => {
     console.log(`Food ${_id} updated`)
   }
   catch (error) {
-    error_handling(error,res)
+    next(error)
   }
 }
 
-exports.delete_food = async (req,res) => {
+exports.delete_food = async (req,res, next) => {
   try {
     const user_id = res.locals.user._id
     const _id = req.params._id
@@ -78,13 +88,13 @@ exports.delete_food = async (req,res) => {
     console.log(`Food ${_id} deleted`)
   }
   catch (error) {
-    error_handling(error,res)
+    next(error)
   }
 }
 
 
 
-exports.upload_food_image = async (req,res) => {
+exports.upload_food_image = async (req,res, next) => {
   try {
     const user_id = res.locals.user._id
     const _id = req.params._id
@@ -95,11 +105,11 @@ exports.upload_food_image = async (req,res) => {
     console.log(`Image of food${_id} uploaded`)
   }
   catch (error) {
-    error_handling(error,res)
+    next(error)
   }
 }
 
-exports.read_food_image = async (req,res) => {
+exports.read_food_image = async (req,res, next) => {
   try {
     const user_id = res.locals.user._id
     const _id = req.params._id
@@ -108,11 +118,11 @@ exports.read_food_image = async (req,res) => {
     res.sendFile(image_absolute_path)
   }
   catch (error) {
-    error_handling(error,res)
+    error_handling(error)
   }
 }
 
-exports.read_food_thumbnail = async (req,res) => {
+exports.read_food_thumbnail = async (req,res, next) => {
   try {
     const user_id = res.locals.user._id
     const _id = req.params._id
@@ -123,6 +133,6 @@ exports.read_food_thumbnail = async (req,res) => {
     console.log(`Thumbnail of food ${_id} queried`)
   }
   catch (error) {
-    error_handling(error,res)
+    next(error)
   }
 }
