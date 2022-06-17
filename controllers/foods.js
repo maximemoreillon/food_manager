@@ -1,7 +1,7 @@
-const Food = require('../models/food.js')
+const { Food } = require('../models/food.js')
 const sharp = require('sharp')
 const path = require('path')
-const {uploads_directory} = require('../config.js')
+const { uploads_directory } = require('../config.js')
 
 const get_thumbnail_filename = (original_filename) => {
   return original_filename.replace(/(\.[\w\d_-]+)$/i, '_thumbnail$1')

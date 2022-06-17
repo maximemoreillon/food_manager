@@ -1,6 +1,6 @@
 stages:
-  - containerization
-  - deployment
+  - build
+  - deploy
 
 variables:
   APPLICATION_NAME: food-manager
@@ -13,8 +13,10 @@ services:
   - name: docker:19.03.12-dind
 
 
-containerization:
-  stage: containerization
+build:
+  stage: build
+  only:
+    - master
   tags:
     - dind
   script:
@@ -31,12 +33,13 @@ containerization:
     - docker image rm ${CONTAINER_IMAGE}
     - docker image rm ${CONTAINER_IMAGE_TAGGED}
 
-deployment:
-  stage: deployment
+deploy:
+  stage: deploy
+  only:
+    - master
   tags:
     - dind
   script:
-    # Apply manifest
     - envsubst < kubernetes_manifest.yml | kubectl apply -f -
   environment:
     name: production
