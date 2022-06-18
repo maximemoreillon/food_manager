@@ -8,14 +8,6 @@ const mealPlanFoodSchema = new Schema({
   quantity: Number,
   
   food: foodSchema,
-
-  // LEGACY
-  _id: Types.ObjectId, // Should have been food_id or food
-  name: String,
-  calories_per_serving: Number,
-  fat: Number,
-  carbohydrates: Number,
-  protein: Number,
 })
 
 const mealPlanSchema = new Schema({
@@ -31,7 +23,7 @@ const mealPlanSchema = new Schema({
   calories_target: Number,
   calories: Number,
 
-  // Should have been nested in 'macros'
+  // Could have been nested in 'macronutrients'
   protein: Number,
   fat: Number,
   carbohydrates: Number,

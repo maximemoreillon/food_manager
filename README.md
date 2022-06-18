@@ -1,4 +1,7 @@
 # Food manager
+
+[![dockeri.co](https://dockeri.co/image/moreillon/food-manager)](https://hub.docker.com/r/moreillon/food-manager)
+
 A calorie and macronutrients tracking web application
 
 ## API
