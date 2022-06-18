@@ -71,8 +71,8 @@ exports.update_food = async (req,res, next) => {
     const user_id = res.locals.user._id
     const _id = req.params._id
     const result = await Food.findOneAndUpdate({_id, user_id}, req.body)
-    res.send(result)
     console.log(`Food ${_id} updated`)
+    res.send(result)
   }
   catch (error) {
     next(error)
