@@ -1,7 +1,7 @@
-const Food = require('../models/food.js')
+const { Food } = require('../models/food.js')
 const sharp = require('sharp')
 const path = require('path')
-const {uploads_directory} = require('../config.js')
+const { uploads_directory } = require('../config.js')
 
 const get_thumbnail_filename = (original_filename) => {
   return original_filename.replace(/(\.[\w\d_-]+)$/i, '_thumbnail$1')
@@ -71,8 +71,8 @@ exports.update_food = async (req,res, next) => {
     const user_id = res.locals.user._id
     const _id = req.params._id
     const result = await Food.findOneAndUpdate({_id, user_id}, req.body)
-    res.send(result)
     console.log(`Food ${_id} updated`)
+    res.send(result)
   }
   catch (error) {
     next(error)

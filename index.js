@@ -58,3 +58,6 @@ app.use((error, req, res, next) => {
 app.listen(APP_PORT, () => {
   console.log(`[Express] Food manager API v${version} listening on port ${APP_PORT}`);
 })
+
+
+// require('./migration').migrate()
