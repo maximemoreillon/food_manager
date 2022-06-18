@@ -60,4 +60,3 @@ app.listen(APP_PORT, () => {
 })
 
 
-// require('./migration').migrate()

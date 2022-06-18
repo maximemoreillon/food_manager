@@ -2,7 +2,7 @@ const MealPlan = require('../models/mealplan.js')
 
 
 
-exports.read_all = async (req,res,next) => {
+exports.read_meal_plans = async (req,res,next) => {
   try {
     const user_id = res.locals.user._id
     const { skip = 0, limit = 10 } = req.query
@@ -27,7 +27,7 @@ exports.read_all = async (req,res,next) => {
   }
 }
 
-exports.read = async (req,res,next) => {
+exports.read_meal_plan = async (req,res,next) => {
   try {
     const user_id = res.locals.user._id
     const {_id} = req.params
@@ -41,7 +41,7 @@ exports.read = async (req,res,next) => {
   }
 }
 
-exports.create = async (req,res,next) => {
+exports.create_meal_plan = async (req,res,next) => {
   try {
     const user_id = res.locals.user._id
     const new_item = new MealPlan({
@@ -58,11 +58,12 @@ exports.create = async (req,res,next) => {
   }
 }
 
-exports.update = async (req,res,next) => {
+exports.update_meal_plan = async (req,res,next) => {
   try {
     const user_id = res.locals.user._id
-    const _id = req.params._id
-    const result = await MealPlan.findOneAndUpdate({_id, user_id}, req.body)
+    const {_id} = req.params
+    const properties = req.body
+    const result = await MealPlan.findOneAndUpdate({ _id, user_id }, properties)
     res.send(result)
     console.log(`Meal plan ${_id} updated`)
   }
@@ -71,7 +72,7 @@ exports.update = async (req,res,next) => {
   }
 }
 
-exports.delete = async (req,res,next) => {
+exports.delete_meal_plan = async (req,res,next) => {
   try {
     const user_id = res.locals.user._id
     const _id = req.params._id

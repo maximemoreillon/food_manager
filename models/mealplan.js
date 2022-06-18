@@ -19,17 +19,15 @@ const mealPlanSchema = new Schema({
 
   foods: [mealPlanFoodSchema],
 
+  macronutrients: {
+    protein: { type: Number, default: 0 },
+    fat: { type: Number, default: 0 },
+    carbohydrates: { type: Number, default: 0 },
+  },
+
   // Could have been nested in 'calories'
   calories_target: Number,
   calories: Number,
-
-  // Could have been nested in 'macronutrients'
-  protein: Number,
-  fat: Number,
-  carbohydrates: Number,
-
-  
-
 
  })
 

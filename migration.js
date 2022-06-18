@@ -1,22 +1,25 @@
 const { Food } = require('./models/food')
+const MealPlan = require('./models/mealplan')
 
-exports.migrate = async () => {
+exports.migrate_foods = async () => {
     const foods = await Food.find({})
 
     foods.forEach(food => {
 
-        food.serving = {
-            size: 0,
-            unit: 'g',
-            calories: food.calories_per_serving,
-            macronutrients: {
-                protein: food.protein,
-                fat: food.fat,
-                carbohydrates: food.carbohydrates,
-            }
-        }
+        //
 
-        // TODO: remove old properties when done 
         food.save()
+    })
+}
+
+
+exports.migrate_meal_plans = async () => {
+    const plans = await MealPlan.find({})
+
+    plans.forEach(plan => {
+
+        //
+
+        plan.save()
     })
 }
