@@ -15,7 +15,7 @@ const mealPlanSchema = new Schema({
   name: String,
   date: Date,
   user_id: String,
-  incomplete: Boolean,
+  incomplete: {type: Boolean, default: true},
 
   foods: [mealPlanFoodSchema],
 
