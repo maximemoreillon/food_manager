@@ -60,3 +60,4 @@ app.listen(APP_PORT, () => {
 })
 
 
+require('./migration').migrate_meal_plans()

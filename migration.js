@@ -16,10 +16,9 @@ exports.migrate_foods = async () => {
 exports.migrate_meal_plans = async () => {
     const plans = await MealPlan.find({})
 
-    plans.forEach(plan => {
+    plans.forEach(async plan => {
 
-        //
 
-        plan.save()
+
     })
 }
