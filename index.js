@@ -19,7 +19,11 @@ const {
   AUTHENTICATION_API_URL
 } = process.env
 
-const auth_options = { url: `${AUTHENTICATION_API_URL}/v3/whoami` }
+db.connect()
+
+
+
+
 
 
 
@@ -36,15 +40,24 @@ app.get('/', (req, res) => {
     mongodb: {
       url: db.url,
       db: db.db,
-      connected: db.get_connected(),
+      connected: db.get_state(),
+    },
+    auth: {
+      url: AUTHENTICATION_API_URL
     },
     uploads_directory,
   })
 })
 
-app.use('/foods', auth(auth_options), food_router)
-app.use('/meal_plans', auth(auth_options), mealplan_router)
-app.use('/settings', auth(auth_options), user_configurations_router)
+if (AUTHENTICATION_API_URL) {
+  const auth_options = { url: `${AUTHENTICATION_API_URL}/v3/whoami` }
+  app.use(auth(auth_options))
+}
+
+
+app.use('/foods', food_router)
+app.use('/meal_plans', mealplan_router)
+app.use('/settings', user_configurations_router)
 
 // Express error handling
 app.use((error, req, res, next) => {
