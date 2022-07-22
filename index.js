@@ -16,7 +16,7 @@ dotenv.config()
 
 const {
   APP_PORT = 80,
-  AUTHENTICATION_API_URL
+  IDENTIFICATION_URL
 } = process.env
 
 db.connect()
@@ -43,14 +43,14 @@ app.get('/', (req, res) => {
       connected: db.get_state(),
     },
     auth: {
-      url: AUTHENTICATION_API_URL
+      url: IDENTIFICATION_URL
     },
     uploads_directory,
   })
 })
 
-if (AUTHENTICATION_API_URL) {
-  const auth_options = { url: `${AUTHENTICATION_API_URL}/v3/whoami` }
+if (IDENTIFICATION_URL) {
+  const auth_options = { url: IDENTIFICATION_URL }
   app.use(auth(auth_options))
 }
 
@@ -71,5 +71,3 @@ app.use((error, req, res, next) => {
 app.listen(APP_PORT, () => {
   console.log(`[Express] Food manager API v${version} listening on port ${APP_PORT}`);
 })
-
-
