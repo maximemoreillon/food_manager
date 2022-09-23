@@ -136,3 +136,16 @@ exports.read_food_thumbnail = async (req,res, next) => {
     next(error)
   }
 }
+
+exports.read_food_vendors = async (req, res, next) => {
+  try {
+    const user_id = res.locals.user._id
+    const vendors = await Food
+      .find({ user_id })
+      .distinct('vendor')
+    res.send(vendors)
+  }
+  catch (error) {
+    next(error)
+  }
+}

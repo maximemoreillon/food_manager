@@ -1,8 +1,18 @@
 const {Router} = require('express')
-const controller = require('../controllers/foods.js')
-const path = require('path')
 const multer  = require('multer')
-const {uploads_directory} = require('../config.js')
+const {
+  create_food,
+  read_all_foods,
+  read_food,
+  update_food,
+  delete_food,
+  upload_food_image,
+  read_food_image,
+  read_food_thumbnail,
+  read_food_vendors,
+} = require('../controllers/foods.js')
+
+const { uploads_directory } = require('../config.js')
 
 const router = Router()
 
@@ -15,19 +25,23 @@ const upload = multer({storage})
 
 
 router.route('/')
-  .get(controller.read_all_foods)
-  .post(controller.create_food)
+  .get(read_all_foods)
+  .post(create_food)
+
+router.route('/vendors')
+  .get(read_food_vendors)
+
 
 router.route('/:_id')
-  .get(controller.read_food)
-  .patch(controller.update_food)
-  .delete(controller.delete_food)
+  .get(read_food)
+  .patch(update_food)
+  .delete(delete_food)
 
 router.route('/:_id/image')
-  .get(controller.read_food_image)
-  .post(upload.single('image'), controller.upload_food_image)
+  .get(read_food_image)
+  .post(upload.single('image'), upload_food_image)
 
 router.route('/:_id/thumbnail')
-  .get(controller.read_food_thumbnail)
+  .get(read_food_thumbnail)
 
 module.exports = router
