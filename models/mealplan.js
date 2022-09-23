@@ -1,10 +1,8 @@
-const { Schema, model, Types } = require('mongoose')
-
+const { Schema, model } = require('mongoose')
 const { foodSchema } = require('./food')
 
 const mealPlanFoodSchema = new Schema({
 
-  
   quantity: Number,
   
   food: foodSchema,
