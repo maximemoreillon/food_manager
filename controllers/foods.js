@@ -20,13 +20,27 @@ const create_image_thumbnail = async (req) => {
 
 
 exports.read_all_foods = async (req,res, next) => {
+
   try {
-    const { skip = 0, limit = 0 } = req.query
+    
+    const {
+      skip = 0,
+      limit = 0,
+      sort = 'name',
+      order = 1,
+      search,
+      hidden = false,
+    } = req.query
+
     const user_id = res.locals.user._id
-    const query = {user_id}
+    let query = {user_id}
+
+    if (search && search !== '') query.name = {$regex: search, $options: 'i'}
+    if (!hidden) query = { ...query, $or: [{ hidden: { $exists: false } }, { hidden: false }] } 
 
     const items = await Food
       .find(query)
+      .sort({ [sort]: order })
       .skip(Number(skip))
       .limit(Math.max(Number(limit), 0))
 
