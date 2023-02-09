@@ -1,19 +1,17 @@
-const { Schema, model } = require('mongoose')
-const { foodSchema } = require('./food')
+import { Schema, model } from "mongoose"
+import { foodSchema } from "./food"
 
 const mealPlanFoodSchema = new Schema({
-
   quantity: Number,
-  
+
   food: foodSchema,
 })
 
 const mealPlanSchema = new Schema({
-
   name: String,
   date: Date,
   user_id: String,
-  incomplete: {type: Boolean, default: true},
+  incomplete: { type: Boolean, default: true },
 
   foods: [mealPlanFoodSchema],
 
@@ -26,9 +24,8 @@ const mealPlanSchema = new Schema({
   // Could have been nested in 'calories'
   calories_target: Number,
   calories: Number,
+})
 
- })
+const MealPlan = model("MealPlan", mealPlanSchema)
 
- const MealPlan = model('MealPlan', mealPlanSchema)
-
- module.exports = MealPlan
+export default MealPlan
