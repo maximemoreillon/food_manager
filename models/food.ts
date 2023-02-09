@@ -1,8 +1,6 @@
-const { Schema, model } = require('mongoose')
+import { Schema, model } from "mongoose"
 
-
-const foodSchema = new Schema({
-
+export const foodSchema = new Schema({
   name: String,
   vendor: String,
 
@@ -13,7 +11,7 @@ const foodSchema = new Schema({
 
   serving: {
     size: { type: Number, default: 0 },
-    unit: { type: String, default: 'g' },
+    unit: { type: String, default: "g" },
     calories: { type: Number, default: 0 },
     price: Number,
 
@@ -22,13 +20,7 @@ const foodSchema = new Schema({
       fat: { type: Number, default: 0 },
       carbohydrates: { type: Number, default: 0 },
     },
-
   },
-
-
-
 })
-const Food = model('Food', foodSchema)
 
-exports.foodSchema = foodSchema
-exports.Food = Food
+export const Food = model("Food", foodSchema)
