@@ -18,3 +18,10 @@ The source-code of the GUI for this application is available in [this repository
 | /foods/:food_id  | GET    | -               | Get the food with the given user ID. |
 | /foods/:food_id  | DELETE | -               | Delete food with the given user ID.  |
 | /foods/:food_id} | PATCH  | new properties  | Update food with the given user ID.  |
+
+## Environment variables
+
+| Variable    | Description                      |
+| ----------- | -------------------------------- |
+| MONGODB_URL | URL of the MongoDB instance      |
+| APP_PORT    | Application port, defaults to 80 |
