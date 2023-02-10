@@ -1,0 +1,44 @@
+version: "3.7"
+
+# TODO: volumes
+
+services:
+  mongodb:
+    image: mongo:4
+    logging:
+      driver: none
+    networks:
+      - food-manager
+
+  food-manager:
+    image: moreillon/food-manager
+    # build: .
+    environment:
+      MONGODB_URL: mongodb://mongodb
+      MONGODB_DB: food_manager
+    networks:
+      - food-manager
+    ports:
+      - 7070:80
+
+  gui:
+    image: moreillon/food-manager-front
+    logging:
+      driver: none
+    environment:
+      VUE_APP_MQTT_LOGGER_API_URL: /proxy/api
+    networks:
+      - food-manager
+
+  proxy:
+    image: moreillon/api-proxy:e80c1d87
+    environment:
+      PROXY_API: http://food-manager
+      PROXY_ROOT: http://gui
+    ports:
+      - 8080:80
+    networks:
+      - food-manager
+
+networks:
+  food-manager:

@@ -37,7 +37,7 @@ export const read_all_foods = async (
       hidden = false,
     } = req.query as any
 
-    const user_id = res.locals.user._id
+    const user_id = res.locals.user?._id
     let query: QueryOptions = { user_id }
 
     if (search && search !== "") query.name = { $regex: search, $options: "i" }
@@ -56,7 +56,6 @@ export const read_all_foods = async (
 
     const response = { total, skip, limit, items }
 
-    console.log(`Queried foods of user ${user_id}`)
     res.send(response)
   } catch (error) {
     next(error)
@@ -85,7 +84,7 @@ export const create_food = async (
   next: NextFunction
 ) => {
   try {
-    const user_id = res.locals.user._id
+    const user_id = res.locals.user?._id
     const new_food = await Food.create({ user_id, ...req.body })
     res.send(new_food)
     console.log(`Food ${new_food._id} created`)
@@ -100,7 +99,7 @@ export const update_food = async (
   next: NextFunction
 ) => {
   try {
-    const user_id = res.locals.user._id
+    const user_id = res.locals.user?._id
     const _id = req.params._id
     const result = await Food.findOneAndUpdate({ _id, user_id }, req.body)
     console.log(`Food ${_id} updated`)
@@ -116,7 +115,7 @@ export const delete_food = async (
   next: NextFunction
 ) => {
   try {
-    const user_id = res.locals.user._id
+    const user_id = res.locals.user?._id
     const _id = req.params._id
     const result = await Food.findOneAndDelete({ _id, user_id })
     res.send(result)
@@ -132,7 +131,7 @@ export const upload_food_image = async (
   next: NextFunction
 ) => {
   try {
-    const user_id = res.locals.user._id
+    const user_id = res.locals.user?._id
     const _id = req.params._id
     // TODO: get rid of any
     const { originalname: image } = req.file as any
@@ -151,7 +150,7 @@ export const read_food_image = async (
   next: NextFunction
 ) => {
   try {
-    const user_id = res.locals.user._id
+    const user_id = res.locals.user?._id
     const _id = req.params._id
     const food = await Food.findOne({ _id, user_id })
     if (!food) throw createHttpError(404, `Food ${_id} not found`)
@@ -174,7 +173,7 @@ export const read_food_thumbnail = async (
   next: NextFunction
 ) => {
   try {
-    const user_id = res.locals.user._id
+    const user_id = res.locals.user?._id
     const _id = req.params._id
     const food = await Food.findOne({ _id, user_id })
     if (!food) throw createHttpError(404, `Food ${_id} not found`)
@@ -199,7 +198,7 @@ export const read_food_vendors = async (
   next: NextFunction
 ) => {
   try {
-    const user_id = res.locals.user._id
+    const user_id = res.locals.user?._id
     const vendors = await Food.find({ user_id }).distinct("vendor")
     res.send(vendors)
   } catch (error) {

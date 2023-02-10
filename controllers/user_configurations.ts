@@ -7,7 +7,7 @@ export const read_config = async (
   next: NextFunction
 ) => {
   try {
-    const user_id = res.locals.user._id
+    const user_id = res.locals.user?._id
     const config = await UserConfiguration.findOne({ user_id })
     console.log(`Config of user ${user_id} queried`)
     res.send(config)
@@ -22,7 +22,7 @@ export const update_config = async (
   next: NextFunction
 ) => {
   try {
-    const user_id = res.locals.user._id
+    const user_id = res.locals.user?._id
     const options = { upsert: true, new: true }
     const result = await UserConfiguration.findOneAndUpdate(
       { user_id },

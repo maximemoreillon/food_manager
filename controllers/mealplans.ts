@@ -8,7 +8,7 @@ export const read_meal_plans = async (
   next: NextFunction
 ) => {
   try {
-    const user_id = res.locals.user._id
+    const user_id = res.locals.user?._id
     const { skip = 0, limit = 10 } = req.query
     const query = { user_id }
 
@@ -20,8 +20,6 @@ export const read_meal_plans = async (
     const total = await MealPlan.countDocuments(query)
 
     const response = { total, skip, limit, items }
-
-    console.log(`Queried meal plans of user ${user_id}`)
 
     res.send(response)
   } catch (error) {
@@ -35,7 +33,7 @@ export const read_meal_plan = async (
   next: NextFunction
 ) => {
   try {
-    const user_id = res.locals.user._id
+    const user_id = res.locals.user?._id
     const { _id } = req.params
     const item = await MealPlan.findOne({ _id, user_id })
     console.log(`Meal plan ${_id} queried`)
@@ -51,7 +49,7 @@ export const create_meal_plan = async (
   next: NextFunction
 ) => {
   try {
-    const user_id = res.locals.user._id
+    const user_id = res.locals.user?._id
     const new_item = new MealPlan({
       ...req.body,
       date: new Date(),
@@ -71,7 +69,7 @@ export const update_meal_plan = async (
   next: NextFunction
 ) => {
   try {
-    const user_id = res.locals.user._id
+    const user_id = res.locals.user?._id
     const { _id } = req.params
     const properties = req.body
     const result = await MealPlan.findOneAndUpdate({ _id, user_id }, properties)
@@ -88,7 +86,7 @@ export const delete_meal_plan = async (
   next: NextFunction
 ) => {
   try {
-    const user_id = res.locals.user._id
+    const user_id = res.locals.user?._id
     const _id = req.params._id
     const result = await MealPlan.findOneAndDelete({ _id, user_id })
     res.send(result)
