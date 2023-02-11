@@ -27,16 +27,7 @@ services:
       driver: none
     environment:
       VUE_APP_FOOD_MANAGER_API_URL: /proxy/api
-    networks:
-      - food-manager
-
-  proxy:
-    image: moreillon/api-proxy:e80c1d87
-    environment:
       PROXY_API: http://food-manager
-      PROXY_ROOT: http://gui
-    ports:
-      - 8080:80
     networks:
       - food-manager
 
