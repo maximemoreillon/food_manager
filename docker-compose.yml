@@ -26,7 +26,7 @@ services:
     logging:
       driver: none
     environment:
-      VUE_APP_MQTT_LOGGER_API_URL: /proxy/api
+      VUE_APP_FOOD_MANAGER_API_URL: /proxy/api
     networks:
       - food-manager
 
