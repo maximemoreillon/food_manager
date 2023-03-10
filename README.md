@@ -1,7 +1,7 @@
 # Food manager
 
 [<img src="https://img.shields.io/docker/pulls/moreillon/food-manager?logo=docker">](https://hub.docker.com/repository/docker/moreillon/food-manager)
-[![Artifact Hub](https://img.shields.io/endpoint?url=https://artifacthub.io/badge/repository/food-manager)](https://artifacthub.io/packages/search?repo=food-manager)
+[![Artifact Hub](https://img.shields.io/endpoint?url=https://artifacthub.io/badge/repository/moreillon)](https://artifacthub.io/packages/search?repo=moreillon)
 
 A calorie and macronutrients tracking web application.
 
