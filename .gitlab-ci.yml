@@ -6,12 +6,11 @@ variables:
   APPLICATION_NAME: food-manager
   CONTAINER_IMAGE: ${DOCKER_HUB_USERNAME}/${APPLICATION_NAME}
   CONTAINER_IMAGE_TAGGED: ${DOCKER_HUB_USERNAME}/${APPLICATION_NAME}:${CI_COMMIT_SHORT_SHA}
-  CERTIFICATE_DOMAIN: api.food.home.maximemoreillon.com
+  K8S_INGRESS_HOST: api.food.home.maximemoreillon.com
 
 image: moreillon/ci-dind
 services:
   - name: docker:19.03.12-dind
-
 
 build:
   stage: build
