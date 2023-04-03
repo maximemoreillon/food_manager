@@ -1,3 +1,4 @@
+import "express-async-errors"
 import express from "express"
 import bodyParser from "body-parser"
 import cors from "cors"
@@ -10,7 +11,6 @@ import user_configurations_router from "./routes/user_configurations"
 import { uploads_directory } from "./config"
 import dotenv from "dotenv"
 import { Request, Response, NextFunction } from "express"
-import "express-async-errors"
 
 dotenv.config()
 
