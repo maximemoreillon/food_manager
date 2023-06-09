@@ -6,7 +6,6 @@ import * as db from "./db"
 import food_router from "./routes/foods"
 import mealplan_router from "./routes/mealplans"
 import auth from "@moreillon/express_identification_middleware"
-import user_configurations_router from "./routes/user_configurations"
 import { uploads_directory } from "./config"
 import dotenv from "dotenv"
 import { Request, Response, NextFunction } from "express"
@@ -46,7 +45,6 @@ if (IDENTIFICATION_URL) {
 
 app.use("/foods", food_router)
 app.use("/meal_plans", mealplan_router)
-app.use("/settings", user_configurations_router)
 
 // Express error handling
 // TODO: find type of error
