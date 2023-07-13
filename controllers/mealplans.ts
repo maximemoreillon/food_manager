@@ -4,8 +4,8 @@ import MealPlan from "../models/mealplan"
 
 export const read_meal_plans = async (req: Request, res: Response) => {
   const user_id = res.locals.user?._id
-  const { skip = 0, limit = 10 } = req.query
-  const query = { user_id }
+  const { skip = 0, limit = 10, ...filters } = req.query
+  const query = { user_id, ...filters }
 
   const items = await MealPlan.find(query)
     .skip(Number(skip))
