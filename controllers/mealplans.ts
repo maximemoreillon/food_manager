@@ -5,9 +5,18 @@ import MealPlan from "../models/mealplan"
 export const read_meal_plans = async (req: Request, res: Response) => {
   const user_id = res.locals.user?._id
 
-  const { skip = 0, limit = 10, to, from, ...filters }: any = req.query
+  const {
+    skip = 0,
+    limit = 10,
+    to,
+    from,
+    filters = "{}",
+    ...rest
+  }: any = req.query
 
-  const query: any = { user_id, ...filters }
+  const formattedFilters = JSON.parse(filters)
+
+  const query: any = { user_id, ...rest, ...formattedFilters }
 
   if (to || from) query.date = {}
   if (to) query.date.$lt = new Date(to)
