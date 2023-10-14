@@ -7,7 +7,7 @@ export const schema = new Schema({
     unique: true,
   },
 
-  default_calories_target: Number,
+  calories_target: Number,
 })
 
 export default model("userConfiguration", schema)
