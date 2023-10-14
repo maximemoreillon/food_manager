@@ -5,6 +5,7 @@ import { author, name as application_name, version } from "./package.json"
 import * as db from "./db"
 import food_router from "./routes/foods"
 import mealplan_router from "./routes/mealplans"
+import user_configuration_router from "./routes/userConfig"
 import auth from "@moreillon/express_identification_middleware"
 import { uploads_directory } from "./config"
 import dotenv from "dotenv"
@@ -45,9 +46,10 @@ if (IDENTIFICATION_URL) {
 
 app.use("/foods", food_router)
 app.use("/meal_plans", mealplan_router)
+app.use("/settings", user_configuration_router)
+
 
 // Express error handling
-// TODO: find type of error
 app.use((error: any, req: Request, res: Response, next: NextFunction) => {
   console.error(error)
   let { statusCode = 500, message = error } = error
