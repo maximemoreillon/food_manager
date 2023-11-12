@@ -10,10 +10,12 @@ import auth from "@moreillon/express_identification_middleware"
 import { uploads_directory } from "./config"
 import dotenv from "dotenv"
 import { Request, Response, NextFunction } from "express"
+import promBundle from "express-prom-bundle"
 
 dotenv.config()
 
 const { APP_PORT = 80, IDENTIFICATION_URL } = process.env
+const promOptions = { includeMethod: true, includePath: true }
 
 db.connect()
 
@@ -21,6 +23,7 @@ db.connect()
 const app = express()
 app.use(express.json())
 app.use(cors())
+app.use(promBundle(promOptions))
 
 app.get("/", (req, res) => {
   res.send({
@@ -47,7 +50,6 @@ if (IDENTIFICATION_URL) {
 app.use("/foods", food_router)
 app.use("/meal_plans", mealplan_router)
 app.use("/settings", user_configuration_router)
-
 
 // Express error handling
 app.use((error: any, req: Request, res: Response, next: NextFunction) => {
