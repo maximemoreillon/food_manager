@@ -103,11 +103,7 @@ export const read_food_image = async (req: Request, res: Response) => {
   if (!food) throw createHttpError(404, `Food ${_id} not found`)
   if (!food.image) throw createHttpError(404, `Food ${_id} image not found`)
 
-  const image_absolute_path = path.join(
-    __dirname,
-    `../${uploads_directory}`,
-    food.image
-  )
+  const image_absolute_path = path.resolve(uploads_directory, food.image)
   res.sendFile(image_absolute_path)
 }
 
@@ -119,9 +115,8 @@ export const read_food_thumbnail = async (req: Request, res: Response) => {
   if (!food.image) throw createHttpError(404, `Food ${_id} image not found`)
 
   const thumbnail_filename = get_thumbnail_filename(food.image)
-  const image_absolute_path = path.join(
-    __dirname,
-    `../${uploads_directory}`,
+  const image_absolute_path = path.resolve(
+    uploads_directory,
     thumbnail_filename
   )
   res.sendFile(image_absolute_path)
