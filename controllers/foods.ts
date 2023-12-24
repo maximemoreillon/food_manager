@@ -72,17 +72,19 @@ export const create_food = async (req: Request, res: Response) => {
 export const update_food = async (req: Request, res: Response) => {
   const user_id = res.locals.user?._id
   const _id = req.params._id
-  const result = await Food.findOneAndUpdate({ _id, user_id }, req.body)
+  const food = await Food.findOneAndUpdate({ _id, user_id }, req.body)
+  if (!food) throw createHttpError(404, `Food ${_id} not found`)
   console.log(`Food ${_id} updated`)
-  res.send(result)
+  res.send(food)
 }
 
 export const delete_food = async (req: Request, res: Response) => {
   const user_id = res.locals.user?._id
   const _id = req.params._id
-  const result = await Food.findOneAndDelete({ _id, user_id })
-  res.send(result)
+  const food = await Food.findOneAndDelete({ _id, user_id })
+  if (!food) throw createHttpError(404, `Food ${_id} not found`)
   console.log(`Food ${_id} deleted`)
+  res.send(food)
 }
 
 export const upload_food_image = async (req: Request, res: Response) => {
