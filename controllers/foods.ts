@@ -34,7 +34,7 @@ export const read_all_foods = async (req: Request, res: Response) => {
 
   const user_id = res.locals.user?._id
   const query: QueryOptions = {
-    $or: [{ user_id }, { user_id: { $exists: false } }],
+    $or: [{ user_id }, { user_id: { $exists: false } }, { user_id: null }],
   }
 
   if (search && search !== "") query.name = { $regex: search, $options: "i" }
@@ -78,10 +78,16 @@ export const update_food = async (req: Request, res: Response) => {
   const _id = req.params._id
   const properties = req.body
 
+  console.log(properties)
+
   if (properties.user_id && !user?.isAdmin)
     throw createHttpError(401, `Cannot change opwnership of food`)
 
-  const result = await Food.findOneAndUpdate({ _id, user_id }, properties)
+  const query: any = { _id }
+  if (!user?.isAdmin) query.user_id = user_id
+
+  const result = await Food.findOneAndUpdate(query, properties)
+  if (!result) throw createHttpError(404, `Food ${_id} not found`)
   console.log(`Food ${_id} updated`)
   res.send(result)
 }
@@ -90,6 +96,7 @@ export const delete_food = async (req: Request, res: Response) => {
   const user_id = res.locals.user?._id
   const _id = req.params._id
   const result = await Food.findOneAndDelete({ _id, user_id })
+  if (!result) throw createHttpError(404, `Food ${_id} not found`)
   res.send(result)
   console.log(`Food ${_id} deleted`)
 }
@@ -110,7 +117,10 @@ export const upload_food_image = async (req: Request, res: Response) => {
 export const read_food_image = async (req: Request, res: Response) => {
   const user_id = res.locals.user?._id
   const _id = req.params._id
-  const food = await Food.findOne({ _id, user_id })
+  const food = await Food.findOne({
+    _id,
+    $or: [{ user_id }, { user_id: { $exists: false } }, { user_id: null }],
+  })
   if (!food) throw createHttpError(404, `Food ${_id} not found`)
   if (!food.image) throw createHttpError(404, `Food ${_id} image not found`)
 
@@ -121,7 +131,10 @@ export const read_food_image = async (req: Request, res: Response) => {
 export const read_food_thumbnail = async (req: Request, res: Response) => {
   const user_id = res.locals.user?._id
   const _id = req.params._id
-  const food = await Food.findOne({ _id, user_id })
+  const food = await Food.findOne({
+    _id,
+    $or: [{ user_id }, { user_id: { $exists: false } }, { user_id: null }],
+  })
   if (!food) throw createHttpError(404, `Food ${_id} not found`)
   if (!food.image) throw createHttpError(404, `Food ${_id} image not found`)
 
