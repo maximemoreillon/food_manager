@@ -24,23 +24,26 @@ const create_image_thumbnail = async (req: any) => {
 export const read_all_foods = async (req: Request, res: Response) => {
   // TODO: typing
   const {
-    skip = 0,
-    limit = 0,
+    skip = "0",
+    limit = "0",
     sort = "name",
-    order = 1,
+    order = "1",
     search,
     hidden = false,
-  } = req.query as any
+  }: any = req.query
 
   const user_id = res.locals.user?._id
-  let query: QueryOptions = { user_id }
+  const query: QueryOptions = {
+    $or: [{ user_id }, { user_id: { $exists: false } }],
+  }
 
   if (search && search !== "") query.name = { $regex: search, $options: "i" }
   if (!hidden)
-    query = {
-      ...query,
-      $or: [{ hidden: { $exists: false } }, { hidden: false }],
-    }
+    query.$or = [
+      ...query.$or,
+      { hidden: { $exists: false } },
+      { hidden: false },
+    ]
 
   const items = await Food.find(query)
     .sort({ [sort]: order })
@@ -70,9 +73,15 @@ export const create_food = async (req: Request, res: Response) => {
 }
 
 export const update_food = async (req: Request, res: Response) => {
-  const user_id = res.locals.user?._id
+  const { user } = res.locals
+  const user_id = user?._id
   const _id = req.params._id
-  const result = await Food.findOneAndUpdate({ _id, user_id }, req.body)
+  const properties = req.body
+
+  if (properties.user_id && !user?.isAdmin)
+    throw createHttpError(401, `Cannot change opwnership of food`)
+
+  const result = await Food.findOneAndUpdate({ _id, user_id }, properties)
   console.log(`Food ${_id} updated`)
   res.send(result)
 }
@@ -89,7 +98,9 @@ export const upload_food_image = async (req: Request, res: Response) => {
   const user_id = res.locals.user?._id
   const _id = req.params._id
   // TODO: get rid of any
-  const { originalname: image } = req.file as any
+  const { originalname: image }: any = req.file
+  if (!image) throw createHttpError("Image does not exist")
+
   await create_image_thumbnail(req)
   const result = await Food.findOneAndUpdate({ _id, user_id }, { image })
   res.send(result)
