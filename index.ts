@@ -11,6 +11,8 @@ import { uploads_directory } from "./config"
 import dotenv from "dotenv"
 import { Request, Response, NextFunction } from "express"
 import promBundle from "express-prom-bundle"
+import swaggerUi from "swagger-ui-express"
+import swaggerDocument from "./swagger-output.json"
 
 dotenv.config()
 
@@ -23,6 +25,7 @@ db.connect()
 const app = express()
 app.use(express.json())
 app.use(cors())
+app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 app.use(promBundle(promOptions))
 
 app.get("/", (req, res) => {
