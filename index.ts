@@ -1,20 +1,21 @@
-import "express-async-errors"
-import express from "express"
-import cors from "cors"
+import dotenv from "dotenv"
+dotenv.config()
 import { author, name as application_name, version } from "./package.json"
+console.log(`Food manager API v${version}`)
+
+import express from "express"
+import "express-async-errors"
+import cors from "cors"
 import * as db from "./db"
 import food_router from "./routes/foods"
 import mealplan_router from "./routes/mealplans"
 import user_configuration_router from "./routes/userConfig"
 import auth from "@moreillon/express_identification_middleware"
 import { uploads_directory } from "./config"
-import dotenv from "dotenv"
 import { Request, Response, NextFunction } from "express"
 import promBundle from "express-prom-bundle"
 import swaggerUi from "swagger-ui-express"
 import swaggerDocument from "./swagger-output.json"
-
-dotenv.config()
 
 const { APP_PORT = 80, IDENTIFICATION_URL } = process.env
 const promOptions = { includeMethod: true, includePath: true }
@@ -34,8 +35,7 @@ app.get("/", (req, res) => {
     author,
     version,
     mongodb: {
-      url: db.url,
-      db: db.db,
+      url: db.redactedConnectionString,
       connected: db.get_state(),
     },
     auth: {
@@ -64,7 +64,5 @@ app.use((error: any, req: Request, res: Response, next: NextFunction) => {
 
 // Start server
 app.listen(APP_PORT, () => {
-  console.log(
-    `[Express] Food manager API v${version} listening on port ${APP_PORT}`
-  )
+  console.log(`[Express] server listening on port ${APP_PORT}`)
 })

@@ -5,14 +5,34 @@ mongoose.set("strictQuery", true)
 
 dotenv.config()
 
-const { MONGODB_URL = "mongodb://mongo", MONGODB_DB = "food_manager" } =
-  process.env
+export const {
+  MONGODB_CONNECTION_STRING,
+  MONGODB_PROTOCOL = "mongodb",
+  MONGODB_USERNAME,
+  MONGODB_PASSWORD,
+  MONGODB_HOST = "localhost",
+  MONGODB_PORT,
+  MONGODB_DB = "food_manager",
+  MONGODB_OPTIONS = "",
+} = process.env
+
+const mongodbPort = MONGODB_PORT ? `:${MONGODB_PORT}` : ""
+
+const connectionString =
+  MONGODB_CONNECTION_STRING ||
+  (MONGODB_USERNAME && MONGODB_PASSWORD
+    ? `${MONGODB_PROTOCOL}://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@${MONGODB_HOST}${mongodbPort}/${MONGODB_DB}${MONGODB_OPTIONS}`
+    : `${MONGODB_PROTOCOL}://${MONGODB_HOST}${mongodbPort}/${MONGODB_DB}${MONGODB_OPTIONS}`)
+
+export const redactedConnectionString = connectionString.replace(
+  /:.*@/,
+  "://***:***@"
+)
 
 export const connect = () => {
-  console.log("[MongoDB] Attempting connection...")
-  const connection_url = `${MONGODB_URL}/${MONGODB_DB}`
+  console.log(`[MongoDB] Connecting to ${redactedConnectionString}`)
   mongoose
-    .connect(connection_url)
+    .connect(connectionString)
     .then(() => {
       console.log("[Mongoose] Initial connection successful")
     })
@@ -22,6 +42,4 @@ export const connect = () => {
     })
 }
 
-export const url = MONGODB_URL
-export const db = MONGODB_DB
 export const get_state = () => mongoose.connection.readyState
