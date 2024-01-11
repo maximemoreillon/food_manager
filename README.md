@@ -22,7 +22,7 @@ The source-code of the GUI for this application is available in [this repository
 
 ## Environment variables
 
-| Variable    | Description                      |
-| ----------- | -------------------------------- |
-| MONGODB_URL | URL of the MongoDB instance      |
-| APP_PORT    | Application port, defaults to 80 |
+| Variable                  | Description                      |
+| ------------------------- | -------------------------------- |
+| MONGODB_CONNECTION_STRING | Connction string for MongoDB     |
+| APP_PORT                  | Application port, defaults to 80 |
