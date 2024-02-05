@@ -24,13 +24,13 @@ const create_image_thumbnail = async (req: any) => {
 export const read_all_foods = async (req: Request, res: Response) => {
   // TODO: typing
   const {
-    skip = 0,
-    limit = 0,
+    skip = "0",
+    limit = "0",
     sort = "name",
-    order = 1,
+    order = "1",
     search,
     hidden = false,
-  } = req.query as any
+  }: any = req.query
 
   const user_id = res.locals.user?._id
   let query: QueryOptions = { user_id }
@@ -90,12 +90,10 @@ export const delete_food = async (req: Request, res: Response) => {
 export const upload_food_image = async (req: Request, res: Response) => {
   const user_id = res.locals.user?._id
   const _id = req.params._id
-  // TODO: get rid of any
-  const { originalname: image } = req.file as any
+  const { originalname: image }: any = req.file
   await create_image_thumbnail(req)
   const result = await Food.findOneAndUpdate({ _id, user_id }, { image })
   res.send(result)
-  console.log(`Image of food${_id} uploaded`)
 }
 
 export const read_food_image = async (req: Request, res: Response) => {
@@ -105,7 +103,7 @@ export const read_food_image = async (req: Request, res: Response) => {
   if (!food) throw createHttpError(404, `Food ${_id} not found`)
   if (!food.image) throw createHttpError(404, `Food ${_id} image not found`)
 
-  const image_absolute_path = path.resolve(uploads_directory, food.image)
+  const image_absolute_path = path.resolve(uploads_directory, _id, food.image)
   res.sendFile(image_absolute_path)
 }
 
@@ -119,10 +117,10 @@ export const read_food_thumbnail = async (req: Request, res: Response) => {
   const thumbnail_filename = get_thumbnail_filename(food.image)
   const image_absolute_path = path.resolve(
     uploads_directory,
+    _id,
     thumbnail_filename
   )
   res.sendFile(image_absolute_path)
-  console.log(`Thumbnail of food ${_id} queried`)
 }
 
 export const read_food_vendors = async (req: Request, res: Response) => {
