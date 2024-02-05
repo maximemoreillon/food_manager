@@ -58,7 +58,6 @@ export const read_food = async (req: Request, res: Response) => {
   const { _id } = req.params
   const food = await Food.findOne({ _id })
   if (!food) throw createHttpError(404, `Food ${_id} not found`)
-  console.log(`Food ${food._id} queried`)
   res.send(food)
 }
 
@@ -66,7 +65,6 @@ export const create_food = async (req: Request, res: Response) => {
   const user_id = res.locals.user?._id
   const new_food = await Food.create({ user_id, ...req.body })
   res.send(new_food)
-  console.log(`Food ${new_food._id} created`)
 }
 
 export const update_food = async (req: Request, res: Response) => {
@@ -74,7 +72,6 @@ export const update_food = async (req: Request, res: Response) => {
   const _id = req.params._id
   const food = await Food.findOneAndUpdate({ _id, user_id }, req.body)
   if (!food) throw createHttpError(404, `Food ${_id} not found`)
-  console.log(`Food ${_id} updated`)
   res.send(food)
 }
 
@@ -83,7 +80,6 @@ export const delete_food = async (req: Request, res: Response) => {
   const _id = req.params._id
   const food = await Food.findOneAndDelete({ _id, user_id })
   if (!food) throw createHttpError(404, `Food ${_id} not found`)
-  console.log(`Food ${_id} deleted`)
   res.send(food)
 }
 
