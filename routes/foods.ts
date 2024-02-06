@@ -1,6 +1,5 @@
 import { Router } from "express"
 import multer from "multer"
-import sharp from "sharp"
 import {
   create_food,
   read_all_foods,

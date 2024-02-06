@@ -85,10 +85,10 @@ export const upload_food_image = async (req: Request, res: Response) => {
   const newThumbnailFilename = `thumbnail.jpg`
   const newImagePath = path.join(destFolderPath, newImageFilename)
   const newThumbnailPath = path.join(destFolderPath, newThumbnailFilename)
-  await sharp(buffer).toFile(newImagePath)
-  await sharp(buffer).resize(128, 128).toFile(newThumbnailPath)
+  await sharp(buffer).rotate().toFile(newImagePath)
+  await sharp(buffer).rotate().resize(128, 128).toFile(newThumbnailPath)
 
-  // Not needed
+  // Not needed, now just serves as a flag to specify that the image is set
   const result = await Food.findOneAndUpdate(
     { _id, user_id },
     { image: newImageFilename }
