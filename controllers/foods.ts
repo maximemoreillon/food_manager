@@ -1,25 +1,12 @@
 import sharp from "sharp"
 import path from "path"
+import { mkdirSync, existsSync } from "fs"
+import { rimrafSync } from "rimraf"
 import { Request, Response } from "express"
 import { Food } from "../models/food"
-import { uploads_directory } from "../config"
+import { UPLOADS_DIRECTORY } from "../config"
 import { QueryOptions } from "mongoose"
 import createHttpError from "http-errors"
-
-const get_thumbnail_filename = (original_filename: string) => {
-  return original_filename.replace(/(\.[\w\d_-]+)$/i, "_thumbnail$1")
-}
-
-// TODO: find type for req
-const create_image_thumbnail = async (req: any) => {
-  const thumbnail_filename = get_thumbnail_filename(req.file.originalname)
-  const thumbnail_path = path.resolve(req.file.destination, thumbnail_filename)
-
-  await sharp(req.file.path, { failOnError: true })
-    .resize(128, 128)
-    .withMetadata()
-    .toFile(thumbnail_path)
-}
 
 export const read_all_foods = async (req: Request, res: Response) => {
   // TODO: typing
@@ -80,42 +67,59 @@ export const delete_food = async (req: Request, res: Response) => {
   const _id = req.params._id
   const food = await Food.findOneAndDelete({ _id, user_id })
   if (!food) throw createHttpError(404, `Food ${_id} not found`)
+
+  const imageFolderPath = path.resolve(UPLOADS_DIRECTORY, _id)
+  if (existsSync(imageFolderPath)) rimrafSync(imageFolderPath)
+
   res.send(food)
 }
 
 export const upload_food_image = async (req: Request, res: Response) => {
   const user_id = res.locals.user?._id
-  const _id = req.params._id
-  const { originalname: image }: any = req.file
-  await create_image_thumbnail(req)
-  const result = await Food.findOneAndUpdate({ _id, user_id }, { image })
+  const { _id } = req.params
+  const { buffer }: any = req.file
+  const destFolderPath = path.resolve(UPLOADS_DIRECTORY, _id)
+  if (!existsSync(destFolderPath))
+    mkdirSync(destFolderPath, { recursive: true })
+  const newImageFilename = `image.jpg`
+  const newThumbnailFilename = `thumbnail.jpg`
+  const newImagePath = path.join(destFolderPath, newImageFilename)
+  const newThumbnailPath = path.join(destFolderPath, newThumbnailFilename)
+  await sharp(buffer).toFile(newImagePath)
+  await sharp(buffer).resize(128, 128).toFile(newThumbnailPath)
+
+  // Not needed
+  const result = await Food.findOneAndUpdate(
+    { _id, user_id },
+    { image: newImageFilename }
+  )
   res.send(result)
 }
 
 export const read_food_image = async (req: Request, res: Response) => {
+  // NOTE: DB query actually not needed
   const user_id = res.locals.user?._id
   const _id = req.params._id
   const food = await Food.findOne({ _id, user_id })
   if (!food) throw createHttpError(404, `Food ${_id} not found`)
-  if (!food.image) throw createHttpError(404, `Food ${_id} image not found`)
 
-  const image_absolute_path = path.resolve(uploads_directory, _id, food.image)
+  const image_absolute_path = path.resolve(UPLOADS_DIRECTORY, _id, `image.jpg`)
   res.sendFile(image_absolute_path)
 }
 
 export const read_food_thumbnail = async (req: Request, res: Response) => {
+  // TODO: just add a ?thumbnaill=yes query param to above
   const user_id = res.locals.user?._id
   const _id = req.params._id
   const food = await Food.findOne({ _id, user_id })
   if (!food) throw createHttpError(404, `Food ${_id} not found`)
-  if (!food.image) throw createHttpError(404, `Food ${_id} image not found`)
 
-  const thumbnail_filename = get_thumbnail_filename(food.image)
   const image_absolute_path = path.resolve(
-    uploads_directory,
+    UPLOADS_DIRECTORY,
     _id,
-    thumbnail_filename
+    `thumbnail.jpg`
   )
+
   res.sendFile(image_absolute_path)
 }
 
