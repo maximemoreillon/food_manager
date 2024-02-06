@@ -1,11 +1,18 @@
-import sharp from "sharp"
-import path from "path"
-import { mkdirSync, existsSync } from "fs"
-import { rimrafSync } from "rimraf"
 import { Request, Response } from "express"
 import { Food } from "../models/food"
-import { UPLOADS_DIRECTORY } from "../config"
 import { QueryOptions } from "mongoose"
+import {
+  deleteImageFromS3,
+  s3Client,
+  sendS3Image,
+  storeImageToS3,
+} from "../s3ImageStorage"
+import {
+  storeImageLocally,
+  deleteImageLocally,
+  sendlocalImage,
+} from "../localImageStorage"
+import { IMAGE_FILENAME } from "../constants"
 import createHttpError from "http-errors"
 
 export const read_all_foods = async (req: Request, res: Response) => {
@@ -68,8 +75,8 @@ export const delete_food = async (req: Request, res: Response) => {
   const food = await Food.findOneAndDelete({ _id, user_id })
   if (!food) throw createHttpError(404, `Food ${_id} not found`)
 
-  const imageFolderPath = path.resolve(UPLOADS_DIRECTORY, _id)
-  if (existsSync(imageFolderPath)) rimrafSync(imageFolderPath)
+  if (s3Client) await deleteImageFromS3(_id)
+  else await deleteImageLocally(_id)
 
   res.send(food)
 }
@@ -78,20 +85,14 @@ export const upload_food_image = async (req: Request, res: Response) => {
   const user_id = res.locals.user?._id
   const { _id } = req.params
   const { buffer }: any = req.file
-  const destFolderPath = path.resolve(UPLOADS_DIRECTORY, _id)
-  if (!existsSync(destFolderPath))
-    mkdirSync(destFolderPath, { recursive: true })
-  const newImageFilename = `image.jpg`
-  const newThumbnailFilename = `thumbnail.jpg`
-  const newImagePath = path.join(destFolderPath, newImageFilename)
-  const newThumbnailPath = path.join(destFolderPath, newThumbnailFilename)
-  await sharp(buffer).rotate().toFile(newImagePath)
-  await sharp(buffer).rotate().resize(128, 128).toFile(newThumbnailPath)
+
+  if (s3Client) storeImageToS3(_id, buffer)
+  else await storeImageLocally(_id, buffer)
 
   // Not needed, now just serves as a flag to specify that the image is set
   const result = await Food.findOneAndUpdate(
     { _id, user_id },
-    { image: newImageFilename }
+    { image: `${_id}/${IMAGE_FILENAME}` }
   )
   res.send(result)
 }
@@ -99,12 +100,12 @@ export const upload_food_image = async (req: Request, res: Response) => {
 export const read_food_image = async (req: Request, res: Response) => {
   // NOTE: DB query actually not needed
   const user_id = res.locals.user?._id
-  const _id = req.params._id
+  const { _id } = req.params
   const food = await Food.findOne({ _id, user_id })
   if (!food) throw createHttpError(404, `Food ${_id} not found`)
 
-  const image_absolute_path = path.resolve(UPLOADS_DIRECTORY, _id, `image.jpg`)
-  res.sendFile(image_absolute_path)
+  if (s3Client) await sendS3Image(res, _id)
+  else sendlocalImage(res, _id)
 }
 
 export const read_food_thumbnail = async (req: Request, res: Response) => {
@@ -113,14 +114,8 @@ export const read_food_thumbnail = async (req: Request, res: Response) => {
   const _id = req.params._id
   const food = await Food.findOne({ _id, user_id })
   if (!food) throw createHttpError(404, `Food ${_id} not found`)
-
-  const image_absolute_path = path.resolve(
-    UPLOADS_DIRECTORY,
-    _id,
-    `thumbnail.jpg`
-  )
-
-  res.sendFile(image_absolute_path)
+  if (s3Client) await sendS3Image(res, _id, true)
+  else sendlocalImage(res, _id, true)
 }
 
 export const read_food_vendors = async (req: Request, res: Response) => {

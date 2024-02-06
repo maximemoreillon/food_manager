@@ -16,6 +16,7 @@ import { Request, Response, NextFunction } from "express"
 import promBundle from "express-prom-bundle"
 import swaggerUi from "swagger-ui-express"
 import swaggerDocument from "./swagger-output.json"
+import { s3Client, S3_BUCKET, S3_ENDPOINT, S3_REGION } from "./s3ImageStorage"
 
 const { APP_PORT = 80, IDENTIFICATION_URL } = process.env
 const promOptions = { includeMethod: true, includePath: true }
@@ -41,7 +42,16 @@ app.get("/", (req, res) => {
     auth: {
       url: IDENTIFICATION_URL,
     },
-    uploads_directory,
+    storage: {
+      local: !s3Client ? uploads_directory : undefined,
+      s3: s3Client
+        ? {
+            S3_BUCKET,
+            S3_ENDPOINT,
+            S3_REGION,
+          }
+        : undefined,
+    },
   })
 })
 
