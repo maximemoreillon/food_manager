@@ -32,6 +32,9 @@ spec:
           envFrom:
             - secretRef:
                 name: environment-variables
+          env:
+            - name: S3_BUCKET
+              value: food-manager
           volumeMounts:
             - mountPath: /usr/src/app/uploads
               name: ${APPLICATION_NAME}
