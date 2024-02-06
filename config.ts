@@ -1,5 +1,3 @@
-import dotenv from "dotenv"
+export const { UPLOADS_DIRECTORY = "uploads" } = process.env
 
-dotenv.config()
-
-export const uploads_directory = process.env.UPLOADS_DIRECTORY || "uploads"
+export const uploads_directory = UPLOADS_DIRECTORY
