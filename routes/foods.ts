@@ -1,5 +1,6 @@
 import { Router } from "express"
 import multer from "multer"
+import sharp from "sharp"
 import {
   create_food,
   read_all_foods,
@@ -11,22 +12,10 @@ import {
   read_food_thumbnail,
   read_food_vendors,
 } from "../controllers/foods"
-import { mkdirSync, existsSync } from "fs"
-import { uploads_directory } from "../config"
-import path from "path"
+
 const router = Router()
 
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    const { _id } = req.params
-    const dirPath = path.resolve(`${uploads_directory}/${_id}`)
-    if (!existsSync(dirPath)) mkdirSync(dirPath)
-    cb(null, dirPath)
-  },
-  filename: (req, file, cb) => {
-    cb(null, file.originalname)
-  },
-})
+const storage = multer.memoryStorage()
 
 const upload = multer({ storage })
 
