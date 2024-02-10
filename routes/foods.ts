@@ -1,4 +1,4 @@
-import { Router } from "express"
+import { Router, Request, Response, NextFunction } from "express"
 import multer from "multer"
 import {
   create_food,
@@ -8,11 +8,15 @@ import {
   delete_food,
   upload_food_image,
   read_food_image,
-  read_food_thumbnail,
   read_food_vendors,
 } from "../controllers/foods"
 
 const router = Router()
+
+const addVariantToQuery = (req: Request, res: Response, next: NextFunction) => {
+  req.query = { ...req.query, variant: "thumbnail" }
+  next()
+}
 
 const storage = multer.memoryStorage()
 
@@ -29,6 +33,6 @@ router
   .get(read_food_image)
   .post(upload.single("image"), upload_food_image)
 
-router.route("/:_id/thumbnail").get(read_food_thumbnail)
+router.route("/:_id/thumbnail").get(addVariantToQuery, read_food_image)
 
 export default router

@@ -101,21 +101,12 @@ export const read_food_image = async (req: Request, res: Response) => {
   // NOTE: DB query actually not needed
   const user_id = res.locals.user?._id
   const { _id } = req.params
+  const { variant } = req.query
   const food = await Food.findOne({ _id, user_id })
   if (!food) throw createHttpError(404, `Food ${_id} not found`)
 
-  if (s3Client) await sendS3Image(res, _id)
-  else sendlocalImage(res, _id)
-}
-
-export const read_food_thumbnail = async (req: Request, res: Response) => {
-  // TODO: just add a ?thumbnaill=yes query param to above
-  const user_id = res.locals.user?._id
-  const _id = req.params._id
-  const food = await Food.findOne({ _id, user_id })
-  if (!food) throw createHttpError(404, `Food ${_id} not found`)
-  if (s3Client) await sendS3Image(res, _id, true)
-  else sendlocalImage(res, _id, true)
+  if (s3Client) await sendS3Image(res, _id, variant === "thumbnail")
+  else sendlocalImage(res, _id, variant === "thumbnail")
 }
 
 export const read_food_vendors = async (req: Request, res: Response) => {

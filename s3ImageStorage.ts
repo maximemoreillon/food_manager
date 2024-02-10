@@ -3,10 +3,12 @@ import {
   GetObjectCommand,
   DeleteObjectCommand,
   PutObjectCommand,
+  ListObjectsCommand,
 } from "@aws-sdk/client-s3"
 import sharp from "sharp"
 import { Response } from "express"
 import { IMAGE_FILENAME, THUMBNAIL_FILENAME } from "./constants"
+import createHttpError from "http-errors"
 
 export const {
   S3_REGION,
@@ -55,22 +57,20 @@ export const storeImageToS3 = async (_id: string, buffer: Buffer) => {
 export const deleteImageFromS3 = async (_id: string) => {
   if (!S3_BUCKET || !s3Client) throw "S3 not configured"
 
-  // TODO: Loop through folder items
+  const Prefix = _id.toString()
 
-  await s3Client.send(
-    new DeleteObjectCommand({
-      Key: `${_id}/${IMAGE_FILENAME}`,
-      Bucket: S3_BUCKET,
-    })
+  const objectList = await s3Client.send(
+    new ListObjectsCommand({ Bucket: S3_BUCKET, Prefix })
   )
 
-  await s3Client.send(
-    new DeleteObjectCommand({
-      Key: `${_id}/${THUMBNAIL_FILENAME}`,
-      Bucket: S3_BUCKET,
-    })
-  )
+  if (!objectList || !objectList.Contents) throw `${Prefix} has no content`
+
+  for await (const { Key } of objectList.Contents) {
+    const options = { Key, Bucket: S3_BUCKET }
+    await s3Client.send(new DeleteObjectCommand(options))
+  }
 }
+
 export const sendS3Image = async (
   res: Response,
   _id: string,
