@@ -6,12 +6,12 @@ import {
   s3Client,
   sendS3Image,
   storeImageToS3,
-} from "../s3ImageStorage"
+} from "../imagesStorage/s3"
 import {
   storeImageLocally,
   deleteImageLocally,
   sendlocalImage,
-} from "../localImageStorage"
+} from "../imagesStorage/local"
 import { IMAGE_FILENAME } from "../constants"
 import createHttpError from "http-errors"
 

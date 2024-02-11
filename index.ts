@@ -16,7 +16,7 @@ import { Request, Response, NextFunction } from "express"
 import promBundle from "express-prom-bundle"
 import swaggerUi from "swagger-ui-express"
 import swaggerDocument from "./swagger-output.json"
-import { s3Client, S3_BUCKET, S3_ENDPOINT, S3_REGION } from "./s3ImageStorage"
+import { s3Client, S3_BUCKET, S3_ENDPOINT, S3_REGION } from "./imagesStorage/s3"
 
 const { APP_PORT = 80, IDENTIFICATION_URL } = process.env
 const promOptions = { includeMethod: true, includePath: true }

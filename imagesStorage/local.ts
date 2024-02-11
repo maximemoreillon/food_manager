@@ -1,10 +1,11 @@
 import { mkdirSync, existsSync } from "fs"
 import sharp from "sharp"
 import path from "path"
-import { UPLOADS_DIRECTORY } from "./config"
+import { UPLOADS_DIRECTORY } from "../config"
 import { rimrafSync } from "rimraf"
 import { Response } from "express"
-import { IMAGE_FILENAME, THUMBNAIL_FILENAME } from "./constants"
+import { IMAGE_FILENAME, THUMBNAIL_FILENAME } from "../constants"
+
 export const storeImageLocally = async (_id: string, buffer: Buffer) => {
   const destFolderPath = path.resolve(UPLOADS_DIRECTORY, _id)
   if (!existsSync(destFolderPath))

@@ -7,8 +7,7 @@ import {
 } from "@aws-sdk/client-s3"
 import sharp from "sharp"
 import { Response } from "express"
-import { IMAGE_FILENAME, THUMBNAIL_FILENAME } from "./constants"
-import createHttpError from "http-errors"
+import { IMAGE_FILENAME, THUMBNAIL_FILENAME } from "../constants"
 
 export const {
   S3_REGION,
