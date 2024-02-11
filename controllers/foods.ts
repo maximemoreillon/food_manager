@@ -86,7 +86,7 @@ export const upload_food_image = async (req: Request, res: Response) => {
   const { _id } = req.params
   const { buffer }: any = req.file
 
-  if (s3Client) storeImageToS3(_id, buffer)
+  if (s3Client) await storeImageToS3(_id, buffer)
   else await storeImageLocally(_id, buffer)
 
   // Not needed, now just serves as a flag to specify that the image is set
