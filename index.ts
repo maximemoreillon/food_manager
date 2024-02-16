@@ -24,7 +24,7 @@ const promOptions = { includeMethod: true, includePath: true }
 db.connect()
 
 // Express configuration
-const app = express()
+export const app = express()
 app.use(express.json())
 app.use(cors())
 app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument))
