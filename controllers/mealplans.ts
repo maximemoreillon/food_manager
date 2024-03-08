@@ -2,6 +2,19 @@ import { Request, Response } from "express"
 
 import MealPlan from "../models/mealplan"
 
+export const create_meal_plan = async (req: Request, res: Response) => {
+  const user_id = res.locals.user?._id
+
+  const { _id, ...properties } = req.body
+
+  const new_item = await MealPlan.create({
+    date: new Date(),
+    user_id,
+    ...properties,
+  })
+  res.send(new_item)
+}
+
 export const read_meal_plans = async (req: Request, res: Response) => {
   const user_id = res.locals.user?._id
 
@@ -38,20 +51,7 @@ export const read_meal_plan = async (req: Request, res: Response) => {
   const user_id = res.locals.user?._id
   const { _id } = req.params
   const item = await MealPlan.findOne({ _id, user_id })
-  console.log(`Meal plan ${_id} queried`)
   res.send(item)
-}
-
-export const create_meal_plan = async (req: Request, res: Response) => {
-  const user_id = res.locals.user?._id
-  const new_item = new MealPlan({
-    ...req.body,
-    date: new Date(),
-    user_id,
-  })
-  const saved_item = await new_item.save()
-  res.send(saved_item)
-  console.log(`Meal plan ${saved_item._id} created`)
 }
 
 export const update_meal_plan = async (req: Request, res: Response) => {
@@ -60,7 +60,6 @@ export const update_meal_plan = async (req: Request, res: Response) => {
   const properties = req.body
   const result = await MealPlan.findOneAndUpdate({ _id, user_id }, properties)
   res.send(result)
-  console.log(`Meal plan ${_id} updated`)
 }
 
 export const delete_meal_plan = async (req: Request, res: Response) => {

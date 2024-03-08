@@ -9,7 +9,10 @@ const mealPlanFoodSchema = new Schema({
 
 const mealPlanSchema = new Schema({
   name: String,
-  date: Date,
+  date: {
+    type: Date,
+    default: Date.now,
+  },
   user_id: String,
   incomplete: { type: Boolean, default: true },
 
