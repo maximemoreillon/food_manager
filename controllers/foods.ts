@@ -24,10 +24,11 @@ export const read_all_foods = async (req: Request, res: Response) => {
     order = "1",
     search,
     hidden = false,
+    ...rest
   }: any = req.query
 
   const user_id = res.locals.user?._id
-  let query: QueryOptions = { user_id }
+  let query: QueryOptions = { user_id, ...rest }
 
   if (search && search !== "") query.name = { $regex: search, $options: "i" }
   if (!hidden)

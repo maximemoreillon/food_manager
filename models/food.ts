@@ -3,6 +3,7 @@ import { Schema, model } from "mongoose"
 export const foodSchema = new Schema({
   name: String,
   vendor: String,
+  barcode: String,
 
   user_id: String,
   hidden: Boolean,
