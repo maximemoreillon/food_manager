@@ -1,7 +1,5 @@
 version: "3.7"
 
-# TODO: volumes
-
 services:
   mongodb:
     image: mongo:4
@@ -9,15 +7,18 @@ services:
       driver: none
     networks:
       - food-manager
+    volumes:
+      - mongodb-data:/data/db
 
   food-manager:
     image: moreillon/food-manager
-    # build: .
     environment:
       MONGODB_HOST: mongodb
       MONGODB_DB: food_manager
     networks:
       - food-manager
+    volumes:
+      - food-manager-data:/usr/src/app/uploads
     
 
   gui:
@@ -41,3 +42,7 @@ services:
 
 networks:
   food-manager:
+
+volumes:
+  food-manager-data:
+  mongodb-data:
