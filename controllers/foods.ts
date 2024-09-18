@@ -14,6 +14,7 @@ import {
 } from "../imagesStorage/local"
 import { IMAGE_FILENAME } from "../constants"
 import createHttpError from "http-errors"
+import { getUserId } from "../auth"
 
 export const read_all_foods = async (req: Request, res: Response) => {
   // TODO: typing
@@ -27,7 +28,7 @@ export const read_all_foods = async (req: Request, res: Response) => {
     ...rest
   }: any = req.query
 
-  const user_id = res.locals.user?._id
+  const user_id = getUserId(req, res)
   let query: QueryOptions = { user_id, ...rest }
 
   if (search && search !== "") query.name = { $regex: search, $options: "i" }
@@ -57,13 +58,13 @@ export const read_food = async (req: Request, res: Response) => {
 }
 
 export const create_food = async (req: Request, res: Response) => {
-  const user_id = res.locals.user?._id
+  const user_id = getUserId(req, res)
   const new_food = await Food.create({ user_id, ...req.body })
   res.send(new_food)
 }
 
 export const update_food = async (req: Request, res: Response) => {
-  const user_id = res.locals.user?._id
+  const user_id = getUserId(req, res)
   const _id = req.params._id
   const food = await Food.findOneAndUpdate({ _id, user_id }, req.body)
   if (!food) throw createHttpError(404, `Food ${_id} not found`)
@@ -71,7 +72,7 @@ export const update_food = async (req: Request, res: Response) => {
 }
 
 export const delete_food = async (req: Request, res: Response) => {
-  const user_id = res.locals.user?._id
+  const user_id = getUserId(req, res)
   const _id = req.params._id
   const food = await Food.findOneAndDelete({ _id, user_id })
   if (!food) throw createHttpError(404, `Food ${_id} not found`)
@@ -83,7 +84,7 @@ export const delete_food = async (req: Request, res: Response) => {
 }
 
 export const upload_food_image = async (req: Request, res: Response) => {
-  const user_id = res.locals.user?._id
+  const user_id = getUserId(req, res)
   const { _id } = req.params
   const { buffer }: any = req.file
 
@@ -100,7 +101,7 @@ export const upload_food_image = async (req: Request, res: Response) => {
 
 export const read_food_image = async (req: Request, res: Response) => {
   // NOTE: DB query actually not needed
-  const user_id = res.locals.user?._id
+  const user_id = getUserId(req, res)
   const { _id } = req.params
   const { variant } = req.query
   const food = await Food.findOne({ _id, user_id })
@@ -111,7 +112,7 @@ export const read_food_image = async (req: Request, res: Response) => {
 }
 
 export const read_food_vendors = async (req: Request, res: Response) => {
-  const user_id = res.locals.user?._id
+  const user_id = getUserId(req, res)
   const vendors = await Food.find({ user_id }).distinct("vendor")
   res.send(vendors)
 }

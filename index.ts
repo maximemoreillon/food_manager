@@ -11,14 +11,14 @@ import food_router from "./routes/foods"
 import mealplan_router from "./routes/mealplans"
 import user_configuration_router from "./routes/userConfig"
 import auth from "@moreillon/express_identification_middleware"
-import { uploads_directory } from "./config"
+import { uploads_directory, APP_PORT, IDENTIFICATION_URL } from "./config"
 import { Request, Response, NextFunction } from "express"
 import promBundle from "express-prom-bundle"
 import swaggerUi from "swagger-ui-express"
 import swaggerDocument from "./swagger-output.json"
 import { s3Client, S3_BUCKET, S3_ENDPOINT, S3_REGION } from "./imagesStorage/s3"
+import { authMiddleware } from "./auth"
 
-const { APP_PORT = 80, IDENTIFICATION_URL } = process.env
 const promOptions = { includeMethod: true, includePath: true }
 
 db.connect()
@@ -55,12 +55,10 @@ app.get("/", (req, res) => {
   })
 })
 
-if (IDENTIFICATION_URL) {
-  const auth_options = { url: IDENTIFICATION_URL }
-  app.use(auth(auth_options))
-}
-
+// Not fully protected because of images
 app.use("/foods", food_router)
+
+app.use(authMiddleware)
 app.use("/meal_plans", mealplan_router)
 app.use("/settings", user_configuration_router)
 

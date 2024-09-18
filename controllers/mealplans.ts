@@ -1,9 +1,10 @@
 import { Request, Response } from "express"
 
 import MealPlan from "../models/mealplan"
+import { getUserId } from "../auth"
 
 export const create_meal_plan = async (req: Request, res: Response) => {
-  const user_id = res.locals.user?._id
+  const user_id = getUserId(req, res)
 
   const { _id, ...properties } = req.body
 
@@ -16,7 +17,7 @@ export const create_meal_plan = async (req: Request, res: Response) => {
 }
 
 export const read_meal_plans = async (req: Request, res: Response) => {
-  const user_id = res.locals.user?._id
+  const user_id = getUserId(req, res)
 
   const {
     skip = 0,
@@ -48,14 +49,14 @@ export const read_meal_plans = async (req: Request, res: Response) => {
 }
 
 export const read_meal_plan = async (req: Request, res: Response) => {
-  const user_id = res.locals.user?._id
+  const user_id = getUserId(req, res)
   const { _id } = req.params
   const item = await MealPlan.findOne({ _id, user_id })
   res.send(item)
 }
 
 export const update_meal_plan = async (req: Request, res: Response) => {
-  const user_id = res.locals.user?._id
+  const user_id = getUserId(req, res)
   const { _id } = req.params
   const properties = req.body
   const result = await MealPlan.findOneAndUpdate({ _id, user_id }, properties)
@@ -63,7 +64,7 @@ export const update_meal_plan = async (req: Request, res: Response) => {
 }
 
 export const delete_meal_plan = async (req: Request, res: Response) => {
-  const user_id = res.locals.user?._id
+  const user_id = getUserId(req, res)
   const _id = req.params._id
   const result = await MealPlan.findOneAndDelete({ _id, user_id })
   res.send(result)
