@@ -101,10 +101,9 @@ export const upload_food_image = async (req: Request, res: Response) => {
 
 export const read_food_image = async (req: Request, res: Response) => {
   // NOTE: DB query actually not needed
-  const user_id = getUserId(req, res)
   const { _id } = req.params
   const { variant } = req.query
-  const food = await Food.findOne({ _id, user_id })
+  const food = await Food.findOne({ _id })
   if (!food) throw createHttpError(404, `Food ${_id} not found`)
 
   if (s3Client) await sendS3Image(res, _id, variant === "thumbnail")
