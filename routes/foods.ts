@@ -23,18 +23,16 @@ const addVariantToQuery =
 
 const router = Router()
 
-// Unprotected routes
-router.route("/:_id/image").get(read_food_image)
+router.route("/").get(read_all_foods).post(create_food)
+router.route("/vendors").get(read_food_vendors)
+router.route("/:_id").get(read_food).patch(update_food).delete(delete_food)
+router
+  .route("/:_id/image")
+  .post(upload.single("image"), upload_food_image)
+  .get(read_food_image)
 
 router
   .route("/:_id/thumbnail")
   .get(addVariantToQuery("thumbnail"), read_food_image)
-
-// Protected routes
-router.use(authMiddleware)
-router.route("/").get(read_all_foods).post(create_food)
-router.route("/vendors").get(read_food_vendors)
-router.route("/:_id").get(read_food).patch(update_food).delete(delete_food)
-router.route("/:_id/image").post(upload.single("image"), upload_food_image)
 
 export default router

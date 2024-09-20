@@ -55,10 +55,8 @@ app.get("/", (req, res) => {
   })
 })
 
-// Not fully protected because of images
-app.use("/foods", food_router)
-
 app.use(authMiddleware)
+app.use("/foods", food_router)
 app.use("/meal_plans", mealplan_router)
 app.use("/settings", user_configuration_router)
 
