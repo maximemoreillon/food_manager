@@ -32,6 +32,8 @@ spec:
           envFrom:
             - secretRef:
                 name: environment-variables
+            - secretRef:
+                name: auth0-env
           env:
             - name: S3_BUCKET
               value: food-manager
