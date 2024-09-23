@@ -10,8 +10,12 @@ import * as db from "./db"
 import food_router from "./routes/foods"
 import mealplan_router from "./routes/mealplans"
 import user_configuration_router from "./routes/userConfig"
-import auth from "@moreillon/express_identification_middleware"
-import { uploads_directory, APP_PORT, IDENTIFICATION_URL } from "./config"
+import {
+  uploads_directory,
+  APP_PORT,
+  IDENTIFICATION_URL,
+  OIDC_JWKS_URI,
+} from "./config"
 import { Request, Response, NextFunction } from "express"
 import promBundle from "express-prom-bundle"
 import swaggerUi from "swagger-ui-express"
@@ -41,6 +45,7 @@ app.get("/", (req, res) => {
     },
     auth: {
       url: IDENTIFICATION_URL,
+      oidc_jwks_uri: OIDC_JWKS_URI,
     },
     storage: {
       local: !s3Client ? uploads_directory : undefined,
