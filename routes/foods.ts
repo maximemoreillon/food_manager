@@ -10,7 +10,6 @@ import {
   read_food_image,
   read_food_vendors,
 } from "../controllers/foods"
-import { authMiddleware } from "../auth"
 
 const storage = multer.memoryStorage()
 const upload = multer({ storage })

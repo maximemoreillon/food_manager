@@ -10,6 +10,7 @@ import * as db from "./db"
 import food_router from "./routes/foods"
 import mealplan_router from "./routes/mealplans"
 import user_configuration_router from "./routes/userConfig"
+import labelrouter from "./routes/label"
 import {
   uploads_directory,
   APP_PORT,
@@ -22,6 +23,7 @@ import swaggerUi from "swagger-ui-express"
 import swaggerDocument from "./swagger-output.json"
 import { s3Client, S3_BUCKET, S3_ENDPOINT, S3_REGION } from "./imagesStorage/s3"
 import { authMiddleware } from "./auth"
+import { openAiClient } from "./openai"
 
 const promOptions = { includeMethod: true, includePath: true }
 
@@ -57,6 +59,7 @@ app.get("/", (req, res) => {
           }
         : undefined,
     },
+    openAi: !!openAiClient,
   })
 })
 
@@ -64,6 +67,8 @@ app.use(authMiddleware)
 app.use("/foods", food_router)
 app.use("/meal_plans", mealplan_router)
 app.use("/settings", user_configuration_router)
+
+app.use("/label", labelrouter)
 
 // Express error handling
 app.use((error: any, req: Request, res: Response, next: NextFunction) => {
