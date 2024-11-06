@@ -4,7 +4,8 @@ import { openAiClient } from "../openai"
 
 export const parseFoodLabel = async (req: Request, res: Response) => {
   if (!openAiClient) throw createHttpError(400, `OpenAI is not enabled`)
-  const file: any = req.file
+  const file = req.file
+  if (!file) throw createHttpError(400, "Image not provided")
 
   const base64Image = file.buffer.toString("base64")
 
