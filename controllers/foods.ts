@@ -66,7 +66,9 @@ export const create_food = async (req: Request, res: Response) => {
 export const update_food = async (req: Request, res: Response) => {
   const user_id = getUserId(req, res)
   const _id = req.params._id
-  const food = await Food.findOneAndUpdate({ _id, user_id }, req.body)
+  const food = await Food.findOneAndUpdate({ _id, user_id }, req.body, {
+    new: true,
+  })
   if (!food) throw createHttpError(404, `Food ${_id} not found`)
   res.send(food)
 }
@@ -94,7 +96,8 @@ export const upload_food_image = async (req: Request, res: Response) => {
   // Not needed, now just serves as a flag to specify that the image is set
   const result = await Food.findOneAndUpdate(
     { _id, user_id },
-    { image: `${_id}/${IMAGE_FILENAME}` }
+    { image: `${_id}/${IMAGE_FILENAME}` },
+    { new: true }
   )
   res.send(result)
 }
