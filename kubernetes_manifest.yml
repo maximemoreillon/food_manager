@@ -1,15 +1,15 @@
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: ${APPLICATION_NAME}
-spec:
-  storageClassName: manual
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 50Gi
----
+# apiVersion: v1
+# kind: PersistentVolumeClaim
+# metadata:
+#   name: ${APPLICATION_NAME}
+# spec:
+#   storageClassName: manual
+#   accessModes:
+#     - ReadWriteOnce
+#   resources:
+#     requests:
+#       storage: 50Gi
+# ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -37,13 +37,13 @@ spec:
           env:
             - name: S3_BUCKET
               value: food-manager
-          volumeMounts:
-            - mountPath: /usr/src/app/uploads
-              name: ${APPLICATION_NAME}
-      volumes:
-        - name: ${APPLICATION_NAME}
-          persistentVolumeClaim:
-            claimName: ${APPLICATION_NAME}
+      #     volumeMounts:
+      #       - mountPath: /usr/src/app/uploads
+      #         name: ${APPLICATION_NAME}
+      # volumes:
+      #   - name: ${APPLICATION_NAME}
+      #     persistentVolumeClaim:
+      #       claimName: ${APPLICATION_NAME}
 ---
 apiVersion: v1
 kind: Service
