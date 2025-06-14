@@ -64,14 +64,14 @@
 const { data, pending } = await useFetch("/api/foods");
 
 const headers = ref([
-  { text: "Image", value: "image" },
-  { text: "Name", value: "name" },
-  { text: "Vendor", value: "vendor" },
-  { text: "Serving", value: "serving" },
-  { text: "Calories [kcal]", value: "serving.calories" },
-  { text: "Protein [g]", value: "serving.macronutrients.protein" },
-  { text: "Fat [g]", value: "serving.macronutrients.fat" },
-  { text: "Carbs [g]", value: "serving.macronutrients.carbohydrates" },
-  { text: "Price", value: "serving.price" },
+  { title: "Image", key: "image" },
+  { title: "Name", key: "name" },
+  { title: "Vendor", key: "vendor" },
+  { title: "Serving", key: "serving" },
+  { title: "Calories [kcal]", key: "serving.calories" },
+  { title: "Protein [g]", key: "serving.macronutrients.protein" },
+  { title: "Fat [g]", key: "serving.macronutrients.fat" },
+  { title: "Carbs [g]", key: "serving.macronutrients.carbohydrates" },
+  { title: "Price", key: "serving.price" },
 ]);
 </script>
