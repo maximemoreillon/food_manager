@@ -151,5 +151,6 @@ function delete_food_image() {
   alert("WIP");
 }
 
+// TODO: use utils
 const image_src = computed(() => `/api/foods/${route.params._id}/image`);
 </script>

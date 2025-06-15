@@ -87,10 +87,10 @@
               />
             </v-col>
             <v-col cols="auto">
-              <!-- <AddFoodDialog
+              <MealPlanFoodAddDialog
                 :meal_plan="meal_plan"
                 @submit="add_food_to_plan($event)"
-              /> -->
+              />
             </v-col>
           </v-row>
 
@@ -148,13 +148,7 @@
 
 <script setup lang="ts">
 // TODO: externalize
-const colors = {
-  protein: "#73bf69",
-  fat: "#f2cc0c",
-  carbohydrates: "#8ab9ff",
-  calories: "#dfecf7",
-  calorie_excess: "#ed8a8a",
-};
+
 const route = useRoute();
 
 const snackbar = ref({
@@ -197,7 +191,8 @@ async function saveMealPlan() {
   alert("WIP");
 }
 
-async function add_food_to_plan() {
+async function add_food_to_plan(event: any) {
+  console.log(event);
   alert("WIP");
 }
 
