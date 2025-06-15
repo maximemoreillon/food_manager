@@ -101,12 +101,12 @@
             :items-per-page="-1"
           >
             <template v-slot:item.image="{ item }">
-              <v-img
+              <!-- <v-img
                 width="5em"
                 height="5em"
                 contain
                 :src="foodImageSrc(item.food)"
-              />
+              /> -->
             </template>
 
             <template v-slot:item.quantity="{ item }">
@@ -188,12 +188,27 @@ async function deleteMealPlan() {
 }
 
 async function saveMealPlan() {
-  alert("WIP");
+  saving.value = true;
+  const body = {
+    ...meal_plan.value,
+    calories: calorie_total.value,
+    macronutrients: macros_total.value,
+  };
+  await $fetch(`/api/mealplans/${route.params._id}`, { method: "PATCH", body });
+  saving.value = false;
 }
 
-async function add_food_to_plan(event: any) {
-  console.log(event);
-  alert("WIP");
+async function add_food_to_plan({ food: new_food, quantity }: any) {
+  if (!new_food._id)
+    return meal_plan.value.foods.push({ food: new_food, quantity });
+
+  const found_food = meal_plan.value.foods.find(
+    ({ food: { _id } }) => _id === new_food._id
+  );
+  if (found_food) found_food.quantity++;
+  else meal_plan.value.foods.push({ food: new_food, quantity });
+  snackbar.value.text = `${new_food.name} added to meal plan`;
+  snackbar.value.show = true;
 }
 
 function foodImageSrc(foodId: string) {

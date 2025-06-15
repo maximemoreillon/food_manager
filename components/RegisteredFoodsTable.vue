@@ -6,8 +6,9 @@
     :items="foods"
     :search="search"
     :items-per-page="50"
-    @click:row="$emit('foodAdded', { food: $event, quantity: 1 })"
   >
+    <!-- @click:row="$emit('foodAdded', { food: $event, quantity: 1 })" -->
+
     <template v-slot:top>
       <v-row class="mt-2">
         <v-col>
@@ -41,6 +42,13 @@
     <template v-slot:item.food.serving="{ item }">
       {{ item.food.serving.size }} {{ item.food.serving.unit }}
     </template>
+
+    <template v-slot:item.add="{ item }">
+      <v-btn
+        text="add"
+        @click="$emit('foodAdded', { food: item, quantity: 1 })"
+      />
+    </template>
   </v-data-table>
 </template>
 
@@ -48,8 +56,6 @@
 const props = defineProps<{
   meal_plan: any;
 }>();
-
-// TODO: useFetch vs $fetch
 
 const headers = ref([
   { title: "", key: "image" },
@@ -60,6 +66,7 @@ const headers = ref([
   { title: "Protein", key: "serving.macronutrients.protein" },
   { title: "Fat", key: "serving.macronutrients.fat" },
   { title: "Carbs", key: "serving.macronutrients.carbohydrates" },
+  { title: "Add", key: "add" },
 ]);
 
 const search = ref("");
@@ -69,6 +76,7 @@ const foods = ref([]);
 
 async function getFoods() {
   loading.value = true;
+  // TODO: figure out if $fetch was the right choice
   const res = await $fetch("/api/foods");
   foods.value = res.items;
   loading.value = false;

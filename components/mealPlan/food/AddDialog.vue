@@ -1,5 +1,5 @@
 <template>
-  <v-dialog max-width="50rem">
+  <v-dialog max-width="80rem">
     <template v-slot:activator="{ props: activatorProps }">
       <v-btn
         v-bind="activatorProps"
@@ -36,7 +36,10 @@
         <v-card-text>
           <v-tabs-window v-model="tab">
             <v-tabs-window-item>
-              <RegisteredFoodsTable :meal_plan="meal_plan" />
+              <RegisteredFoodsTable
+                :meal_plan="meal_plan"
+                @foodAdded="$emit('submit', $event)"
+              />
             </v-tabs-window-item>
           </v-tabs-window>
         </v-card-text>
