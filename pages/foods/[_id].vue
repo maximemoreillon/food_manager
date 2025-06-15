@@ -19,7 +19,13 @@
       </v-toolbar>
       <v-divider />
 
-      <v-img class="mt-3" height="300" :src="image_src" contain />
+      <v-img
+        v-if="food.image"
+        class="mt-3"
+        height="300"
+        :src="image_src"
+        contain
+      />
 
       <v-card-text>
         <v-row>
@@ -139,8 +145,16 @@ const snackbar = ref({
   text: "",
 });
 
-function update_food() {
-  alert("WIP");
+async function update_food() {
+  saving.value = true;
+  await $fetch(`/api/foods/${route.params._id}`, {
+    method: "PATCH",
+    body: food.value,
+  });
+  saving.value = false;
+
+  snackbar.value.show = true;
+  snackbar.value.text = "Food saved";
 }
 
 function delete_food() {

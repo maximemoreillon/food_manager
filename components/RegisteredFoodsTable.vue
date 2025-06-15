@@ -23,7 +23,13 @@
     </template>
 
     <template v-slot:item.image="{ item }">
-      <v-img width="5em" height="5em" contain :src="imageSrc(item._id)" />
+      <v-img
+        v-if="item.image"
+        width="5em"
+        height="5em"
+        contain
+        :src="imageSrc(item._id)"
+      />
     </template>
 
     <template v-slot:item.serving="{ item }">

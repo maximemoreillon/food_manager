@@ -30,9 +30,9 @@ const drawer = ref(true);
 
       <v-app-bar-title>Application Bar</v-app-bar-title>
     </v-app-bar>
-    <v-navigation-drawer v-model="drawer">
+    <!-- <v-navigation-drawer v-model="drawer">
       <v-list :items="items"></v-list>
-    </v-navigation-drawer>
+    </v-navigation-drawer> -->
     <v-main>
       <slot />
     </v-main>

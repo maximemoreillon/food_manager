@@ -101,12 +101,12 @@
             :items-per-page="-1"
           >
             <template v-slot:item.image="{ item }">
-              <!-- <v-img
+              <v-img
                 width="5em"
                 height="5em"
                 contain
-                :src="foodImageSrc(item.food)"
-              /> -->
+                :src="foodImageSrc(item.food._id)"
+              />
             </template>
 
             <template v-slot:item.quantity="{ item }">
@@ -117,10 +117,12 @@
               {{ item.food.serving.size }} {{ item.food.serving.unit }}
             </template>
 
-            <template v-slot:item.remove="{ item }">
-              <v-btn icon @click="remove_food_from_plan(item)">
-                <v-icon>mdi-delete</v-icon>
-              </v-btn>
+            <template v-slot:item.remove="{ index }">
+              <v-btn
+                icon="mdi-delete"
+                @click="remove_food_from_plan(index)"
+                variant="flat"
+              />
             </template>
 
             <template v-slot:item.edit="{ item }">
@@ -162,21 +164,21 @@ const saving = ref(false);
 const deleting = ref(false);
 const duplicating = ref(false);
 const foodsTableHeaders = ref([
-  { text: "", value: "image" },
-  { text: "Name", value: "food.name" },
-  // { text: "Vendor", value: "food.vendor" },
-  { text: "Calories [kcal]", value: "food.serving.calories" },
-  { text: "Protein [g]", value: "food.serving.macronutrients.protein" },
-  { text: "Fat [g]", value: "food.serving.macronutrients.fat" },
+  { title: "", key: "image" },
+  { title: "Name", key: "food.name" },
+  // { title: "Vendor", key: "food.vendor" },
+  { title: "Calories [kcal]", key: "food.serving.calories" },
+  { title: "Protein [g]", key: "food.serving.macronutrients.protein" },
+  { title: "Fat [g]", key: "food.serving.macronutrients.fat" },
   {
-    text: "Carbs [g]",
-    value: "food.serving.macronutrients.carbohydrates",
+    title: "Carbs [g]",
+    key: "food.serving.macronutrients.carbohydrates",
   },
-  { text: "Serving", value: "food.serving" },
-  { text: "Quantity", value: "quantity", width: "5rem" },
-  { text: "", value: "remove" },
+  { title: "Serving", key: "food.serving" },
+  { title: "Quantity", key: "quantity", width: "5rem" },
+  { title: "", key: "remove" },
 
-  { text: "", value: "edit" },
+  { title: "", key: "edit" },
 ]);
 
 const { data: meal_plan, pending: loading } = await useFetch(
@@ -207,7 +209,7 @@ async function add_food_to_plan({ food: new_food, quantity }: any) {
   );
   if (found_food) found_food.quantity++;
   else meal_plan.value.foods.push({ food: new_food, quantity });
-  snackbar.value.text = `${new_food.name} added to meal plan`;
+  snackbar.value.text = `${new_food.name} added`;
   snackbar.value.show = true;
 }
 
@@ -215,8 +217,8 @@ function foodImageSrc(foodId: string) {
   return `/api/foods/${foodId}/image`;
 }
 
-function remove_food_from_plan(item: any) {
-  alert("WIP");
+function remove_food_from_plan(index: number) {
+  meal_plan.value.foods.splice(index, 1);
 }
 
 async function duplicate_meal_plan() {
