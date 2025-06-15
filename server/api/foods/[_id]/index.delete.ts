@@ -2,12 +2,12 @@ export default defineEventHandler(async (event) => {
   // Note: destructuring results in error
   const _id = event.context.params?._id;
 
-  const item = await MealPlan.findByIdAndDelete(_id);
-  if (!item)
+  const food = await Food.findByIdAndDelete(_id);
+  if (!food)
     throw createError({
       statusCode: 400,
-      statusMessage: `Meal plan ${_id} not found`,
+      statusMessage: `Food ${_id} not found`,
     });
 
-  return item;
+  return food;
 });

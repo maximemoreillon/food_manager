@@ -1,4 +1,5 @@
-- [ ] v-data-table pages
+- [ ] v-data-table pagination
 - [ ] OIDC auth
+  - [ ] Persistent user session not found
 - [ ] S3
 - [ ] Error handling

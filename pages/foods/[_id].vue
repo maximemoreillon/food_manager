@@ -13,9 +13,12 @@
         <v-btn icon @click="update_food()" :loading="saving">
           <v-icon>mdi-content-save</v-icon>
         </v-btn>
-        <v-btn icon color="#c00000" @click="delete_food()" :loading="deleting">
-          <v-icon>mdi-delete</v-icon>
-        </v-btn>
+        <v-btn
+          icon="mdi-delete"
+          color="#c00000"
+          @click="deleteFood()"
+          :loading="deleting"
+        />
       </v-toolbar>
       <v-divider />
 
@@ -157,11 +160,15 @@ async function update_food() {
   snackbar.value.text = "Food saved";
 }
 
-function delete_food() {
-  alert("WIP");
+async function deleteFood() {
+  if (!confirm("Delete food?")) return;
+  deleting.value = true;
+  await $fetch(`/api/foods/${route.params._id}`, { method: "DELETE" });
+  deleting.value = false;
+  navigateTo("/foods");
 }
 
-function delete_food_image() {
+function deleteFood_image() {
   alert("WIP");
 }
 

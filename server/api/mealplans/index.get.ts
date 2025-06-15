@@ -1,4 +1,7 @@
+import { getUserSession } from "nuxt-oidc-auth/runtime/server/utils/session.js";
+
 export default defineEventHandler(async (event) => {
+  const session = await getUserSession(event);
   const {
     skip = 0,
     limit = 10,

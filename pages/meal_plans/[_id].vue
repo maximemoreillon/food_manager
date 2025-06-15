@@ -1,29 +1,28 @@
 <template>
   <v-card :loading="loading">
     <v-toolbar flat>
-      <v-btn icon exact :to="{ name: 'meal_plans' }">
-        <v-icon>mdi-arrow-left</v-icon>
-      </v-btn>
+      <v-btn icon="mdi-arrow-left" exact :to="{ name: 'meal_plans' }" />
 
       <v-toolbar-title>Meal plan</v-toolbar-title>
       <v-spacer />
-      <v-btn icon @click="saveMealPlan()" :loading="saving">
-        <v-icon>mdi-content-save</v-icon>
-      </v-btn>
-
-      <v-btn icon @click="duplicate_meal_plan()" :loading="duplicating">
-        <v-icon>mdi-content-copy</v-icon>
-      </v-btn>
+      <v-btn
+        @click="saveMealPlan()"
+        :loading="saving"
+        icon="mdi-content-save"
+      />
 
       <v-btn
-        icon
+        @click="duplicate_meal_plan()"
+        :loading="duplicating"
+        icon="mdi-content-copy"
+      />
+
+      <v-btn
         color="#c00000"
-        v-if="meal_plan._id"
         @click="deleteMealPlan()"
         :loading="deleting"
-      >
-        <v-icon>mdi-delete</v-icon>
-      </v-btn>
+        icon="mdi-delete"
+      />
     </v-toolbar>
 
     <template v-if="meal_plan && !loading">
@@ -89,7 +88,7 @@
             <v-col cols="auto">
               <MealPlanFoodAddDialog
                 :meal_plan="meal_plan"
-                @submit="add_food_to_plan($event)"
+                @submit="addFoodToMealPlan($event)"
               />
             </v-col>
           </v-row>
@@ -102,6 +101,7 @@
           >
             <template v-slot:item.image="{ item }">
               <v-img
+                v-if="item.foor.image"
                 width="5em"
                 height="5em"
                 contain
@@ -186,7 +186,11 @@ const { data: meal_plan, pending: loading } = await useFetch(
 );
 
 async function deleteMealPlan() {
-  alert("WIP");
+  if (!confirm("Delete meal plan?")) return;
+  deleting.value = true;
+  await $fetch(`/api/mealplans/${route.params._id}`, { method: "DELETE" });
+  deleting.value = false;
+  navigateTo("/meal_plans");
 }
 
 async function saveMealPlan() {
@@ -200,7 +204,7 @@ async function saveMealPlan() {
   saving.value = false;
 }
 
-async function add_food_to_plan({ food: new_food, quantity }: any) {
+async function addFoodToMealPlan({ food: new_food, quantity }: any) {
   if (!new_food._id)
     return meal_plan.value.foods.push({ food: new_food, quantity });
 
