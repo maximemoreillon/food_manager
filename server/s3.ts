@@ -42,6 +42,9 @@ export const storeImageToS3 = async (_id: string, buffer: Buffer) => {
     `${_id}/${THUMBNAIL_FILENAME}`,
     await sharp(buffer).rotate().resize(128, 128).toBuffer()
   );
+
+  // TODO: consider also returning thumbnail key
+  return `${_id}/${IMAGE_FILENAME}`;
 };
 
 export const deleteImageFromS3 = async (_id: string) => {
@@ -65,36 +68,16 @@ export const deleteImageFromS3 = async (_id: string) => {
   });
 };
 
-export const sendS3Image = async (
-  res: Response,
-  _id: string,
-  thumbnail: boolean = false
-) => {
+export const sendS3Image = async (_id: string, thumbnail: boolean = false) => {
   if (!S3_BUCKET || !s3Client) throw "S3 not configured";
 
   const filename = thumbnail ? THUMBNAIL_FILENAME : IMAGE_FILENAME;
   const Key = `${_id}/${filename}`;
-  const { ext } = path.parse(Key);
+  // const { ext } = path.parse(Key);
 
   const stream = await s3Client.getObject(S3_BUCKET, Key);
 
   if (!stream) throw "No stream available";
 
-  // TODO: send using Nuxt
-
-  // res.setHeader(
-  //   "Content-Disposition",
-  //   `attachment; filename=${encodeURIComponent(filename)}`
-  // );
-  // res.setHeader("Content-Type", `image/${ext.replace(".", "")}`);
-
-  // stream.on("data", (chunk) => {
-  //   res.write(chunk);
-  // });
-  // stream.on("end", () => {
-  //   res.end();
-  // });
-  // stream.on("error", (err) => {
-  //   res.end();
-  // });
+  return stream;
 };

@@ -3,7 +3,7 @@
     <v-toolbar flat>
       <v-toolbar-title>Foods</v-toolbar-title>
       <v-spacer />
-      <!-- <NewFoodDialog /> -->
+      <FoodCreateDialog />
     </v-toolbar>
 
     <v-card-text>

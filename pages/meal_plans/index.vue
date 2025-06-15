@@ -11,7 +11,7 @@
             <v-icon left>mdi-plus</v-icon>
             <span>New</span>
           </v-btn> -->
-          <MealPlansCreateDialog />
+          <MealPlanCreateDialog />
         </v-col>
       </v-row>
     </v-toolbar>
