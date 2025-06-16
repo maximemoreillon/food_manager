@@ -1,5 +1,6 @@
+<script setup lang="ts">
+navigateTo("/meal_plans");
+</script>
 <template>
-  <v-card>
-    <v-card-title> Hello Vuetify </v-card-title>
-  </v-card>
+  <div>Redirecting</div>
 </template>

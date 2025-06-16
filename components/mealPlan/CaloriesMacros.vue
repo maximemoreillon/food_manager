@@ -13,6 +13,7 @@
   </div>
 </template>
 <script>
+// TODO: composition API syntax
 export default {
   name: "CalorieMacros",
   props: {

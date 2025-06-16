@@ -18,6 +18,7 @@ const schema = new Schema({
 
   foods: [mealPlanFoodSchema],
 
+  // TODO: have those as a computed/virtual
   macronutrients: {
     protein: { type: Number, default: 0 },
     fat: { type: Number, default: 0 },
@@ -26,6 +27,7 @@ const schema = new Schema({
 
   // Could have been nested in 'calories'
   calories_target: Number,
+  // TODO: have this as a computed/virtual
   calories: Number,
 });
 

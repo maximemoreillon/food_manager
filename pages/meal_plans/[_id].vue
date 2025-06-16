@@ -101,7 +101,7 @@
           >
             <template v-slot:item.image="{ item }">
               <v-img
-                v-if="item.foor.image"
+                v-if="item.food.image"
                 width="5em"
                 height="5em"
                 contain
@@ -125,11 +125,11 @@
               />
             </template>
 
-            <template v-slot:item.edit="{ item }">
-              <!-- <FoodEditDialog
-                :item="item"
-                @submit="update_item(item, $event)"
-              /> -->
+            <template v-slot:item.edit="{ item, index }">
+              <MealPlanFoodEditDialog
+                :mealPlanRecord="item"
+                @edit="updateMealPlanFood(index, $event)"
+              />
             </template>
           </v-data-table>
         </section>
@@ -149,6 +149,8 @@
 </template>
 
 <script setup lang="ts">
+import type { FoodT, MealPlanRecord } from "~/shared/types";
+
 // TODO: externalize
 
 const route = useRoute();
@@ -204,7 +206,8 @@ async function saveMealPlan() {
   saving.value = false;
 }
 
-async function addFoodToMealPlan({ food: new_food, quantity }: any) {
+async function addFoodToMealPlan(input: { food: FoodT; quantity: number }) {
+  const { food: new_food, quantity } = input;
   if (!new_food._id)
     return meal_plan.value.foods.push({ food: new_food, quantity });
 
@@ -225,6 +228,9 @@ function remove_food_from_plan(index: number) {
   meal_plan.value.foods.splice(index, 1);
 }
 
+function updateMealPlanFood(index: number, editedRecord: MealPlanRecord) {
+  meal_plan.value.foods[index] = editedRecord;
+}
 async function duplicate_meal_plan() {
   alert("WIP");
 }

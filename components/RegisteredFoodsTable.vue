@@ -59,8 +59,10 @@
 </template>
 
 <script lang="ts" setup>
+import type { MealPlanT } from "~/server/models/mealPlan.schema";
+
 const props = defineProps<{
-  meal_plan: any;
+  meal_plan: MealPlanT;
 }>();
 
 const headers = ref([

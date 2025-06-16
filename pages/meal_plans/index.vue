@@ -38,11 +38,11 @@
         </template>
 
         <template v-slot:item.macronutrients="{ item }">
-          <!-- <CalorieMacros
+          <MealPlanCaloriesMacros
             :target="item.calories_target"
             :calories="item.calories"
             :macronutrients="item.macronutrients"
-          /> -->
+          />
         </template>
 
         <template v-slot:item.incomplete="{ item }">

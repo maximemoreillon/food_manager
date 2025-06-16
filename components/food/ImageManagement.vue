@@ -23,7 +23,9 @@
 </template>
 
 <script lang="ts" setup>
-const props = defineProps<{ food: { _id: string; image: string } }>();
+import type { FoodT } from "~/shared/types";
+
+const props = defineProps<{ food: FoodT }>();
 const uploading = ref(false);
 const deleting = ref(false);
 const newImage = ref<File | null>(null);
@@ -33,12 +35,17 @@ async function upload() {
     alert("Image not provided");
     return;
   }
+  uploading.value = true;
   const body = new FormData();
   body.append("image", newImage.value);
+  // TODO: error handling
   const res = await $fetch(`/api/foods/${props.food._id}/image`, {
     method: "POST",
     body,
   });
+  // TODO: emit result
+  // TODO: snackbar
+  uploading.value = false;
 }
 
 function deleteFoodImage() {}

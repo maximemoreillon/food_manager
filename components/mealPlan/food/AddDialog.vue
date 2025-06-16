@@ -49,6 +49,8 @@
 </template>
 
 <script lang="ts" setup>
+import type { MealPlanT } from "~/shared/types";
+
 const tab = ref(null);
-defineProps<{ meal_plan: any }>();
+defineProps<{ meal_plan: MealPlanT }>();
 </script>
