@@ -2,17 +2,17 @@
   <v-card :loading="loading">
     <template v-if="food && !loading">
       <v-toolbar flat>
-        <v-btn icon :to="{ name: 'foods' }" exact>
-          <v-icon>mdi-arrow-left</v-icon>
-        </v-btn>
+        <v-btn icon="mdi-arrow-left" to="/foods" exact />
         <v-toolbar-title>{{ food.name || "unnnamed food" }}</v-toolbar-title>
         <v-spacer />
 
         <!-- <LabelParsing @parsed="handleParsedLabel" icon /> -->
 
-        <v-btn icon @click="update_food()" :loading="saving">
-          <v-icon>mdi-content-save</v-icon>
-        </v-btn>
+        <v-btn
+          icon="mdi-content-save"
+          @click="update_food()"
+          :loading="saving"
+        />
         <v-btn
           icon="mdi-delete"
           color="#c00000"
@@ -94,7 +94,11 @@
           </v-col>
         </v-row>
 
-        <FoodImageManagement :food="food" />
+        <FoodImageManagement
+          :food="food"
+          @upload="handleImageUploaded"
+          @delete="handleImageDeleted"
+        />
 
         <v-row>
           <v-col>
@@ -132,6 +136,8 @@
 </template>
 
 <script lang="ts" setup>
+import type { FoodT } from "~/shared/types";
+
 const route = useRoute();
 const vendors = ref([]);
 
@@ -168,8 +174,13 @@ async function deleteFood() {
   navigateTo("/foods");
 }
 
-function deleteFood_image() {
-  alert("WIP");
+function handleImageDeleted() {
+  food.value.image = null;
+}
+
+function handleImageUploaded({ image }: FoodT) {
+  // Need some extra procesing to not bust cash
+  food.value.image = image;
 }
 
 // TODO: use utils

@@ -1,7 +1,7 @@
 <template>
   <v-row align="center">
     <v-col>
-      <v-file-input v-model="newImage" label="image" />
+      <v-file-input v-model="newImage" label="image" accept="image/*" />
     </v-col>
     <v-col cols="auto">
       <v-btn :disabled="!newImage" @click="upload()" :loading="uploading">
@@ -26,6 +26,7 @@
 import type { FoodT } from "~/shared/types";
 
 const props = defineProps<{ food: FoodT }>();
+const emit = defineEmits(["upload", "delete"]);
 const uploading = ref(false);
 const deleting = ref(false);
 const newImage = ref<File | null>(null);
@@ -46,7 +47,10 @@ async function upload() {
   // TODO: emit result
   // TODO: snackbar
   uploading.value = false;
+  emit("upload", res);
 }
 
-function deleteFoodImage() {}
+function deleteFoodImage() {
+  emit("delete");
+}
 </script>

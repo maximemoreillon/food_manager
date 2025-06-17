@@ -1,7 +1,7 @@
 <template>
   <v-card :loading="loading">
     <v-toolbar flat>
-      <v-btn icon="mdi-arrow-left" exact :to="{ name: 'meal_plans' }" />
+      <v-btn icon="mdi-arrow-left" exact to="/meal_plans" />
 
       <v-toolbar-title>Meal plan</v-toolbar-title>
       <v-spacer />

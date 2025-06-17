@@ -8,26 +8,24 @@
         text="new"
       />
     </template>
-    <template v-slot:default="{ isActive }">
-      <v-card>
-        <v-card-title> New meal plan </v-card-title>
+    <v-card>
+      <v-card-title> New meal plan </v-card-title>
 
-        <v-card-text>
-          <v-form @submit.prevent="create_meal_plan()">
-            <v-row align="center">
-              <v-col>
-                <v-text-field autofocus label="Name" v-model="name" />
-              </v-col>
-              <v-col cols="auto">
-                <v-btn color="primary" type="submit" :loading="loading">
-                  <v-icon>mdi-content-save</v-icon>
-                </v-btn>
-              </v-col>
-            </v-row>
-          </v-form>
-        </v-card-text>
-      </v-card>
-    </template>
+      <v-card-text>
+        <v-form @submit.prevent="create_meal_plan()">
+          <v-row align="center">
+            <v-col>
+              <v-text-field autofocus label="Name" v-model="name" />
+            </v-col>
+            <v-col cols="auto">
+              <v-btn color="primary" type="submit" :loading="loading">
+                <v-icon>mdi-content-save</v-icon>
+              </v-btn>
+            </v-col>
+          </v-row>
+        </v-form>
+      </v-card-text>
+    </v-card>
   </v-dialog>
 </template>
 
