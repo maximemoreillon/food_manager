@@ -46,20 +46,17 @@
         <section class="my-8">
           <div class="text-h6 my-4">Calories and Macros</div>
           <v-row align="baseline" justify="space-between" dense>
-            <v-col>
-              <v-text-field
-                label="Calories"
-                type="number"
-                :value="calorie_total"
-              />
-            </v-col>
-            <v-col>
+            <v-col class="calorie_counter">
+              <!-- TODO: fix not displaying -->
+              {{ calorie_total }}
+              /
               <v-text-field
                 label="Target"
                 type="number"
                 v-model.number="meal_plan.calories_target"
               />
             </v-col>
+
             <v-spacer />
             <v-col cols="auto" v-for="(value, key) in macros_total" :key="key">
               <v-chip :color="colors[key]">
@@ -67,11 +64,15 @@
               </v-chip>
             </v-col>
           </v-row>
-          <MealPlanCaloriesMacros
-            :target="meal_plan.calories_target"
-            :calories="calorie_total"
-            :macronutrients="macros_total"
-          />
+          <v-row>
+            <v-col>
+              <MealPlanCaloriesMacros
+                :target="meal_plan.calories_target"
+                :calories="calorie_total"
+                :macronutrients="macros_total"
+              />
+            </v-col>
+          </v-row>
         </section>
 
         <section>
@@ -275,3 +276,13 @@ const macros_label_lookup = ref({
   carbohydrates: "carbs",
 });
 </script>
+
+<style scoped>
+.calorie_counter {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  border: 1px solid white;
+  border-radius: 0.5em;
+}
+</style>

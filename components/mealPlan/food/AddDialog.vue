@@ -15,9 +15,7 @@
           <v-spacer />
 
           <!-- TODO: close button -->
-          <!-- <v-btn icon @click="dialog = false">
-            <v-icon>mdi-close</v-icon>
-          </v-btn> -->
+          <v-btn @click="dialog = false" icon="mdi-close" />
 
           <template v-slot:extension>
             <v-tabs v-model="tab">
@@ -53,12 +51,6 @@
             </v-tabs-window-item>
           </v-tabs-window>
         </v-card-text>
-
-        <v-card-actions>
-          <v-spacer></v-spacer>
-
-          <v-btn text="Close" @click="isActive.value = false"></v-btn>
-        </v-card-actions>
       </v-card>
     </template>
   </v-dialog>

@@ -61,7 +61,9 @@
         <v-btn
           @click="registerFoodInDb()"
           :loading="registering"
-          icon="mdi-playlist-plus"
+          prepend-icon="mdi-playlist-plus"
+          text="Register in DB"
+          variant="outlined"
         />
       </v-col>
       <v-col cols="auto">
@@ -69,7 +71,7 @@
           type="submit"
           color="primary"
           prepend-icon="mdi-check"
-          text="Finish"
+          text="Submit"
         />
       </v-col>
     </v-row>
