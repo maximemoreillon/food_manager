@@ -1,4 +1,5 @@
 <template>
+  <!-- TODO: v-if breaks everything -->
   <v-form @submit.prevent="submit()" v-if="food">
     <v-row>
       <v-col>
@@ -89,11 +90,10 @@
 import type { FoodT } from "~/shared/types";
 
 const props = defineProps<{
-  mealPlanRecord: { food: FoodT; quantity: number };
-  // open: boolean;
+  mealPlanRecord?: { food: FoodT; quantity: number };
 }>();
 
-const emit = defineEmits(["submit"]);
+const emit = defineEmits(["submission"]);
 
 const quantity = ref(1);
 const food = ref<FoodT | null>(null);
@@ -119,7 +119,7 @@ function loadFood() {
   if (props.mealPlanRecord) {
     food.value = JSON.parse(JSON.stringify(props.mealPlanRecord.food));
     quantity.value = props.mealPlanRecord.quantity;
-  }
+  } else reset_inputs();
 }
 
 onMounted(async () => {
@@ -132,8 +132,12 @@ const snackbar = ref({
   color: "green",
 });
 function submit() {
-  // TODO: why the strucruing, destructuring?
-  emit("submit", { quantity: quantity.value, food: { ...food.value } });
+  emit("submission", {
+    quantity: quantity.value,
+    // food: JSON.parse(JSON.stringify(food.value)),
+    // TODO: might need a copy
+    food: food.value,
+  });
   reset_inputs();
 }
 

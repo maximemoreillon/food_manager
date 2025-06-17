@@ -36,8 +36,8 @@
             <v-col cols="auto">
               <v-checkbox label="Incomplete" v-model="meal_plan.incomplete" />
             </v-col>
-            <v-col cols="auto">
-              <v-icon left>mdi-calendar</v-icon>
+            <v-col cols="auto" class="mb-4">
+              <v-icon class="mr-2">mdi-calendar</v-icon>
               <span>{{ new Date(meal_plan.date).toDateString() }}</span>
             </v-col>
           </v-row>
@@ -46,16 +46,17 @@
         <section class="my-8">
           <div class="text-h6 my-4">Calories and Macros</div>
           <v-row align="baseline" justify="space-between" dense>
-            <v-col cols="12" md="auto">
+            <v-col>
               <v-text-field
-                :error="calorie_total > meal_plan.calories_target"
-                :prefix="`${calorie_total}/`"
                 label="Calories"
-                color="red"
                 type="number"
-                outlined
-                dense
-                rounded
+                :value="calorie_total"
+              />
+            </v-col>
+            <v-col>
+              <v-text-field
+                label="Target"
+                type="number"
                 v-model.number="meal_plan.calories_target"
               />
             </v-col>
@@ -88,7 +89,7 @@
             <v-col cols="auto">
               <MealPlanFoodAddDialog
                 :meal_plan="meal_plan"
-                @submit="addFoodToMealPlan($event)"
+                @add="addFoodToMealPlan($event)"
               />
             </v-col>
           </v-row>
@@ -190,6 +191,7 @@ const { data: meal_plan, pending: loading } = await useFetch(
 async function deleteMealPlan() {
   if (!confirm("Delete meal plan?")) return;
   deleting.value = true;
+  // TODO: error handling
   await $fetch(`/api/mealplans/${route.params._id}`, { method: "DELETE" });
   deleting.value = false;
   navigateTo("/meal_plans");
@@ -202,12 +204,18 @@ async function saveMealPlan() {
     calories: calorie_total.value,
     macronutrients: macros_total.value,
   };
+  // TODO: error handling
   await $fetch(`/api/mealplans/${route.params._id}`, { method: "PATCH", body });
+  snackbar.value.text = `Meal plan saved`;
+  snackbar.value.show = true;
+
   saving.value = false;
 }
 
 async function addFoodToMealPlan(input: { food: FoodT; quantity: number }) {
+  console.log(JSON.stringify(input));
   const { food: new_food, quantity } = input;
+
   if (!new_food._id)
     return meal_plan.value.foods.push({ food: new_food, quantity });
 

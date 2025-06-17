@@ -62,6 +62,7 @@
 import type { MealPlanT } from "~/server/models/mealPlan.schema";
 
 const props = defineProps<{
+  open: boolean;
   meal_plan: MealPlanT;
 }>();
 
@@ -93,6 +94,13 @@ async function getFoods() {
 onMounted(async () => {
   await getFoods();
 });
+
+watch(
+  () => props.open,
+  () => {
+    search.value = "";
+  }
+);
 
 function item_too_calorific(calorieCount: number) {
   return calorieCount > props.meal_plan.calories_target - calorie_total.value;

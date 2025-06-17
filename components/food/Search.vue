@@ -1,6 +1,6 @@
 <template>
   <v-form @submit.prevent="submit">
-    <v-row>
+    <v-row align="center">
       <v-col>
         <v-text-field v-model="searchString" />
       </v-col>

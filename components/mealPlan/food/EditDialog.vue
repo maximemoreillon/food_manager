@@ -11,7 +11,7 @@
       <v-card-text>
         <MealPlanFoodForm
           :mealPlanRecord="mealPlanRecord"
-          @submit="handleSubmit"
+          @submission="handleSubmit"
         />
       </v-card-text>
     </v-card>

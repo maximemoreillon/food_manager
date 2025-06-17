@@ -39,5 +39,6 @@ export default defineEventHandler(async (event) => {
 
   const total = await Food.countDocuments(query);
 
+  // TODO: page and itemsPerPage are string
   return { total, page, itemsPerPage, items, sort, order };
 });

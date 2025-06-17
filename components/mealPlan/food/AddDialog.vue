@@ -1,5 +1,5 @@
 <template>
-  <v-dialog max-width="80rem">
+  <v-dialog max-width="80rem" v-model="dialog">
     <template v-slot:activator="{ props: activatorProps }">
       <v-btn
         v-bind="activatorProps"
@@ -36,13 +36,29 @@
         <v-card-text>
           <v-tabs-window v-model="tab">
             <v-tabs-window-item>
+              <!-- TODO: open is only used to reset text input... -->
               <RegisteredFoodsTable
+                :open="dialog"
                 :meal_plan="meal_plan"
-                @foodAdded="$emit('submit', $event)"
+                @foodAdded="$emit('add', $event)"
+              />
+            </v-tabs-window-item>
+            <v-tabs-window-item>
+              <MealPlanFoodForm
+                @submission="
+                  $emit('add', $event);
+                  dialog = false;
+                "
               />
             </v-tabs-window-item>
           </v-tabs-window>
         </v-card-text>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+
+          <v-btn text="Close" @click="isActive.value = false"></v-btn>
+        </v-card-actions>
       </v-card>
     </template>
   </v-dialog>
@@ -50,7 +66,7 @@
 
 <script lang="ts" setup>
 import type { MealPlanT } from "~/shared/types";
-
+const dialog = ref(false);
 const tab = ref(null);
 defineProps<{ meal_plan: MealPlanT }>();
 </script>

@@ -56,12 +56,11 @@
 
 <script lang="ts" setup>
 const route = useRoute();
-const query = computed(() => route.query);
 
-const fetchFnc = () => {
-  const searchParams = new URLSearchParams(query.value).toString();
+function fetchFnc() {
+  const searchParams = new URLSearchParams(route.query).toString();
   return `/api/foods?${searchParams}`;
-};
+}
 
 const { data, pending } = await useFetch(fetchFnc);
 
@@ -81,7 +80,6 @@ watch(
   tableOptions,
   (newVal) => {
     const { page, itemsPerPage, sortBy } = newVal;
-    console.log(sortBy);
     const query: any = {
       ...route.query,
       page: page.toString(),

@@ -22,6 +22,9 @@
         :headers="headers"
         :items="data.items"
         :items-length="data.total"
+        v-model:sort-by="tableOptions.sortBy"
+        v-model:items-per-page="tableOptions.itemsPerPage"
+        v-model:page="tableOptions.page"
       >
         <template v-slot:item.name="{ item }">
           <NuxtLink :href="`/meal_plans/${item._id}`">
@@ -54,7 +57,25 @@
 </template>
 
 <script setup lang="ts">
+const route = useRoute();
+
+function fetchFnc() {
+  const searchParams = new URLSearchParams(route.query).toString();
+  return `/api/foods?${searchParams}`;
+}
+
 const { data, pending } = await useFetch("/api/mealplans");
+
+const tableOptions = ref({
+  page: Number(route.query.page || data.value.page),
+  itemsPerPage: Number(route.query.itemsPerPage || data.value.itemsPerPage),
+  sortBy: [
+    {
+      key: route.query.sort || data.value.sort,
+      order: route.query.order || data.value.order,
+    },
+  ],
+});
 
 const headers = ref([
   { title: "Name", key: "name" },
@@ -67,4 +88,20 @@ const headers = ref([
 function formatted_date(date_string: string) {
   return new Date(date_string).toDateString();
 }
+
+watch(
+  tableOptions,
+  (newVal) => {
+    const { page, itemsPerPage, sortBy } = newVal;
+    const query: any = {
+      ...route.query,
+      page: page.toString(),
+      itemsPerPage: itemsPerPage.toString(),
+      sort: sortBy?.at(0)?.key,
+      order: sortBy?.at(0)?.order,
+    };
+    navigateTo({ query: { ...route.query, ...query } });
+  },
+  { deep: true }
+);
 </script>
