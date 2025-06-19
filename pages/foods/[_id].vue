@@ -1,6 +1,6 @@
 <template>
   <v-card :loading="loading">
-    <template v-if="food && !loading">
+    <template v-if="!error && food && !loading">
       <v-toolbar flat>
         <v-btn icon="mdi-arrow-left" to="/foods" exact />
         <v-toolbar-title>{{ food.name || "unnnamed food" }}</v-toolbar-title>
@@ -144,9 +144,12 @@ const vendors = ref([]);
 const deleting = ref(false);
 const saving = ref(false);
 
-const { data: food, pending: loading } = await useFetch(
-  `/api/foods/${route.params._id}`
-);
+// TODO: is this really how type safety should be enforced?
+const {
+  data: food,
+  pending: loading,
+  error,
+} = await useFetch<FoodT>(`/api/foods/${route.params._id}`);
 
 const snackbar = ref({
   color: "green",

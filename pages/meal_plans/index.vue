@@ -18,6 +18,7 @@
 
     <v-card-text>
       <v-data-table-server
+        v-if="data"
         :loading="pending"
         :headers="headers"
         :items="data.items"
@@ -33,7 +34,7 @@
         </template>
 
         <template v-slot:item.date="{ item }">
-          <span>{{ formatted_date(item.date) }}</span>
+          <span>{{ formatDate(item.date) }}</span>
         </template>
 
         <template v-slot:item.calories="{ item }">
@@ -57,22 +58,31 @@
 </template>
 
 <script setup lang="ts">
+import type { MealPlanT } from "~/shared/types";
+import formatDate from "~/utils/formatDate";
+
+type MealPlansResponse = {
+  sort: string;
+  order: string;
+  page: string;
+  itemsPerPage: string;
+  items: MealPlanT[];
+  total: number;
+};
+
 const route = useRoute();
-
-function fetchFnc() {
-  const searchParams = new URLSearchParams(route.query).toString();
-  return `/api/foods?${searchParams}`;
-}
-
-const { data, pending } = await useFetch("/api/mealplans");
+const queryParams = computed(() => route.query); // computed needed to trigger refetch
+const { data, pending } = await useFetch<MealPlansResponse>(`/api/mealplans`, {
+  query: queryParams,
+});
 
 const tableOptions = ref({
-  page: Number(route.query.page || data.value.page),
-  itemsPerPage: Number(route.query.itemsPerPage || data.value.itemsPerPage),
+  page: Number(route.query.page || data.value?.page),
+  itemsPerPage: Number(route.query.itemsPerPage || data.value?.itemsPerPage),
   sortBy: [
     {
-      key: route.query.sort || data.value.sort,
-      order: route.query.order || data.value.order,
+      key: route.query.sort || data.value?.sort,
+      order: route.query.order || data.value?.order,
     },
   ],
 });
@@ -84,10 +94,6 @@ const headers = ref([
   { title: "Macros", key: "macronutrients" },
   { title: "Incomplete", key: "incomplete" },
 ]);
-
-function formatted_date(date_string: string) {
-  return new Date(date_string).toDateString();
-}
 
 watch(
   tableOptions,

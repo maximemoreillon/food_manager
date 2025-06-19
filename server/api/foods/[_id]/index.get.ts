@@ -1,3 +1,5 @@
+import { FoodT } from "~/shared/types";
+
 export default defineEventHandler(async (event) => {
   // Note: destructuring results in error
   const _id = event.context.params?._id;

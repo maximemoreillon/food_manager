@@ -56,13 +56,8 @@
 
 <script lang="ts" setup>
 const route = useRoute();
-
-function fetchFnc() {
-  const searchParams = new URLSearchParams(route.query).toString();
-  return `/api/foods?${searchParams}`;
-}
-
-const { data, pending } = await useFetch(fetchFnc);
+const queryParams = computed(() => route.query); // computed needed to trigger refetch
+const { data, pending } = await useFetch(`/api/foods`, { query: queryParams });
 
 // TODO: not very nice, especially type casting
 const tableOptions = ref({

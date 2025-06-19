@@ -151,7 +151,7 @@
 </template>
 
 <script setup lang="ts">
-import type { FoodT, MealPlanRecord } from "~/shared/types";
+import type { FoodT, MealPlanRecord, MealPlanT } from "~/shared/types";
 
 // TODO: externalize
 
@@ -185,7 +185,7 @@ const foodsTableHeaders = ref([
   { title: "", key: "edit" },
 ]);
 
-const { data: meal_plan, pending: loading } = await useFetch(
+const { data: meal_plan, pending: loading } = await useFetch<MealPlanT>(
   `/api/mealplans/${route.params._id}`
 );
 
@@ -214,7 +214,7 @@ async function saveMealPlan() {
 }
 
 async function addFoodToMealPlan(input: { food: FoodT; quantity: number }) {
-  console.log(JSON.stringify(input));
+  if (!meal_plan.value) throw new Error("Missing meal plan");
   const { food: new_food, quantity } = input;
 
   if (!new_food._id)
@@ -229,15 +229,18 @@ async function addFoodToMealPlan(input: { food: FoodT; quantity: number }) {
   snackbar.value.show = true;
 }
 
-function foodImageSrc(foodId: string) {
+function foodImageSrc(foodId?: string) {
+  if (!foodId) return;
   return `/api/foods/${foodId}/image`;
 }
 
 function remove_food_from_plan(index: number) {
+  if (!meal_plan.value) throw new Error("Missing meal plan");
   meal_plan.value.foods.splice(index, 1);
 }
 
 function updateMealPlanFood(index: number, editedRecord: MealPlanRecord) {
+  if (!meal_plan.value) throw new Error("Missing meal plan");
   meal_plan.value.foods[index] = editedRecord;
 }
 async function duplicate_meal_plan() {
