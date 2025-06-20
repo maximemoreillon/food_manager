@@ -31,6 +31,7 @@
     <v-row>
       <v-col>
         <v-text-field
+          :color="colors.protein"
           label="Protein [g]"
           type="number"
           v-model="food.serving.macronutrients.protein"
@@ -38,6 +39,7 @@
       </v-col>
       <v-col>
         <v-text-field
+          :color="colors.fat"
           label="Fat [g]"
           type="number"
           v-model="food.serving.macronutrients.fat"
@@ -45,6 +47,7 @@
       </v-col>
       <v-col>
         <v-text-field
+          :color="colors.carbohydrates"
           label="Carbs [g]"
           type="number"
           v-model="food.serving.macronutrients.carbohydrates"
@@ -54,7 +57,11 @@
 
     <v-row>
       <v-col cols="auto" v-if="openAiEnabled">
-        <!-- <LabelParsing @parsed="handleParsedLabel" outlined /> -->
+        <FoodLabelParsing
+          @parsed="handleParsedLabel"
+          variant="outlined"
+          text="Parse label"
+        />
       </v-col>
       <v-spacer></v-spacer>
       <v-col cols="auto" v-if="!isRegistered">
@@ -89,6 +96,7 @@
 </template>
 
 <script setup lang="ts">
+import { FoodLabelParsing } from "#components";
 import type { FoodT } from "~/server/models/food.schema";
 
 const props = defineProps<{
@@ -100,7 +108,9 @@ const emit = defineEmits(["submission"]);
 const quantity = ref(1);
 const food = ref<FoodT | null>(null);
 // const registeredFoods = ref([]);
-const openAiEnabled = ref(false);
+
+// TODO: actually check
+const openAiEnabled = ref(true);
 const registering = ref(false);
 
 const defaults = ref({

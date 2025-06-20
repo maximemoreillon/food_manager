@@ -118,7 +118,11 @@
             </template>
 
             <template v-slot:item.quantity="{ item }">
-              <v-text-field type="number" v-model="item.quantity" />
+              <v-text-field
+                type="number"
+                v-model="item.quantity"
+                hide-details
+              />
             </template>
 
             <template v-slot:item.food.serving="{ item }">
