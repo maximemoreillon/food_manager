@@ -26,7 +26,7 @@
         v-if="food.image"
         class="mt-3"
         height="300"
-        :src="image_src"
+        :src="imageSrc(food._id)"
         contain
       />
 
@@ -139,6 +139,8 @@
 import type { FoodT } from "~/shared/types";
 
 const route = useRoute();
+
+// TODO: populate vendors
 const vendors = ref([]);
 
 const deleting = ref(false);
@@ -159,10 +161,9 @@ const snackbar = ref({
 
 async function update_food() {
   saving.value = true;
-  await $fetch(`/api/foods/${route.params._id}`, {
-    method: "PATCH",
-    body: food.value,
-  });
+  const opts = { method: "PATCH", body: food.value };
+  // @ts-ignore
+  await $fetch(`/api/foods/${route.params._id}`, opts);
   saving.value = false;
 
   snackbar.value.show = true;
@@ -172,20 +173,20 @@ async function update_food() {
 async function deleteFood() {
   if (!confirm("Delete food?")) return;
   deleting.value = true;
+  // @ts-ignore
   await $fetch(`/api/foods/${route.params._id}`, { method: "DELETE" });
   deleting.value = false;
   navigateTo("/foods");
 }
 
 function handleImageDeleted() {
-  food.value.image = null;
+  if (!food.value) return;
+  food.value.image = undefined;
 }
 
 function handleImageUploaded({ image }: FoodT) {
-  // Need some extra procesing to not bust cash
+  if (!food.value) return;
+  // Need some extra procesing to bust cache
   food.value.image = image;
 }
-
-// TODO: use utils
-const image_src = computed(() => `/api/foods/${route.params._id}/image`);
 </script>

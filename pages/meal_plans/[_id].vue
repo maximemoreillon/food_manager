@@ -45,16 +45,20 @@
 
         <section class="my-8">
           <div class="text-h6 my-4">Calories and Macros</div>
-          <v-row align="baseline" justify="space-between" dense>
-            <v-col class="calorie_counter">
-              <!-- TODO: fix not displaying -->
-              {{ calorie_total }}
-              /
-              <v-text-field
-                label="Target"
-                type="number"
-                v-model.number="meal_plan.calories_target"
-              />
+          <v-row align="center" justify="space-between" dense>
+            <v-col cols="auto">
+              <div class="calorie_counter">
+                <v-text-field
+                  :error="calorie_total > meal_plan.calories_target"
+                  :prefix="`${calorie_total.toString()}/`"
+                  label="Total / Target"
+                  type="number"
+                  v-model.number="meal_plan.calories_target"
+                  hide-details
+                  hide-spin-buttons
+                  variant="outlined"
+                />
+              </div>
             </v-col>
 
             <v-spacer />
@@ -107,7 +111,7 @@
                 width="5em"
                 height="5em"
                 contain
-                :src="foodImageSrc(item.food._id)"
+                :src="imageSrc(item.food._id, true)"
               />
             </template>
 
@@ -153,8 +157,6 @@
 <script setup lang="ts">
 import type { FoodT, MealPlanRecord, MealPlanT } from "~/shared/types";
 
-// TODO: externalize
-
 const route = useRoute();
 
 const snackbar = ref({
@@ -167,10 +169,10 @@ const search = ref("");
 const saving = ref(false);
 const deleting = ref(false);
 const duplicating = ref(false);
+
 const foodsTableHeaders = ref([
   { title: "", key: "image" },
   { title: "Name", key: "food.name" },
-  // { title: "Vendor", key: "food.vendor" },
   { title: "Calories [kcal]", key: "food.serving.calories" },
   { title: "Protein [g]", key: "food.serving.macronutrients.protein" },
   { title: "Fat [g]", key: "food.serving.macronutrients.fat" },
@@ -189,13 +191,20 @@ const { data: meal_plan, pending: loading } = await useFetch<MealPlanT>(
   `/api/mealplans/${route.params._id}`
 );
 
+// TODO: dedicated component
 async function deleteMealPlan() {
   if (!confirm("Delete meal plan?")) return;
   deleting.value = true;
-  // TODO: error handling
-  await $fetch(`/api/mealplans/${route.params._id}`, { method: "DELETE" });
-  deleting.value = false;
-  navigateTo("/meal_plans");
+  try {
+    await $fetch(`/api/mealplans/${route.params._id}`, { method: "DELETE" });
+    navigateTo("/meal_plans");
+  } catch (error) {
+    snackbar.value.color = `error`;
+    snackbar.value.text = `Meal plan deletion`;
+    snackbar.value.show = true;
+  } finally {
+    deleting.value = false;
+  }
 }
 
 async function saveMealPlan() {
@@ -205,12 +214,21 @@ async function saveMealPlan() {
     calories: calorie_total.value,
     macronutrients: macros_total.value,
   };
-  // TODO: error handling
-  await $fetch(`/api/mealplans/${route.params._id}`, { method: "PATCH", body });
-  snackbar.value.text = `Meal plan saved`;
-  snackbar.value.show = true;
-
-  saving.value = false;
+  try {
+    await $fetch(`/api/mealplans/${route.params._id}`, {
+      method: "PATCH",
+      body,
+    });
+    snackbar.value.text = `Meal plan saved`;
+    snackbar.value.show = true;
+  } catch (error) {
+    console.error(error);
+    snackbar.value.color = `error`;
+    snackbar.value.text = `Meal plan updated failed`;
+    snackbar.value.show = true;
+  } finally {
+    saving.value = false;
+  }
 }
 
 async function addFoodToMealPlan(input: { food: FoodT; quantity: number }) {
@@ -227,11 +245,6 @@ async function addFoodToMealPlan(input: { food: FoodT; quantity: number }) {
   else meal_plan.value.foods.push({ food: new_food, quantity });
   snackbar.value.text = `${new_food.name} added`;
   snackbar.value.show = true;
-}
-
-function foodImageSrc(foodId?: string) {
-  if (!foodId) return;
-  return `/api/foods/${foodId}/image`;
 }
 
 function remove_food_from_plan(index: number) {
@@ -282,10 +295,6 @@ const macros_label_lookup = ref({
 
 <style scoped>
 .calorie_counter {
-  display: flex;
-  align-items: center;
-  gap: 0.5em;
-  border: 1px solid white;
-  border-radius: 0.5em;
+  width: 25ch;
 }
 </style>

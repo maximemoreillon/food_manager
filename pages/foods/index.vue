@@ -46,7 +46,7 @@
             width="6em"
             height="6em"
             contain
-            :src="imageSrc(item._id)"
+            :src="imageSrc(item._id, true)"
           />
         </template>
       </v-data-table-server>
@@ -55,18 +55,31 @@
 </template>
 
 <script lang="ts" setup>
+import type { FoodT } from "~/shared/types";
+
+type FoodsFetchResponse = {
+  page: string | number;
+  itemsPerPage: string | number;
+  sort: string;
+  order: string;
+  total: number;
+  items: FoodT[];
+};
+
 const route = useRoute();
 const queryParams = computed(() => route.query); // computed needed to trigger refetch
-const { data, pending } = await useFetch(`/api/foods`, { query: queryParams });
+const { data, pending } = await useFetch<FoodsFetchResponse>(`/api/foods`, {
+  query: queryParams,
+});
 
 // TODO: not very nice, especially type casting
 const tableOptions = ref({
-  page: Number(route.query.page || data.value.page),
-  itemsPerPage: Number(route.query.itemsPerPage || data.value.itemsPerPage),
+  page: Number(route.query.page || data.value?.page),
+  itemsPerPage: Number(route.query.itemsPerPage || data.value?.itemsPerPage),
   sortBy: [
     {
-      key: route.query.sort || data.value.sort,
-      order: route.query.order || data.value.order,
+      key: route.query.sort || data.value?.sort || "name",
+      order: route.query.order || data.value?.order || "desc",
     },
   ],
 });
