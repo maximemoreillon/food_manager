@@ -1,5 +1,14 @@
 import { QueryOptions } from "mongoose";
 import { getUserSession } from "nuxt-oidc-auth/runtime/server/utils/session.js";
+import { z } from "zod";
+
+const querySchema = z.object({
+  itemsPerPage: z.coerce.number().optional(),
+  page: z.coerce.number().optional(),
+  sort: z.string().optional(),
+  order: z.union([z.literal("asc"), z.literal("asc")]).optional(),
+  search: z.string().optional(),
+});
 
 export default defineEventHandler(async (event) => {
   // TODO: make a getUserId util
@@ -8,36 +17,16 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusCode: 401, statusMessage: "No userInfo" });
   const user_id = userInfo.legacy_id || userInfo.sub;
 
-  const searchParams = getQuery(event);
-
   // TODO use utils function for this?
   const {
-    itemsPerPage = "5",
-    page = "1",
+    itemsPerPage = 5,
+    page = 1,
     sort = "name",
     order = "asc",
     search,
-    hidden,
+    // hidden,
     ...rest
-  } = searchParams;
-
-  if (typeof sort !== "string")
-    throw createError({
-      statusCode: 400,
-      statusMessage: "'sort' must be string",
-    });
-
-  if (typeof order !== "string")
-    throw createError({
-      statusCode: 400,
-      statusMessage: "'order' must be string",
-    });
-
-  if (!["asc", "desc"].includes(order))
-    throw createError({
-      statusCode: 400,
-      statusMessage: "Order must be 'asc' or 'desc'",
-    });
+  } = await getValidatedQuery(event, querySchema.parse);
 
   const sortMap = {
     asc: 1,
@@ -50,7 +39,7 @@ export default defineEventHandler(async (event) => {
   if (search && search !== "") query.name = { $regex: search, $options: "i" };
 
   const items = await Food.find(query)
-    .sort({ [sort]: sortMap[order as "asc" | "desc"] })
+    .sort({ [sort]: sortMap[order] })
     .skip(skip)
     .limit(Math.max(Number(itemsPerPage), 0));
 
@@ -59,8 +48,8 @@ export default defineEventHandler(async (event) => {
   // TODO: type cast before
   return {
     total,
-    page: Number(page),
-    itemsPerPage: Number(itemsPerPage),
+    page,
+    itemsPerPage,
     items,
     sort,
     order,

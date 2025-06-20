@@ -58,8 +58,8 @@
 import type { FoodT } from "~/shared/types";
 
 type FoodsFetchResponse = {
-  page: string | number;
-  itemsPerPage: string | number;
+  page: number;
+  itemsPerPage: number;
   sort: string;
   order: string;
   total: number;
@@ -67,9 +67,9 @@ type FoodsFetchResponse = {
 };
 
 const route = useRoute();
-const queryParams = computed(() => route.query); // computed needed to trigger refetch
+const query = computed(() => route.query); // computed needed to trigger refetch
 const { data, pending } = await useFetch<FoodsFetchResponse>(`/api/foods`, {
-  query: queryParams,
+  query,
 });
 
 const tableOptions = ref({
@@ -89,8 +89,8 @@ watch(
     const { page, itemsPerPage, sortBy } = newVal;
     const query: any = {
       ...route.query,
-      page: page.toString(),
-      itemsPerPage: itemsPerPage.toString(),
+      page: page?.toString(),
+      itemsPerPage: itemsPerPage?.toString(),
       sort: sortBy?.at(0)?.key,
       order: sortBy?.at(0)?.order,
     };

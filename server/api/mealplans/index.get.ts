@@ -1,4 +1,13 @@
 import { getUserSession } from "nuxt-oidc-auth/runtime/server/utils/session.js";
+import { z } from "zod";
+
+const querySchema = z.object({
+  itemsPerPage: z.coerce.number().optional(),
+  page: z.coerce.number().optional(),
+  sort: z.string().optional(),
+  order: z.union([z.literal("asc"), z.literal("asc")]).optional(),
+  search: z.string().optional(),
+});
 
 export default defineEventHandler(async (event) => {
   // TODO: make a getUserId util
@@ -7,40 +16,39 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusCode: 401, statusMessage: "No userInfo" });
   const user_id = userInfo.legacy_id || userInfo.sub;
 
-  // TODO: typing as {string: string}
   const {
-    itemsPerPage = "5",
-    page = "1",
+    itemsPerPage = 5,
+    page = 1,
     sort = "date",
     order = "desc",
     search,
-    to,
-    from,
-    filters = "{}",
     ...rest
-  }: any = getQuery(event);
-
-  if (order !== "asc" && order !== "desc")
-    throw createError({ statusCode: 400, statusMessage: "Invalid order" });
+  } = await getValidatedQuery(event, querySchema.parse);
 
   const sortMap = {
     asc: 1,
     desc: -1,
-  };
+  } as const;
 
-  const skip = (Number(page) - 1) * Number(itemsPerPage);
-  const formattedFilters = JSON.parse(filters);
+  const skip = (page - 1) * itemsPerPage;
 
-  const query: any = { user_id, ...rest, ...formattedFilters };
+  const query: any = { user_id, ...rest };
   if (search && search !== "") query.name = { $regex: search, $options: "i" };
 
   const items = await MealPlan.find(query)
-    .skip(Number(skip))
+    .skip(skip)
     .sort({ [sort]: sortMap[order] })
-    .limit(Math.max(Number(itemsPerPage), 0));
+    .limit(Math.max(itemsPerPage, 0));
 
   const total = await MealPlan.countDocuments(query);
 
-  // TODO: page and itemsPerPage are string
-  return { total, page, itemsPerPage, items, sort, order };
+  // TODO: type cast before
+  return {
+    total,
+    page,
+    itemsPerPage,
+    items,
+    sort,
+    order,
+  };
 });

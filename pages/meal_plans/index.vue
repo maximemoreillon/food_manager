@@ -53,6 +53,7 @@
           <v-icon v-if="item.incomplete"> mdi-alert </v-icon>
         </template>
       </v-data-table-server>
+      {{ error }}
     </v-card-text>
   </v-card>
 </template>
@@ -64,25 +65,28 @@ import formatDate from "~/utils/formatDate";
 type MealPlansResponse = {
   sort: string;
   order: string;
-  page: string;
-  itemsPerPage: string;
+  page: number;
+  itemsPerPage: number;
   items: MealPlanT[];
   total: number;
 };
 
 const route = useRoute();
 const queryParams = computed(() => route.query); // computed needed to trigger refetch
-const { data, pending } = await useFetch<MealPlansResponse>(`/api/mealplans`, {
-  query: queryParams,
-});
+const { data, pending, error } = await useFetch<MealPlansResponse>(
+  `/api/mealplans`,
+  {
+    query: queryParams,
+  }
+);
 
 const tableOptions = ref({
-  page: Number(route.query.page || data.value?.page),
-  itemsPerPage: Number(route.query.itemsPerPage || data.value?.itemsPerPage),
+  page: data.value?.page,
+  itemsPerPage: data.value?.itemsPerPage,
   sortBy: [
     {
-      key: route.query.sort || data.value?.sort,
-      order: route.query.order || data.value?.order,
+      key: data.value?.sort,
+      order: data.value?.order,
     },
   ],
 });
@@ -101,8 +105,8 @@ watch(
     const { page, itemsPerPage, sortBy } = newVal;
     const query: any = {
       ...route.query,
-      page: page.toString(),
-      itemsPerPage: itemsPerPage.toString(),
+      page: page?.toString(),
+      itemsPerPage: itemsPerPage?.toString(),
       sort: sortBy?.at(0)?.key,
       order: sortBy?.at(0)?.order,
     };
