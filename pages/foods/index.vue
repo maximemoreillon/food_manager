@@ -72,14 +72,13 @@ const { data, pending } = await useFetch<FoodsFetchResponse>(`/api/foods`, {
   query: queryParams,
 });
 
-// TODO: not very nice, especially type casting
 const tableOptions = ref({
-  page: Number(route.query.page || data.value?.page),
-  itemsPerPage: Number(route.query.itemsPerPage || data.value?.itemsPerPage),
+  page: data.value?.page,
+  itemsPerPage: data.value?.itemsPerPage,
   sortBy: [
     {
-      key: route.query.sort || data.value?.sort || "name",
-      order: route.query.order || data.value?.order || "desc",
+      key: data.value?.sort,
+      order: data.value?.order,
     },
   ],
 });

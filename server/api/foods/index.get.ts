@@ -56,6 +56,13 @@ export default defineEventHandler(async (event) => {
 
   const total = await Food.countDocuments(query);
 
-  // TODO: page and itemsPerPage are string
-  return { total, page, itemsPerPage, items, sort, order };
+  // TODO: type cast before
+  return {
+    total,
+    page: Number(page),
+    itemsPerPage: Number(itemsPerPage),
+    items,
+    sort,
+    order,
+  };
 });
