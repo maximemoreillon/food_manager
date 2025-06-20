@@ -6,7 +6,7 @@ const querySchema = z.object({
   itemsPerPage: z.coerce.number().optional(),
   page: z.coerce.number().optional(),
   sort: z.string().optional(),
-  order: z.union([z.literal("asc"), z.literal("asc")]).optional(),
+  order: z.union([z.literal("asc"), z.literal("desc")]).optional(),
   search: z.string().optional(),
 });
 
@@ -17,7 +17,6 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusCode: 401, statusMessage: "No userInfo" });
   const user_id = userInfo.legacy_id || userInfo.sub;
 
-  // TODO use utils function for this?
   const {
     itemsPerPage = 5,
     page = 1,
@@ -33,7 +32,7 @@ export default defineEventHandler(async (event) => {
     desc: -1,
   } as const;
 
-  const skip = (Number(page) - 1) * Number(itemsPerPage);
+  const skip = page - 1 * itemsPerPage;
 
   const query: QueryOptions = { user_id, ...rest };
   if (search && search !== "") query.name = { $regex: search, $options: "i" };
@@ -45,7 +44,6 @@ export default defineEventHandler(async (event) => {
 
   const total = await Food.countDocuments(query);
 
-  // TODO: type cast before
   return {
     total,
     page,

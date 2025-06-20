@@ -5,7 +5,7 @@ const querySchema = z.object({
   itemsPerPage: z.coerce.number().optional(),
   page: z.coerce.number().optional(),
   sort: z.string().optional(),
-  order: z.union([z.literal("asc"), z.literal("asc")]).optional(),
+  order: z.union([z.literal("asc"), z.literal("desc")]).optional(),
   search: z.string().optional(),
 });
 
@@ -42,7 +42,6 @@ export default defineEventHandler(async (event) => {
 
   const total = await MealPlan.countDocuments(query);
 
-  // TODO: type cast before
   return {
     total,
     page,

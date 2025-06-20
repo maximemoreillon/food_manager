@@ -28,6 +28,7 @@ export type FoodT = {
 export type MealPlanRecord = { food: FoodT; quantity: number };
 
 export type MealPlanT = {
+  _id?: string;
   name: string;
   date: Date;
   user_id: string;
