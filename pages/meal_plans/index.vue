@@ -55,17 +55,9 @@
 </template>
 
 <script setup lang="ts">
-import type { MealPlanT } from "~/shared/types";
+import type { SortItem } from "vuetify/lib/components/VDataTable/composables/sort.mjs";
+import type { MealPlansResponse } from "~/server/api/mealplans/index.get";
 import formatDate from "~/utils/formatDate";
-
-type MealPlansResponse = {
-  sort: string;
-  order: string;
-  page: number;
-  itemsPerPage: number;
-  items: MealPlanT[];
-  total: number;
-};
 
 const route = useRoute();
 const queryParams = computed(() => route.query); // computed needed to trigger refetch
@@ -79,12 +71,7 @@ const { data, pending, error } = await useFetch<MealPlansResponse>(
 const tableOptions = ref({
   page: data.value?.page,
   itemsPerPage: data.value?.itemsPerPage,
-  sortBy: [
-    {
-      key: data.value?.sort,
-      order: data.value?.order,
-    },
-  ],
+  sortBy: [{ key: data.value?.sort, order: data.value?.order }] as SortItem[],
 });
 
 const headers = ref([

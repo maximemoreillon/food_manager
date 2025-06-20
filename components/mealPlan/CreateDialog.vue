@@ -30,13 +30,15 @@
 </template>
 
 <script lang="ts" setup>
+import type { MealPlanT } from "~/server/models/mealPlan.schema";
+
 const name = ref("");
 const loading = ref(false);
 
 async function create_meal_plan() {
   loading.value = true;
 
-  const res = await $fetch("/api/mealplans", {
+  const res = await $fetch<MealPlanT>("/api/mealplans", {
     method: "POST",
     body: { name: name.value },
   });

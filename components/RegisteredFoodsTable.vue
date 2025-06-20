@@ -38,7 +38,9 @@
 
     <template v-slot:item.serving.calories="{ item }">
       <v-chip
-        :color="item_too_calorific(item) ? colors.calorie_excess : ''"
+        :color="
+          item_too_calorific(item.serving.calories) ? colors.calorie_excess : ''
+        "
         outlined
       >
         {{ item.serving.calories }}
@@ -46,12 +48,13 @@
     </template>
 
     <template v-slot:item.food.serving="{ item }">
-      {{ item.food.serving.size }} {{ item.food.serving.unit }}
+      {{ item.serving.size }} {{ item.serving.unit }}
     </template>
 
     <template v-slot:item.add="{ item }">
       <v-btn
         text="add"
+        color="primary"
         @click="$emit('foodAdded', { food: item, quantity: 1 })"
       />
     </template>
@@ -59,6 +62,8 @@
 </template>
 
 <script lang="ts" setup>
+import type { FoodsFetchResponse } from "~/server/api/foods/index.get";
+import type { FoodT } from "~/server/models/food.schema";
 import type { MealPlanT } from "~/server/models/mealPlan.schema";
 
 const props = defineProps<{
@@ -81,12 +86,13 @@ const headers = ref([
 const search = ref("");
 
 const loading = ref(false);
-const foods = ref([]);
+const foods = ref<FoodT[]>([]);
 
 async function getFoods() {
   loading.value = true;
   // TODO: figure out if $fetch was the right choice
-  const res = await $fetch("/api/foods");
+  const res = await $fetch<FoodsFetchResponse>("/api/foods");
+
   foods.value = res.items;
   loading.value = false;
 }

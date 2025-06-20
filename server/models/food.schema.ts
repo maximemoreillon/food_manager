@@ -1,6 +1,33 @@
 import { defineMongooseModel } from "#nuxt/mongoose";
 import { Schema } from "mongoose";
 
+export type Macros = {
+  protein: number;
+  fat: number;
+  carbohydrates: number;
+};
+
+export type FoodT = {
+  _id?: string;
+  name: string;
+  vendor?: string;
+  barcode?: string;
+
+  user_id: string;
+  hidden: boolean;
+
+  image?: string;
+
+  serving: {
+    size: number;
+    unit: string;
+    calories: number;
+    price: number;
+
+    macronutrients: Macros;
+  };
+};
+
 export const schema = new Schema({
   name: String,
   vendor: String,

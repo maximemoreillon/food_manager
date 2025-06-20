@@ -113,7 +113,7 @@ export default {
   left: 0;
   bottom: 0;
   transition: width 0.25s;
-  border: 2px solid #dddddd;
+  border: 1px solid #dddddd;
   border-radius: 0.5em;
 }
 

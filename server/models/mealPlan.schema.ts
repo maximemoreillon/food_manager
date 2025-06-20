@@ -1,6 +1,24 @@
 import { defineMongooseModel } from "#nuxt/mongoose";
 import { Schema } from "mongoose";
-import { schema as foodSchema } from "./food.schema";
+import { schema as foodSchema, FoodT, Macros } from "./food.schema";
+
+export type MealPlanRecord = { food: FoodT; quantity: number };
+
+export type MealPlanT = {
+  _id?: string;
+  name: string;
+  date: Date;
+  user_id: string;
+  incomplete: boolean;
+
+  foods: MealPlanRecord[];
+
+  macronutrients: Macros;
+
+  // Could have been nested in 'calories'
+  calories_target: number;
+  calories: number;
+};
 
 const mealPlanFoodSchema = new Schema({
   quantity: Number,

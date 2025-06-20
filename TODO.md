@@ -1,6 +1,6 @@
-- [ ] v-data-table pagination
+- [x] v-data-table pagination
 - [ ] OIDC auth
   - [ ] Persistent user session not found
 - [ ] S3
 - [ ] Error handling
-- [ ] Node is null
+- [x] Node is null

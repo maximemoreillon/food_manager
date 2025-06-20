@@ -1,6 +1,7 @@
 import { QueryOptions } from "mongoose";
 import { getUserSession } from "nuxt-oidc-auth/runtime/server/utils/session.js";
 import { z } from "zod";
+import { FoodT } from "~/server/models/food.schema";
 
 const querySchema = z.object({
   itemsPerPage: z.coerce.number().optional(),
@@ -32,7 +33,7 @@ export default defineEventHandler(async (event) => {
     desc: -1,
   } as const;
 
-  const skip = page - 1 * itemsPerPage;
+  const skip = (page - 1) * itemsPerPage;
 
   const query: QueryOptions = { user_id, ...rest };
   if (search && search !== "") query.name = { $regex: search, $options: "i" };
@@ -53,3 +54,12 @@ export default defineEventHandler(async (event) => {
     order,
   };
 });
+
+export type FoodsFetchResponse = {
+  page: number;
+  itemsPerPage: number;
+  sort: string;
+  order: string;
+  total: number;
+  items: FoodT[];
+};

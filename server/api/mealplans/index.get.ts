@@ -1,5 +1,6 @@
 import { getUserSession } from "nuxt-oidc-auth/runtime/server/utils/session.js";
 import { z } from "zod";
+import { MealPlanT } from "~/server/models/mealPlan.schema";
 
 const querySchema = z.object({
   itemsPerPage: z.coerce.number().optional(),
@@ -51,3 +52,12 @@ export default defineEventHandler(async (event) => {
     order,
   };
 });
+
+export type MealPlansResponse = {
+  sort: string;
+  order: string;
+  page: number;
+  itemsPerPage: number;
+  items: MealPlanT[];
+  total: number;
+};

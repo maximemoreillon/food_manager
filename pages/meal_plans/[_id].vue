@@ -144,18 +144,16 @@
 
     <v-snackbar :color="snackbar.color" v-model="snackbar.show">
       {{ snackbar.text }}
-
-      <!-- <template v-slot:action="{ attrs }">
-        <v-btn text dark v-bind="attrs" @click="snackbar.show = false">
-          Close
-        </v-btn>
-      </template> -->
     </v-snackbar>
   </v-card>
 </template>
 
 <script setup lang="ts">
-import type { FoodT, MealPlanRecord, MealPlanT } from "~/shared/types";
+import type { FoodT } from "~/server/models/food.schema";
+import type {
+  MealPlanRecord,
+  MealPlanT,
+} from "~/server/models/mealPlan.schema";
 
 const route = useRoute();
 

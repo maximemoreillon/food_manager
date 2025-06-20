@@ -19,6 +19,8 @@
 </template>
 
 <script setup lang="ts">
+import type { FoodT } from "~/server/models/food.schema";
+
 defineProps<{
   mealPlanRecord: { food: FoodT; quantity: number };
 }>();

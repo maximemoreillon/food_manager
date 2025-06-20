@@ -136,7 +136,7 @@
 </template>
 
 <script lang="ts" setup>
-import type { FoodT } from "~/shared/types";
+import type { FoodT } from "~/server/models/food.schema";
 
 const route = useRoute();
 
