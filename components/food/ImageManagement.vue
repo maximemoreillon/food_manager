@@ -23,7 +23,7 @@
 </template>
 
 <script lang="ts" setup>
-import type { FoodT } from "~/shared/types";
+import type { FoodT } from "~/server/models/food.schema";
 
 const props = defineProps<{ food: FoodT }>();
 const emit = defineEmits(["upload", "delete"]);
@@ -39,15 +39,19 @@ async function upload() {
   uploading.value = true;
   const body = new FormData();
   body.append("image", newImage.value);
-  // TODO: error handling
-  const res = await $fetch(`/api/foods/${props.food._id}/image`, {
-    method: "POST",
-    body,
-  });
-  // TODO: emit result
-  // TODO: snackbar
-  uploading.value = false;
-  emit("upload", res);
+  try {
+    const res = await $fetch(`/api/foods/${props.food._id}/image`, {
+      method: "POST",
+      body,
+    });
+    // TODO: snackbar
+    emit("upload", res);
+  } catch (error) {
+    console.error(error);
+    alert("Error");
+  } finally {
+    uploading.value = false;
+  }
 }
 
 function deleteFoodImage() {

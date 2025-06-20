@@ -89,7 +89,7 @@
 </template>
 
 <script setup lang="ts">
-import type { FoodT } from "~/shared/types";
+import type { FoodT } from "~/server/models/food.schema";
 
 const props = defineProps<{
   mealPlanRecord?: { food: FoodT; quantity: number };

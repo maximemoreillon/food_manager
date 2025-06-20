@@ -1,8 +1,8 @@
 <template>
   <v-form @submit.prevent="submit">
-    <v-row align="center">
+    <v-row align="center" dense>
       <v-col>
-        <v-text-field v-model="searchString" />
+        <v-text-field v-model="searchString" hide-details label="Search" />
       </v-col>
       <v-col cols="auto">
         <v-btn type="submit" icon="mdi-magnify" variant="flat" />

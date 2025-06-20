@@ -1,15 +1,9 @@
 <template>
   <v-card>
     <v-toolbar flat>
-      <v-row align="center">
-        <v-col>
-          <v-toolbar-title> Meal plans </v-toolbar-title>
-        </v-col>
-        <v-spacer />
-        <v-col cols="auto">
-          <MealPlanCreateDialog />
-        </v-col>
-      </v-row>
+      <v-toolbar-title> Meal plans </v-toolbar-title>
+      <v-spacer />
+      <MealPlanCreateDialog />
     </v-toolbar>
 
     <v-card-text>

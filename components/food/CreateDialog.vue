@@ -32,23 +32,28 @@
 </template>
 
 <script lang="ts" setup>
+import type { FoodT } from "~/server/models/food.schema";
+
 const loading = ref(false);
 
 const name = ref("");
 async function create_food() {
   loading.value = true;
 
-  const res = await $fetch("/api/foods", {
-    method: "POST",
-    body: { name: name.value },
-  });
+  try {
+    const res = await $fetch<FoodT>("/api/foods", {
+      method: "POST",
+      body: { name: name.value },
+    });
 
-  // TODO: typing
-  const { _id } = res;
-
-  // TODO: navigate to _id
-  await navigateTo(`/foods/${_id}`);
-
-  loading.value = false;
+    const { _id } = res;
+    await navigateTo(`/foods/${_id}`);
+  } catch (error) {
+    // TODO: snackbar
+    console.error(error);
+    alert(error);
+  } finally {
+    loading.value = false;
+  }
 }
 </script>
