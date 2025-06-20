@@ -43,7 +43,7 @@
           </v-row>
         </section>
 
-        <section class="my-8">
+        <section>
           <div class="text-h6 my-4">Calories and Macros</div>
           <v-row align="center" justify="space-between" dense>
             <v-col cols="auto">
@@ -51,8 +51,9 @@
                 <v-text-field
                   :error="calorie_total > meal_plan.calories_target"
                   :prefix="`${calorie_total.toString()}/`"
-                  label="Total / Target"
+                  label="Calories"
                   type="number"
+                  density="compact"
                   v-model.number="meal_plan.calories_target"
                   hide-details
                   hide-spin-buttons
@@ -63,7 +64,7 @@
 
             <v-spacer />
             <v-col cols="auto" v-for="(value, key) in macros_total" :key="key">
-              <v-chip :color="colors[key]">
+              <v-chip :color="colors[key]" variant="flat">
                 {{ Math.round(value) }}g {{ macros_label_lookup[key] }}
               </v-chip>
             </v-col>
@@ -91,6 +92,7 @@
                 hide-details
               />
             </v-col>
+            <v-spacer />
             <v-col cols="auto">
               <MealPlanFoodAddDialog
                 :meal_plan="meal_plan"
@@ -108,8 +110,8 @@
             <template v-slot:item.image="{ item }">
               <v-img
                 v-if="item.food.image"
-                width="5em"
-                height="5em"
+                width="6em"
+                height="6em"
                 contain
                 :src="imageSrc(item.food._id, true)"
               />

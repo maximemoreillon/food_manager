@@ -2,5 +2,10 @@
 - [ ] OIDC auth
   - [ ] Persistent user session not found
 - [ ] S3
+  - [ ] Deletion
 - [ ] Error handling
 - [x] Node is null
+- [ ] User settings
+- [ ] OpenAI label parsing
+- [ ] Barcode scanner
+- [ ] Vendors

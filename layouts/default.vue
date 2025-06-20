@@ -15,8 +15,15 @@ const drawer = ref(true);
       <v-navigation-drawer v-model="drawer">
         <!-- <v-list-item title="My Application" subtitle="Vuetify"></v-list-item>
         <v-divider></v-divider> -->
-        <v-list-item link title="Foods" to="/foods"></v-list-item>
-        <v-list-item link title="Meal plans" to="/meal_plans"></v-list-item>
+        <v-list nav>
+          <v-list-item link title="Foods" to="/foods" prepend-icon="mdi-food" />
+          <v-list-item
+            link
+            title="Meal plans"
+            to="/meal_plans"
+            prepend-icon="mdi-silverware-fork-knife"
+          />
+        </v-list>
       </v-navigation-drawer>
     </client-only>
     <v-main>
