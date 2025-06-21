@@ -1,6 +1,7 @@
 import { getUserSession } from "nuxt-oidc-auth/runtime/server/utils/session.js";
 import { z } from "zod";
 import { MealPlanT } from "~/server/models/mealPlan.schema";
+import getUserId from "~/server/utils/getUserId";
 
 const querySchema = z.object({
   itemsPerPage: z.coerce.number().optional(),
@@ -11,11 +12,7 @@ const querySchema = z.object({
 });
 
 export default defineEventHandler(async (event) => {
-  // TODO: make a getUserId util
-  const { userInfo } = await getUserSession(event);
-  if (!userInfo)
-    throw createError({ statusCode: 401, statusMessage: "No userInfo" });
-  const user_id = userInfo.legacy_id || userInfo.sub;
+  const user_id = await getUserId(event);
 
   const {
     itemsPerPage = 5,

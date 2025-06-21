@@ -1,9 +1,16 @@
+import getUserId from "~/server/utils/getUserId";
+
 export default defineEventHandler(async (event) => {
+  const user_id = await getUserId(event);
+
+  // TODO: filter by user_id
   // Note: destructuring results in error
   const _id = event.context.params?._id;
   const body = await readBody(event);
 
-  const item = await Food.findOneAndUpdate({ _id }, body, { new: true });
+  const item = await Food.findOneAndUpdate({ _id, user_id }, body, {
+    new: true,
+  });
   if (!item)
     throw createError({
       statusCode: 400,

@@ -1,6 +1,6 @@
-import { FoodT } from "~/shared/types";
-
 export default defineEventHandler(async (event) => {
+  // TODO: filter by user_id
+
   // Note: destructuring results in error
   const _id = event.context.params?._id;
 

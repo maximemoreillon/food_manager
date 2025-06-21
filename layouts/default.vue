@@ -23,6 +23,12 @@ const drawer = ref(true);
             to="/meal_plans"
             prepend-icon="mdi-silverware-fork-knife"
           />
+          <v-list-item
+            link
+            title="Settings"
+            to="/settings"
+            prepend-icon="mdi-cogs"
+          />
         </v-list>
       </v-navigation-drawer>
     </client-only>

@@ -1,9 +1,18 @@
 import { storeImageToS3 } from "~/server/s3";
+import getUserId from "~/server/utils/getUserId";
 
 export default defineEventHandler(async (event) => {
+  const user_id = await getUserId(event);
+
   const _id = event.context.params?._id;
   if (!_id)
     throw createError({ statusCode: 400, statusMessage: "Missing _id" });
+
+  const food = await Food.findOne({ _id, user_id });
+
+  if (!food)
+    throw createError({ statusCode: 404, statusMessage: "Food not found" });
+
   const files = await readMultipartFormData(event);
   if (!files)
     throw createError({ statusCode: 400, statusMessage: "Missing file" });
@@ -12,10 +21,10 @@ export default defineEventHandler(async (event) => {
 
   const fileKey = await storeImageToS3(_id, image.data);
 
-  // TODO: user_id
-  return await Food.findOneAndUpdate(
-    { _id },
-    { image: fileKey },
-    { new: true }
-  );
+  // @ts-ignore
+  food.image = fileKey;
+
+  await food.save();
+
+  return food.toObject();
 });
