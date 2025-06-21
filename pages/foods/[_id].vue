@@ -6,7 +6,7 @@
         <v-toolbar-title>{{ food.name || "unnnamed food" }}</v-toolbar-title>
         <v-spacer />
 
-        <LabelParsing @parsed="handleParsedLabel" icon />
+        <FoodLabelParsing @parsed="handleParsedLabel" icon />
 
         <v-btn
           icon="mdi-content-save"

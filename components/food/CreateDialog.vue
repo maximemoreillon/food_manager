@@ -6,6 +6,7 @@
         color="primary"
         prepend-icon="mdi-plus"
         text="new"
+        variant="elevated"
       />
     </template>
     <template v-slot:default="{ isActive }">

@@ -1,12 +1,7 @@
 <template>
   <v-dialog max-width="80rem" v-model="dialog">
     <template v-slot:activator="{ props: activatorProps }">
-      <v-btn
-        v-bind="activatorProps"
-        prepend-icon="mdi-label"
-        :variant="variant"
-        text="Parse label"
-      />
+      <v-btn v-bind="activatorProps" icon="mdi-label" :variant="variant" />
     </template>
     <template v-slot:default="{ isActive }">
       <v-card>

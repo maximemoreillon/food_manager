@@ -5,8 +5,11 @@
       <v-col>
         <v-text-field label="Food name" v-model="food.name" />
       </v-col>
-      <v-col>
+      <v-col cols="3">
         <v-text-field label="Quantity" v-model.number="quantity" />
+      </v-col>
+      <v-col cols="auto" v-if="openAiEnabled">
+        <FoodLabelParsing @parsed="handleParsedLabel" variant="flat" />
       </v-col>
     </v-row>
     <v-row>
@@ -56,13 +59,6 @@
     </v-row>
 
     <v-row>
-      <v-col cols="auto" v-if="openAiEnabled">
-        <FoodLabelParsing
-          @parsed="handleParsedLabel"
-          variant="outlined"
-          text="Parse label"
-        />
-      </v-col>
       <v-spacer></v-spacer>
       <v-col cols="auto" v-if="!isRegistered">
         <v-btn
