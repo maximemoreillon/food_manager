@@ -1,3 +1,5 @@
 export default defineEventHandler(async (event) => {
-  return "WIP";
+  const user_id = await getUserId(event);
+  const vendors = await Food.find({ user_id }).distinct("vendor");
+  return vendors;
 });

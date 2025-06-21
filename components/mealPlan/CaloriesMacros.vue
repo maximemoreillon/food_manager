@@ -8,86 +8,47 @@
         v-for="(value, key) in macronutrients"
         :key="`bar_${key}`"
         :style="macro_bar_style(key)"
-      ></div>
+      />
     </div>
   </div>
 </template>
-<script>
+<script setup lang="ts">
 // TODO: composition API syntax
-export default {
-  name: "CalorieMacros",
-  props: {
-    calories: {
-      type: Number,
-      default: () => 0,
-    },
-    target: {
-      type: Number,
-      default() {
-        // TODO: get that from somewhere
-        const target = 2500;
-        return Number(target);
-      },
-    },
-    macronutrients: {
-      type: Object,
-      default: () => ({ protein: 0, fat: 0, carbohydrates: 0 }),
-    },
-  },
-  data() {
-    return {
-      colors,
-    };
-  },
-  methods: {
-    macro_bar_style(macro) {
-      return {
-        width: `${
-          (100 * this.macronutrients[macro]) / this.macros_total_mass
-        }%`,
-        "background-color": this.colors[macro],
-        // A bit dirty, rounding out corners
-        "border-top-right-radius": macro === "carbohydrates" ? "0.25em" : "0",
-        "border-bottom-right-radius":
-          macro === "carbohydrates" ? "0.25em" : "0",
-        "border-top-left-radius": macro === "protein" ? "0.25em" : "0",
-        "border-bottom-left-radius": macro === "protein" ? "0.25em" : "0",
-      };
-    },
-  },
-  computed: {
-    calorie_to_target_ratio() {
-      return this.calories / this.target;
-    },
-    calorie_bar_style() {
-      return {
-        width: `${(100 * this.calories) / this.calorie_bar_max}%`,
-      };
-    },
-    target_bar_style() {
-      return {
-        width: `${100 * (this.target / this.calorie_bar_max)}%`,
-        "border-color": this.calories < this.target ? "#dddddd" : "#c00000",
-      };
-    },
 
-    macros_total_mass() {
-      const { protein, fat, carbohydrates } = this.macronutrients;
-      return protein + fat + carbohydrates;
-    },
-    calorie_bar_max() {
-      return Math.max(this.target, this.calories);
-    },
-    targetModel: {
-      get() {
-        return this.target;
-      },
-      set(value) {
-        this.$emit("update:target", value);
-      },
-    },
-  },
-};
+const props = defineProps<{
+  calories: number;
+  target: number;
+  macronutrients: Macros;
+}>();
+function macro_bar_style(macro: "protein" | "fat" | "carbohydrates") {
+  return {
+    width: `${(100 * props.macronutrients[macro]) / macros_total_mass.value}%`,
+    "background-color": colors[macro],
+    // A bit dirty, rounding out corners
+    "border-top-right-radius": macro === "carbohydrates" ? "0.25em" : "0",
+    "border-bottom-right-radius": macro === "carbohydrates" ? "0.25em" : "0",
+    "border-top-left-radius": macro === "protein" ? "0.25em" : "0",
+    "border-bottom-left-radius": macro === "protein" ? "0.25em" : "0",
+  };
+}
+
+const calorie_to_target_ratio = computed(() => props.calories / props.target);
+
+const macros_total_mass = computed(() => {
+  const { protein, fat, carbohydrates } = props.macronutrients;
+  return protein + fat + carbohydrates;
+});
+
+const target_bar_style = computed(() => ({
+  width: `${100 * (props.target / calorie_bar_max.value)}%`,
+  "border-color": props.calories < props.target ? "#dddddd" : "#c00000",
+}));
+
+const calorie_bar_style = computed(() => ({
+  width: `${(100 * props.calories) / calorie_bar_max.value}%`,
+}));
+
+const calorie_bar_max = computed(() => Math.max(props.target, props.calories));
 </script>
 
 <style scoped>

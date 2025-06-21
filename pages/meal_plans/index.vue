@@ -28,13 +28,13 @@
         </template>
 
         <template v-slot:item.calories="{ item }">
-          {{ item.calories }}/{{ item.calories_target }}
+          {{ item.calories || 0 }}/{{ item.calories_target || 0 }}
         </template>
 
         <template v-slot:item.macronutrients="{ item }">
           <MealPlanCaloriesMacros
-            :target="item.calories_target"
-            :calories="item.calories"
+            :target="item.calories_target || 0"
+            :calories="item.calories || 0"
             :macronutrients="item.macronutrients"
           />
         </template>

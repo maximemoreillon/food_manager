@@ -28,7 +28,7 @@ export type FoodT = {
   };
 };
 
-export const schema = new Schema({
+export const foodSchema = new Schema({
   name: String,
   vendor: String,
   barcode: String,
@@ -54,5 +54,5 @@ export const schema = new Schema({
 
 export const Food = defineMongooseModel({
   name: "Food",
-  schema,
+  schema: foodSchema,
 });

@@ -1,6 +1,6 @@
 import { defineMongooseModel } from "#nuxt/mongoose";
 import { Schema } from "mongoose";
-import { schema as foodSchema, FoodT, Macros } from "./food.schema";
+import { foodSchema, FoodT, Macros } from "./food.schema";
 
 export type MealPlanRecord = { food: FoodT; quantity: number };
 

@@ -19,13 +19,21 @@
                 <v-text-field autofocus label="Name" v-model="name" />
               </v-col>
               <v-col cols="auto">
-                <v-btn color="primary" type="submit" :loading="loading">
-                  <v-icon>mdi-content-save</v-icon>
-                </v-btn>
+                <v-btn
+                  color="primary"
+                  type="submit"
+                  :loading="loading"
+                  icon="mdi-content-save"
+                />
               </v-col>
             </v-row>
           </v-form>
         </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+
+          <v-btn text="Close" @click="isActive.value = false"></v-btn>
+        </v-card-actions>
       </v-card>
     </template>
   </v-dialog>

@@ -8,26 +8,33 @@
         text="Parse label"
       />
     </template>
-    <v-card>
-      <v-card-title> Label parsing </v-card-title>
-      <v-card-text>
-        <v-row align="center">
-          <v-col>
-            <v-file-input v-model="image" label="image" accept="image/*" />
-          </v-col>
-          <v-col cols="auto">
-            <v-btn
-              :disabled="!image"
-              @click="parseLabel()"
-              :loading="loading"
-              color="primary"
-            >
-              <v-icon>mdi-brain</v-icon>
-            </v-btn>
-          </v-col>
-        </v-row>
-      </v-card-text>
-    </v-card>
+    <template v-slot:default="{ isActive }">
+      <v-card>
+        <v-card-title> Label parsing </v-card-title>
+        <v-card-text>
+          <v-row align="center">
+            <v-col>
+              <v-file-input v-model="image" label="image" accept="image/*" />
+            </v-col>
+            <v-col cols="auto">
+              <v-btn
+                :disabled="!image"
+                @click="parseLabel()"
+                :loading="loading"
+                color="primary"
+              >
+                <v-icon>mdi-brain</v-icon>
+              </v-btn>
+            </v-col>
+          </v-row>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+
+          <v-btn text="Close" @click="isActive.value = false"></v-btn>
+        </v-card-actions>
+      </v-card>
+    </template>
   </v-dialog>
 </template>
 

@@ -6,7 +6,7 @@
         <v-toolbar-title>{{ food.name || "unnnamed food" }}</v-toolbar-title>
         <v-spacer />
 
-        <!-- <LabelParsing @parsed="handleParsedLabel" icon /> -->
+        <LabelParsing @parsed="handleParsedLabel" icon />
 
         <v-btn
           icon="mdi-content-save"
@@ -83,7 +83,11 @@
         </v-row>
         <v-row>
           <v-col>
-            <v-combobox label="Vendor" v-model="food.vendor" :items="vendors" />
+            <v-combobox
+              label="Vendor"
+              v-model="food.vendor"
+              :items="vendors ? vendors : []"
+            />
           </v-col>
           <v-col>
             <v-text-field
@@ -125,23 +129,12 @@
 
     <v-snackbar :color="snackbar.color" v-model="snackbar.show">
       {{ snackbar.text }}
-
-      <!-- <template v-slot:action="{ attrs }">
-        <v-btn text dark v-bind="attrs" @click="snackbar.show = false">
-          Close
-        </v-btn>
-      </template> -->
     </v-snackbar>
   </v-card>
 </template>
 
 <script lang="ts" setup>
-import type { FoodT } from "~/server/models/food.schema";
-
 const route = useRoute();
-
-// TODO: populate vendors
-const vendors = ref([]);
 
 const deleting = ref(false);
 const saving = ref(false);
@@ -153,6 +146,9 @@ const {
   error,
 } = await useFetch<FoodT>(`/api/foods/${route.params._id}`);
 
+const { data: vendors } = await useFetch<string[]>(`/api/foods/vendors`);
+
+// TODO: have a better snackbar management
 const snackbar = ref({
   color: "green",
   show: false,
@@ -162,21 +158,37 @@ const snackbar = ref({
 async function update_food() {
   saving.value = true;
   const opts = { method: "PATCH", body: food.value };
-  // @ts-ignore
-  await $fetch(`/api/foods/${route.params._id}`, opts);
-  saving.value = false;
 
-  snackbar.value.show = true;
-  snackbar.value.text = "Food saved";
+  try {
+    // @ts-ignore
+    await $fetch(`/api/foods/${route.params._id}`, opts);
+    snackbar.value.show = true;
+    snackbar.value.text = "Food saved";
+    snackbar.value.color = "success";
+  } catch (error) {
+    console.error(error);
+    snackbar.value.show = true;
+    snackbar.value.text = "Food update failed";
+    snackbar.value.color = "error";
+  } finally {
+    saving.value = false;
+  }
 }
 
 async function deleteFood() {
   if (!confirm("Delete food?")) return;
   deleting.value = true;
-  // @ts-ignore
-  await $fetch(`/api/foods/${route.params._id}`, { method: "DELETE" });
-  deleting.value = false;
-  navigateTo("/foods");
+  try {
+    // @ts-ignore
+    await $fetch(`/api/foods/${route.params._id}`, { method: "DELETE" });
+    navigateTo("/foods");
+  } catch (error) {
+    snackbar.value.show = true;
+    snackbar.value.color = "error";
+    snackbar.value.text = "Food deletion failerd";
+  } finally {
+    deleting.value = false;
+  }
 }
 
 function handleImageDeleted() {
@@ -188,5 +200,18 @@ function handleImageUploaded({ image }: FoodT) {
   if (!food.value) return;
   // Need some extra procesing to bust cache
   food.value.image = image;
+}
+
+// TODO: typing
+function handleParsedLabel(event: any) {
+  if (!food.value) return;
+  const { calories, protein, fat, carbohydrates, servingSize, servingUnit } =
+    event;
+  food.value.serving.calories = calories;
+  food.value.serving.size = servingSize;
+  food.value.serving.unit = servingUnit;
+  food.value.serving.macronutrients.fat = fat;
+  food.value.serving.macronutrients.protein = protein;
+  food.value.serving.macronutrients.carbohydrates = carbohydrates;
 }
 </script>

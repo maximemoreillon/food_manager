@@ -15,7 +15,6 @@
     <v-card-text v-if="!loading && data">
       <v-row>
         <v-col>
-          <!-- TODO: stop mutating store data with v-model -->
           <v-text-field
             label="Default calories target"
             v-model="data.calories_target"

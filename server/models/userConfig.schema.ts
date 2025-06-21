@@ -5,7 +5,7 @@ export type UserConfigurationT = {
   calories_target: number;
 };
 
-export const schema = new Schema({
+const schema = new Schema({
   user_id: {
     type: String,
     unique: true,

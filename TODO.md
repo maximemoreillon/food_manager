@@ -9,3 +9,4 @@
 - [ ] OpenAI label parsing
 - [ ] Barcode scanner
 - [ ] Vendors
+- [ ] toObject
