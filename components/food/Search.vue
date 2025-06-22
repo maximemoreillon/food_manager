@@ -16,6 +16,8 @@ const route = useRoute();
 const searchString = ref(route.query.search);
 
 function submit() {
-  navigateTo({ query: { ...route.query, search: searchString.value } });
+  navigateTo({
+    query: { ...route.query, search: searchString.value, page: 1 },
+  });
 }
 </script>

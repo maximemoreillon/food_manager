@@ -1,6 +1,5 @@
 import { Client } from "minio";
 import sharp from "sharp";
-import path from "path";
 
 const IMAGE_FILENAME = "image.jpg";
 const THUMBNAIL_FILENAME = "thumbnail.jpg";
@@ -9,7 +8,7 @@ const {
   S3_REGION,
   S3_ACCESS_KEY_ID = "",
   S3_SECRET_ACCESS_KEY = "",
-  S3_ENDPOINT,
+  S3_ENDPOINT = "localhost",
   S3_BUCKET = "food-manager",
   S3_PORT = "443",
   S3_USE_SSL,
@@ -18,7 +17,7 @@ const {
 const s3Client = new Client({
   accessKey: S3_ACCESS_KEY_ID,
   secretKey: S3_SECRET_ACCESS_KEY,
-  endPoint: S3_ENDPOINT || "localhost",
+  endPoint: S3_ENDPOINT,
   port: Number(S3_PORT),
   useSSL: !!S3_USE_SSL,
 });
@@ -62,7 +61,6 @@ export const deleteImageFromS3 = async (_id: string) => {
 export const sendS3Image = async (_id: string, thumbnail: boolean = false) => {
   const filename = thumbnail ? THUMBNAIL_FILENAME : IMAGE_FILENAME;
   const Key = `${_id}/${filename}`;
-  // const { ext } = path.parse(Key);
 
   const stream = await s3Client.getObject(S3_BUCKET, Key);
 

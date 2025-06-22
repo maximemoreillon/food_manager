@@ -7,49 +7,51 @@
     </v-toolbar>
 
     <v-card-text v-if="data">
-      <v-data-table-server
-        :loading="pending"
-        :headers="headers"
-        :items="data.items"
-        :items-length="data.total"
-        v-model:sort-by="tableOptions.sortBy"
-        v-model:items-per-page="tableOptions.itemsPerPage"
-        v-model:page="tableOptions.page"
-      >
-        <template v-slot:top>
-          <v-row align="baseline" dense>
-            <v-col cols="12" md="6">
-              <FoodSearch />
-            </v-col>
-            <v-spacer />
-            <!-- <v-col cols="auto">
+      <!-- TODO: ClientOnly might not be needed -->
+      <ClientOnly>
+        <v-data-table-server
+          :loading="pending"
+          :headers="headers"
+          :items="data.items"
+          :items-length="data.total"
+          v-model:sort-by="tableOptions.sortBy"
+          v-model:items-per-page="tableOptions.itemsPerPage"
+          v-model:page="tableOptions.page"
+        >
+          <template v-slot:top>
+            <v-row align="baseline" dense>
+              <v-col cols="12" md="6">
+                <FoodSearch />
+              </v-col>
+              <v-spacer />
+              <!-- <v-col cols="auto">
               <v-checkbox label="Show hidden" v-model="show_hidden" />
             </v-col> -->
-          </v-row>
-        </template>
+            </v-row>
+          </template>
 
-        <template v-slot:item.name="{ item }">
-          <NuxtLink :href="`/foods/${item._id}`">{{ item.name }}</NuxtLink>
-        </template>
+          <template v-slot:item.name="{ item }">
+            <NuxtLink :href="`/foods/${item._id}`">{{ item.name }}</NuxtLink>
+          </template>
 
-        <template v-slot:item.serving="{ item }">
-          {{ item.serving.size }} {{ item.serving.unit }}
-        </template>
+          <template v-slot:item.serving="{ item }">
+            {{ item.serving.size }} {{ item.serving.unit }}
+          </template>
 
-        <template v-slot:item.hidden="{ item }">
-          <v-icon v-if="item.hidden">mdi-check</v-icon>
-        </template>
+          <template v-slot:item.hidden="{ item }">
+            <v-icon v-if="item.hidden">mdi-check</v-icon>
+          </template>
 
-        <template v-slot:item.image="{ item }">
-          <v-img
-            v-if="item.image"
-            width="6em"
-            height="6em"
-            contain
-            :src="imageSrc(item._id, true)"
-          />
-        </template>
-      </v-data-table-server>
+          <template v-slot:item.image="{ item }">
+            <v-img
+              width="6em"
+              height="6em"
+              contain
+              :src="imageSrc(item, true)"
+            />
+          </template>
+        </v-data-table-server>
+      </ClientOnly>
     </v-card-text>
   </v-card>
 </template>

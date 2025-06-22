@@ -8,7 +8,7 @@
       <v-col cols="3">
         <v-text-field label="Quantity" v-model.number="quantity" />
       </v-col>
-      <v-col cols="auto" v-if="openAiEnabled">
+      <v-col cols="auto" v-if="openAi?.available">
         <FoodLabelParsing @parsed="handleParsedLabel" />
       </v-col>
     </v-row>
@@ -95,6 +95,7 @@
 import { FoodLabelParsing } from "#components";
 import type { FoodT } from "~/server/models/food.schema";
 
+const { data: openAi } = await useFetch("/api/openai");
 const props = defineProps<{
   mealPlanRecord?: { food: FoodT; quantity: number };
 }>();
@@ -106,7 +107,6 @@ const food = ref<FoodT | null>(null);
 // const registeredFoods = ref([]);
 
 // TODO: actually check
-const openAiEnabled = ref(true);
 const registering = ref(false);
 
 const defaults = ref({

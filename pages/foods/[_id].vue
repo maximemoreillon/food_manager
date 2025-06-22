@@ -20,13 +20,7 @@
       </v-toolbar>
       <v-divider />
 
-      <v-img
-        v-if="food.image"
-        class="mt-3"
-        height="300"
-        :src="imageSrc(food._id)"
-        contain
-      />
+      <v-img class="mt-3" height="300" :src="imageSrc(food)" contain />
 
       <v-card-text>
         <v-row>
@@ -55,7 +49,7 @@
               type="number"
             />
           </v-col>
-          <v-col cols="auto">
+          <v-col cols="auto" v-if="openAi?.available">
             <FoodLabelParsing @parsed="handleParsedLabel" />
           </v-col>
         </v-row>
@@ -148,6 +142,7 @@ const {
 } = await useFetch<FoodT>(`/api/foods/${route.params._id}`);
 
 const { data: vendors } = await useFetch<string[]>(`/api/foods/vendors`);
+const { data: openAi } = await useFetch("/api/openai");
 
 // TODO: have a better snackbar management
 const snackbar = ref({

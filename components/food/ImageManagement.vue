@@ -1,7 +1,12 @@
 <template>
   <v-row align="center">
     <v-col>
-      <v-file-input v-model="newImage" label="image" accept="image/*" />
+      <v-file-input
+        v-model="newImage"
+        label="image"
+        accept="image/*"
+        hide-details
+      />
     </v-col>
     <v-col cols="auto">
       <v-btn :disabled="!newImage" @click="upload()" :loading="uploading">

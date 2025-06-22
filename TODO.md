@@ -5,8 +5,10 @@
 - [x] Error handling
 - [x] Node is null
 - [x] User settings
-- [ ] OpenAI label parsing
+- [x] OpenAI label parsing
+  - [ ] Find better way to check if openAI is available on the GUI
 - [ ] Barcode scanner
 - [x] Vendors
 - [ ] toObject
 - [ ] Pagination in RegisteredFoodsTable
+- [ ] Hidden filtering

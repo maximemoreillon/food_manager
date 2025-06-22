@@ -87,7 +87,7 @@
               <v-text-field
                 v-model="search"
                 clearable
-                append-icon="mdi-magnify"
+                prepend-inner-icon="mdi-magnify"
                 label="Search"
                 hide-details
               />
@@ -113,7 +113,7 @@
                 width="6em"
                 height="6em"
                 contain
-                :src="imageSrc(item.food._id, true)"
+                :src="imageSrc(item.food, true)"
               />
             </template>
 
@@ -122,6 +122,7 @@
                 type="number"
                 v-model="item.quantity"
                 hide-details
+                density="compact"
               />
             </template>
 
