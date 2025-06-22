@@ -15,7 +15,7 @@ export default defineEventHandler(async (event) => {
   const user_id = await getUserId(event);
 
   const {
-    itemsPerPage = 5,
+    itemsPerPage = 10,
     page = 1,
     sort = "date",
     order = "desc",

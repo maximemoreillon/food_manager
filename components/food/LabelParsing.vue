@@ -9,7 +9,12 @@
         <v-card-text>
           <v-row align="center">
             <v-col>
-              <v-file-input v-model="image" label="image" accept="image/*" />
+              <v-file-input
+                v-model="image"
+                label="image"
+                accept="image/*"
+                hide-details
+              />
             </v-col>
             <v-col cols="auto">
               <v-btn
@@ -43,11 +48,11 @@ async function parseLabel() {
     alert("Image not provided");
     return;
   }
-  loading.value;
+  loading.value = true;
   const body = new FormData();
   body.append("image", image.value);
   try {
-    const data = await $fetch(`/label`, { body, method: "POST" });
+    const data = await $fetch(`/api/label`, { body, method: "POST" });
 
     emit("parsed", data);
     dialog.value = false;

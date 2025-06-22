@@ -9,3 +9,4 @@
 - [ ] Barcode scanner
 - [x] Vendors
 - [ ] toObject
+- [ ] Pagination in RegisteredFoodsTable

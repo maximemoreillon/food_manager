@@ -25,8 +25,8 @@
     <template v-slot:item.image="{ item }">
       <v-img
         v-if="item.image"
-        width="5em"
-        height="5em"
+        width="6em"
+        height="6em"
         contain
         :src="imageSrc(item._id)"
       />
@@ -91,7 +91,9 @@ const foods = ref<FoodT[]>([]);
 async function getFoods() {
   loading.value = true;
   // TODO: figure out if $fetch was the right choice
-  const res = await $fetch<FoodsFetchResponse>("/api/foods");
+  const res = await $fetch<FoodsFetchResponse>("/api/foods", {
+    query: { itemsPerPage: 1000 },
+  });
 
   foods.value = res.items;
   loading.value = false;

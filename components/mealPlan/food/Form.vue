@@ -149,8 +149,17 @@ function submit() {
   reset_inputs();
 }
 
-function handleParsedLabel() {
-  alert("WIP");
+// TODO: typing
+function handleParsedLabel(event: any) {
+  if (!food.value) return;
+  const { calories, protein, fat, carbohydrates, servingSize, servingUnit } =
+    event;
+  food.value.serving.calories = calories;
+  food.value.serving.size = servingSize;
+  food.value.serving.unit = servingUnit;
+  food.value.serving.macronutrients.fat = fat;
+  food.value.serving.macronutrients.protein = protein;
+  food.value.serving.macronutrients.carbohydrates = carbohydrates;
 }
 
 const isRegistered = computed(() => {

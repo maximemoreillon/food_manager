@@ -105,26 +105,26 @@
           @delete="handleImageDeleted"
         />
 
-        <v-row>
+        <!-- <v-row>
           <v-col>
             <v-row>
               <v-col>
                 <v-text-field label="Barcode" v-model="food.barcode" />
               </v-col>
               <v-col cols="auto">
-                <!-- <BarcodeReaderDialog @decode="$set(food, 'barcode', $event)" /> -->
+                <BarcodeReaderDialog @decode="$set(food, 'barcode', $event)" />
               </v-col>
             </v-row>
             <v-row dense justify="center" v-if="food.barcode">
               <v-col cols="auto">
-                <!-- <VueBarcode
+                <VueBarcode
                   :value="food.barcode"
                   :options="{ displayValue: false }"
-                /> -->
+                />
               </v-col>
             </v-row>
           </v-col>
-        </v-row>
+        </v-row> -->
       </v-card-text>
     </template>
 
