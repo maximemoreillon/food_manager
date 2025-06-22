@@ -43,7 +43,7 @@ export const storeImageToS3 = async (_id: string, buffer: Buffer) => {
 export const deleteImageFromS3 = async (_id: string) => {
   const Prefix = _id.toString();
 
-  const objectsStream = await s3Client.listObjects(S3_BUCKET, Prefix, true);
+  const objectsStream = s3Client.listObjects(S3_BUCKET, Prefix, true);
   const objectsList: any[] = [];
 
   objectsStream.on("data", (obj) => {

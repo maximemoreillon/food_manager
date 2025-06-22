@@ -1,12 +1,11 @@
 - [x] v-data-table pagination
 - [ ] OIDC auth
   - [ ] Persistent user session not found
-- [ ] S3
-  - [ ] Deletion
-- [ ] Error handling
+- [x] S3
+- [x] Error handling
 - [x] Node is null
-- [ ] User settings
+- [x] User settings
 - [ ] OpenAI label parsing
 - [ ] Barcode scanner
-- [ ] Vendors
+- [x] Vendors
 - [ ] toObject

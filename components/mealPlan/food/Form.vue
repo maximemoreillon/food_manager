@@ -9,7 +9,7 @@
         <v-text-field label="Quantity" v-model.number="quantity" />
       </v-col>
       <v-col cols="auto" v-if="openAiEnabled">
-        <FoodLabelParsing @parsed="handleParsedLabel" variant="flat" />
+        <FoodLabelParsing @parsed="handleParsedLabel" />
       </v-col>
     </v-row>
     <v-row>

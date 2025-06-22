@@ -1,7 +1,7 @@
 <template>
-  <v-dialog max-width="80rem" v-model="dialog">
+  <v-dialog max-width="40rem" v-model="dialog">
     <template v-slot:activator="{ props: activatorProps }">
-      <v-btn v-bind="activatorProps" icon="mdi-label" :variant="variant" />
+      <v-btn v-bind="activatorProps" icon="mdi-label" variant="flat" />
     </template>
     <template v-slot:default="{ isActive }">
       <v-card>
@@ -34,8 +34,6 @@
 </template>
 
 <script lang="ts" setup>
-type Variant = "flat" | "text" | "elevated" | "tonal" | "outlined" | "plain";
-defineProps<{ variant?: Variant }>();
 const image = ref<File | null>(null);
 const dialog = ref(false);
 const loading = ref(false);

@@ -6,8 +6,6 @@
         <v-toolbar-title>{{ food.name || "unnnamed food" }}</v-toolbar-title>
         <v-spacer />
 
-        <FoodLabelParsing @parsed="handleParsedLabel" icon />
-
         <v-btn
           icon="mdi-content-save"
           @click="update_food()"
@@ -56,6 +54,9 @@
               v-model.number="food.serving.calories"
               type="number"
             />
+          </v-col>
+          <v-col cols="auto">
+            <FoodLabelParsing @parsed="handleParsedLabel" />
           </v-col>
         </v-row>
         <v-row>
