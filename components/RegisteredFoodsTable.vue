@@ -6,6 +6,7 @@
     :items="foods"
     :search="search"
     :items-per-page="50"
+    @click:row="handleRowClicked"
   >
     <!-- @click:row="$emit('foodAdded', { food: $event, quantity: 1 })" -->
 
@@ -45,13 +46,13 @@
       {{ item.serving.size }} {{ item.serving.unit }}
     </template>
 
-    <template v-slot:item.add="{ item }">
+    <!-- <template v-slot:item.add="{ item }">
       <v-btn
         text="add"
         color="primary"
         @click="$emit('foodAdded', { food: item, quantity: 1 })"
       />
-    </template>
+    </template> -->
   </v-data-table>
 </template>
 
@@ -65,6 +66,8 @@ const props = defineProps<{
   meal_plan: MealPlanT;
 }>();
 
+const emit = defineEmits(["foodAdded"]);
+
 const headers = ref([
   { title: "", key: "image" },
   { title: "Name", key: "name" },
@@ -74,7 +77,7 @@ const headers = ref([
   { title: "Protein", key: "serving.macronutrients.protein" },
   { title: "Fat", key: "serving.macronutrients.fat" },
   { title: "Carbs", key: "serving.macronutrients.carbohydrates" },
-  { title: "Add", key: "add" },
+  // { title: "Add", key: "add" },
 ]);
 
 const search = ref("");
@@ -116,4 +119,11 @@ const calorie_total = computed(() => {
   );
   return Math.round(total * 100) / 100;
 });
+
+function handleRowClicked(
+  _: any,
+  { item }: { item: { quantity: number; food: FoodT } }
+) {
+  emit("foodAdded", { food: item, quantity: 1 });
+}
 </script>

@@ -110,8 +110,7 @@
             <template v-slot:item.image="{ item }">
               <v-img
                 v-if="item.food.image"
-                width="6em"
-                height="6em"
+                width="5em"
                 contain
                 :src="imageSrc(item.food, true)"
               />
