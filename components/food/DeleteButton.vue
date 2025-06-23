@@ -22,15 +22,14 @@ const snackbar = ref({
 });
 
 async function deleteMealPlan() {
-  if (!confirm("Delete meal plan?")) return;
+  if (!confirm("Delete Food?")) return;
   deleting.value = true;
-  // TODO: error handling
   try {
-    await $fetch(`/api/mealplans/${route.params._id}`, { method: "DELETE" });
+    await $fetch(`/api/foods/${route.params._id}`, { method: "DELETE" });
     navigateTo("/meal_plans");
   } catch (error) {
     snackbar.value.color = `error`;
-    snackbar.value.text = `Meal plan deletion failed`;
+    snackbar.value.text = `Food deletion failed`;
     snackbar.value.show = true;
   } finally {
     deleting.value = false;

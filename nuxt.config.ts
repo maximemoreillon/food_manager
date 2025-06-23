@@ -42,17 +42,17 @@ export default defineNuxtConfig({
     defaultProvider: "auth0",
     providers: {
       auth0: {
-        audience: "https://maximemoreillon.com",
-        redirectUri: "http://localhost:3000/auth/auth0/callback",
+        redirectUri: "",
+        audience: "", // TODO: have this as env settings as environment
         baseUrl: "",
         clientId: "",
         clientSecret: "",
         scope: ["openid", "offline_access", "profile", "email"],
         additionalTokenParameters: {
-          audience: "https://maximemoreillon.com",
+          audience: "",
         },
         additionalAuthParameters: {
-          audience: "https://maximemoreillon.com",
+          audience: "",
         },
       },
     },

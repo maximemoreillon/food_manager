@@ -11,12 +11,7 @@
           @click="update_food()"
           :loading="saving"
         />
-        <v-btn
-          icon="mdi-delete"
-          color="#c00000"
-          @click="deleteFood()"
-          :loading="deleting"
-        />
+        <FoodDeleteButton />
       </v-toolbar>
       <v-divider />
 
@@ -168,22 +163,6 @@ async function update_food() {
     snackbar.value.color = "error";
   } finally {
     saving.value = false;
-  }
-}
-
-async function deleteFood() {
-  if (!confirm("Delete food?")) return;
-  deleting.value = true;
-  try {
-    // @ts-ignore
-    await $fetch(`/api/foods/${route.params._id}`, { method: "DELETE" });
-    navigateTo("/foods");
-  } catch (error) {
-    snackbar.value.show = true;
-    snackbar.value.color = "error";
-    snackbar.value.text = "Food deletion failerd";
-  } finally {
-    deleting.value = false;
   }
 }
 
