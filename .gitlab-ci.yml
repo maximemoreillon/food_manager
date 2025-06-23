@@ -1,5 +1,6 @@
 stages:
   - build
+  - deploy
 
 variables:
   APPLICATION_NAME: food-manager
