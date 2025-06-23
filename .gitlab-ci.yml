@@ -3,9 +3,9 @@ stages:
 
 variables:
   APPLICATION_NAME: food-manager
-  K8s_RESOURCE_NAME: food-manager-nuxt
   CONTAINER_IMAGE: ${DOCKER_HUB_USERNAME}/${APPLICATION_NAME}
   CONTAINER_IMAGE_TAGGED: ${CONTAINER_IMAGE}:nuxt-${CI_COMMIT_SHORT_SHA}
+  K8S_RESOURCE_NAME: food-manager-nuxt
   K8S_INGRESS_HOST: nuxt.food.home.maximemoreillon.com
 
 image: moreillon/ci-dind
@@ -13,11 +13,20 @@ services:
   - name: docker:24.0.7-dind
 
 build:
+  stage: build
   only:
     - nuxt
-  stage: build
   before_script:
     - echo "${DOCKER_HUB_PASSWORD}" | docker login --username ${DOCKER_HUB_USERNAME} --password-stdin
   script:
     - docker build -t ${CONTAINER_IMAGE_TAGGED} .
     - docker push ${CONTAINER_IMAGE_TAGGED}
+
+deploy:
+  stage: deploy
+  only:
+    - nuxt
+  before_script:
+    - kubectl config use-context moreillon_ci/moreillon_k8s_home/kubernetes-agent:home-talos
+  script:
+    - envsubst < kubernetes_manifest.yml | kubectl apply -n ${KUBERNETES_NAMESPACE} -f -
