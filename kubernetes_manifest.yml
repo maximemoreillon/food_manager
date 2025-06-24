@@ -25,7 +25,7 @@ kind: Service
 metadata:
   name: ${K8S_RESOURCE_NAME}
 spec:
-  type: ClusterIP
+  type: NodePort
   selector:
     app: ${K8S_RESOURCE_NAME}
   ports:

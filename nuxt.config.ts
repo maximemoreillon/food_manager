@@ -43,7 +43,7 @@ export default defineNuxtConfig({
     providers: {
       auth0: {
         redirectUri: "",
-        audience: "", // TODO: have this as env settings as environment
+        audience: "",
         baseUrl: "",
         clientId: "",
         clientSecret: "",
