@@ -28,13 +28,16 @@ export default defineNuxtConfig({
       },
     },
   },
+  mongoose: {
+    uri: process.env.MONGODB_URI,
+  },
   oidc: {
     // Not sure if this is needed
-    session: {
-      expirationCheck: true,
-      automaticRefresh: true,
-      expirationThreshold: 3600,
-    },
+    // session: {
+    //   expirationCheck: true,
+    //   automaticRefresh: true,
+    //   expirationThreshold: 3600,
+    // },
     middleware: {
       globalMiddlewareEnabled: true,
       customLoginPage: false,
@@ -42,11 +45,11 @@ export default defineNuxtConfig({
     defaultProvider: "auth0",
     providers: {
       auth0: {
-        redirectUri: "",
-        audience: "",
         baseUrl: "",
         clientId: "",
         clientSecret: "",
+        audience: "",
+        redirectUri: process.env.NUXT_OIDC_PROVIDERS_AUTH0_REDIRECT_URI,
         scope: ["openid", "offline_access", "profile", "email"],
         additionalTokenParameters: {
           audience: "",
