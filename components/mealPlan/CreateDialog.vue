@@ -16,12 +16,21 @@
         <v-form @submit.prevent="create_meal_plan()">
           <v-row align="center">
             <v-col>
-              <v-text-field autofocus label="Name" v-model="name" />
+              <v-text-field
+                autofocus
+                label="Name"
+                v-model="name"
+                hide-details
+              />
             </v-col>
             <v-col cols="auto">
-              <v-btn color="primary" type="submit" :loading="loading">
-                <v-icon>mdi-content-save</v-icon>
-              </v-btn>
+              <v-btn
+                color="primary"
+                type="submit"
+                :loading="loading"
+                prepend-icon="mdi-plus"
+                text="Create"
+              />
             </v-col>
           </v-row>
         </v-form>

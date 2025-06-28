@@ -73,7 +73,7 @@ const headers = ref([
   { title: "Date", key: "date" },
   { title: "Calories", key: "calories" },
   { title: "Macros", key: "macronutrients" },
-  { title: "Incomplete", key: "incomplete" },
+  { title: "Incomplete", key: "incomplete", width: "20ch" },
 ]);
 
 watch(

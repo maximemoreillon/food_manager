@@ -10,7 +10,6 @@
         varian="flat"
       />
     </v-toolbar>
-    <v-card-title></v-card-title>
 
     <v-card-text v-if="!loading && data">
       <v-row>
@@ -20,10 +19,6 @@
             v-model="data.calories_target"
           />
         </v-col>
-      </v-row>
-      <v-row>
-        <v-spacer />
-        <v-col cols="auto"> </v-col>
       </v-row>
     </v-card-text>
 

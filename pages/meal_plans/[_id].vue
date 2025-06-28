@@ -17,12 +17,8 @@
         icon="mdi-content-copy"
       />
 
-      <v-btn
-        color="#c00000"
-        @click="deleteMealPlan()"
-        :loading="deleting"
-        icon="mdi-delete"
-      />
+      <!-- TODO: use component -->
+      <MealPlanDeleteButton />
     </v-toolbar>
 
     <template v-if="meal_plan && !loading">
@@ -171,7 +167,6 @@ const snackbar = ref({
 
 const search = ref("");
 const saving = ref(false);
-const deleting = ref(false);
 const duplicating = ref(false);
 
 const foodsTableHeaders = ref([
@@ -194,22 +189,6 @@ const foodsTableHeaders = ref([
 const { data: meal_plan, pending: loading } = await useFetch<MealPlanT>(
   `/api/mealplans/${route.params._id}`
 );
-
-// TODO: dedicated component
-async function deleteMealPlan() {
-  if (!confirm("Delete meal plan?")) return;
-  deleting.value = true;
-  try {
-    await $fetch(`/api/mealplans/${route.params._id}`, { method: "DELETE" });
-    navigateTo("/meal_plans");
-  } catch (error) {
-    snackbar.value.color = `error`;
-    snackbar.value.text = `Meal plan deletion`;
-    snackbar.value.show = true;
-  } finally {
-    deleting.value = false;
-  }
-}
 
 async function saveMealPlan() {
   saving.value = true;

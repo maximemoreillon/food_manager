@@ -1,5 +1,5 @@
 <template>
-  <v-card :loading="loading" class="mx-auto" max-width="80em">
+  <v-card :loading="loading" class="mx-auto" max-width="50em">
     <template v-if="!error && food && !loading">
       <v-toolbar flat>
         <v-btn icon="mdi-arrow-left" to="/foods" exact />
@@ -126,7 +126,6 @@
 <script lang="ts" setup>
 const route = useRoute();
 
-const deleting = ref(false);
 const saving = ref(false);
 
 // TODO: is this really how type safety should be enforced?
