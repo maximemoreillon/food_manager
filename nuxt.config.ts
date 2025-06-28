@@ -19,7 +19,7 @@ export default defineNuxtConfig({
       });
     },
     "nuxt-mongoose",
-    "nuxt-oidc-auth",
+    "nuxt-auth-utils",
   ],
   vite: {
     vue: {
@@ -28,35 +28,13 @@ export default defineNuxtConfig({
       },
     },
   },
-  mongoose: {
-    uri: process.env.MONGODB_URI,
-  },
-  oidc: {
-    // Not sure if this is needed
-    // session: {
-    //   expirationCheck: true,
-    //   automaticRefresh: true,
-    //   expirationThreshold: 3600,
-    // },
-    middleware: {
-      globalMiddlewareEnabled: true,
-      customLoginPage: false,
-    },
-    defaultProvider: "auth0",
-    providers: {
+  runtimeConfig: {
+    oauth: {
       auth0: {
-        baseUrl: "",
         clientId: "",
         clientSecret: "",
-        audience: "",
-        redirectUri: "",
-        scope: ["openid", "offline_access", "profile", "email"],
-        additionalTokenParameters: {
-          audience: "",
-        },
-        additionalAuthParameters: {
-          audience: "",
-        },
+        domain: "",
+        audient: "",
       },
     },
   },
