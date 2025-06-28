@@ -9,9 +9,14 @@
       />
     </v-col>
     <v-col cols="auto">
-      <v-btn :disabled="!newImage" @click="upload()" :loading="uploading">
-        <v-icon>mdi-upload</v-icon>
-      </v-btn>
+      <v-btn
+        :disabled="!newImage"
+        @click="upload()"
+        :loading="uploading"
+        prepend-icon="mdi-upload"
+        color="primary"
+        text="Upload"
+      />
     </v-col>
     <v-col cols="auto">
       <v-btn
@@ -20,9 +25,10 @@
         :disabled="!food.image"
         :loading="deleting"
         @click="deleteFoodImage()"
-      >
-        <v-icon>mdi-delete</v-icon>
-      </v-btn>
+        prepend-icon="mdi-delete"
+        variant="outlined"
+        text="delete"
+      />
     </v-col>
   </v-row>
 </template>

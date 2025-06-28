@@ -25,8 +25,9 @@ async function deleteMealPlan() {
   if (!confirm("Delete Food?")) return;
   deleting.value = true;
   try {
+    // @ts-ignore
     await $fetch(`/api/foods/${route.params._id}`, { method: "DELETE" });
-    navigateTo("/meal_plans");
+    navigateTo("/foods");
   } catch (error) {
     snackbar.value.color = `error`;
     snackbar.value.text = `Food deletion failed`;

@@ -1,5 +1,5 @@
 <template>
-  <v-card :loading="loading">
+  <v-card :loading="loading" class="mx-auto" max-width="80em">
     <template v-if="!error && food && !loading">
       <v-toolbar flat>
         <v-btn icon="mdi-arrow-left" to="/foods" exact />
