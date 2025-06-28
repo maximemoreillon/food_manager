@@ -49,7 +49,7 @@ export default defineNuxtConfig({
         clientId: "",
         clientSecret: "",
         audience: "",
-        redirectUri: process.env.NUXT_OIDC_PROVIDERS_AUTH0_REDIRECT_URI,
+        redirectUri: "",
         scope: ["openid", "offline_access", "profile", "email"],
         additionalTokenParameters: {
           audience: "",
