@@ -1,5 +1,4 @@
 import { storeImageToS3 } from "~/server/s3";
-import getUserId from "~/server/utils/getUserId";
 
 export default defineEventHandler(async (event) => {
   const user_id = await getUserId(event);

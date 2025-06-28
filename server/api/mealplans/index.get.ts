@@ -1,4 +1,3 @@
-import { getUserSession } from "nuxt-oidc-auth/runtime/server/utils/session.js";
 import { z } from "zod";
 import { MealPlanT } from "~/server/models/mealPlan.schema";
 import getUserId from "~/server/utils/getUserId";
