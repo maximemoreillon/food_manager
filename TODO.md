@@ -12,3 +12,5 @@
 - [ ] toObject
 - [ ] Pagination in RegisteredFoodsTable
 - [x] Hidden filtering
+- [ ] Computed/virtual calories total
+- [ ]
