@@ -3,9 +3,7 @@
     <v-toolbar flat>
       <v-toolbar-title> Meal plans </v-toolbar-title>
       <v-spacer />
-      <ClientOnly>
-        <MealPlanCreateDialog />
-      </ClientOnly>
+      <MealPlanCreateDialog />
     </v-toolbar>
 
     <v-card-text>
@@ -35,12 +33,14 @@
         </template>
 
         <template v-slot:item.macronutrients="{ item }">
-          <MealPlanCaloriesMacros
-            v-if="item.calories_target"
-            :target="item.calories_target"
-            :calories="item.calories || 0"
-            :macronutrients="item.macronutrients"
-          />
+          <ClientOnly>
+            <MealPlanCaloriesMacros
+              v-if="item.calories_target"
+              :target="item.calories_target"
+              :calories="item.calories || 0"
+              :macronutrients="item.macronutrients"
+            />
+          </ClientOnly>
         </template>
 
         <template v-slot:item.incomplete="{ item }">
