@@ -21,12 +21,12 @@ export type MealPlanT = {
 };
 
 const mealPlanFoodSchema = new Schema({
-  quantity: Number,
-  food: foodSchema,
+  quantity: { type: Number, default: 1 },
+  food: { type: foodSchema, required: true },
 });
 
 const schema = new Schema({
-  name: String,
+  name: { type: String, required: true },
   date: {
     type: Date,
     default: Date.now,
@@ -37,16 +37,38 @@ const schema = new Schema({
   foods: [mealPlanFoodSchema],
 
   // TODO: have those as a computed/virtual
-  macronutrients: {
-    protein: { type: Number, default: 0 },
-    fat: { type: Number, default: 0 },
-    carbohydrates: { type: Number, default: 0 },
-  },
+  // macronutrients: {
+  //   protein: { type: Number, default: 0 },
+  //   fat: { type: Number, default: 0 },
+  //   carbohydrates: { type: Number, default: 0 },
+  // },
 
-  // Could have been nested in 'calories'
   calories_target: Number,
-  // TODO: have this as a computed/virtual
-  calories: Number,
+});
+
+schema.virtual("calories").get(function () {
+  const total = this.foods.reduce(
+    (acc, { quantity, food }) => acc + quantity * food.serving.calories,
+    0
+  );
+  return Math.round(total * 100) / 100;
+});
+
+schema.virtual("macronutrients").get(function () {
+  return this.foods.reduce(
+    (acc, { quantity, food }) => {
+      const {
+        serving: { macronutrients },
+      } = food;
+      return {
+        carbohydrates:
+          acc.carbohydrates + macronutrients.carbohydrates * quantity,
+        fat: acc.fat + macronutrients.fat * quantity,
+        protein: acc.protein + macronutrients.protein * quantity,
+      };
+    },
+    { carbohydrates: 0, fat: 0, protein: 0 }
+  );
 });
 
 export const MealPlan = defineMongooseModel({

@@ -40,10 +40,10 @@ export default defineEventHandler(async (event) => {
   const total = await MealPlan.countDocuments(query);
 
   return {
+    items: items.map((i) => i.toObject({ virtuals: true })),
     total,
     page,
     itemsPerPage,
-    items,
     sort,
     order,
   };

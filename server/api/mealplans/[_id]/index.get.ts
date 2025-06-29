@@ -11,5 +11,5 @@ export default defineEventHandler(async (event) => {
       statusMessage: `Meal plan ${_id} not found`,
     });
 
-  return item;
+  return item.toObject({ virtuals: true });
 });

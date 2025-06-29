@@ -45,8 +45,8 @@
             <v-col cols="auto">
               <div class="calorie_counter">
                 <v-text-field
-                  :error="calorie_total > meal_plan.calories_target"
-                  :prefix="`${calorie_total.toString()}/`"
+                  :error="meal_plan.calories > meal_plan.calories_target"
+                  :prefix="`${meal_plan.calories.toString()}/`"
                   label="Calories"
                   type="number"
                   density="compact"
@@ -59,7 +59,11 @@
             </v-col>
 
             <v-spacer />
-            <v-col cols="auto" v-for="(value, key) in macros_total" :key="key">
+            <v-col
+              cols="auto"
+              v-for="(value, key) in meal_plan.macronutrients"
+              :key="key"
+            >
               <v-chip :color="colors[key]" variant="flat">
                 {{ Math.round(value) }}g {{ macros_label_lookup[key] }}
               </v-chip>
@@ -69,8 +73,8 @@
             <v-col>
               <MealPlanCaloriesMacros
                 :target="meal_plan.calories_target"
-                :calories="calorie_total"
-                :macronutrients="macros_total"
+                :calories="meal_plan.calories"
+                :macronutrients="meal_plan.macronutrients"
               />
             </v-col>
           </v-row>
@@ -192,11 +196,7 @@ const { data: meal_plan, pending: loading } = await useFetch<MealPlanT>(
 
 async function saveMealPlan() {
   saving.value = true;
-  const body = {
-    ...meal_plan.value,
-    calories: calorie_total.value,
-    macronutrients: macros_total.value,
-  };
+  const body = meal_plan.value;
   try {
     await $fetch(`/api/mealplans/${route.params._id}`, {
       method: "PATCH",
@@ -243,32 +243,6 @@ async function duplicate_meal_plan() {
   // TODO: implement
   alert("WIP");
 }
-
-function total_for_macro(macro: "protein" | "fat" | "carbohydrates") {
-  if (!meal_plan.value) return 0;
-
-  const total = meal_plan.value.foods.reduce(
-    (acc, { quantity, food }) =>
-      acc + quantity * food.serving.macronutrients[macro],
-    0
-  );
-  return Math.round(total * 100) / 100;
-}
-
-const calorie_total = computed(() => {
-  if (!meal_plan.value) return 0;
-  const total = meal_plan.value.foods.reduce(
-    (acc, { quantity, food }) => acc + quantity * food.serving.calories,
-    0
-  );
-  return Math.round(total * 100) / 100;
-});
-
-const macros_total = computed(() => ({
-  protein: total_for_macro("protein"),
-  fat: total_for_macro("fat"),
-  carbohydrates: total_for_macro("carbohydrates"),
-}));
 
 const macros_label_lookup = ref({
   protein: "protein",
