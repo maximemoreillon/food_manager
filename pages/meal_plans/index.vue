@@ -49,7 +49,7 @@
             <v-icon v-if="item.incomplete"> mdi-alert </v-icon>
           </template>
         </v-data-table-server>
-        <div v-else class="text-error">No data available</div>
+        <div v-else-if="!pending" class="text-error">No data available</div>
       </ClientOnly>
     </v-card-text>
   </v-card>

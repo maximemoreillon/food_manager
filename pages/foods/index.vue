@@ -91,7 +91,7 @@ watch(
       // TODO: not very nice
       hidden: hidden ? hidden : undefined,
     };
-    navigateTo({ query: { ...route.query, ...query } });
+    navigateTo({ query });
   },
   { deep: true }
 );

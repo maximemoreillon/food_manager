@@ -9,8 +9,9 @@
   - [ ] Find better way to check if openAI is available on the GUI
 - [ ] Barcode scanner
 - [x] Vendors
-- [ ] toObject
-- [ ] Pagination in RegisteredFoodsTable
+- [ ] toObject ?
+- [x] Pagination in RegisteredFoodsTable
 - [x] Hidden filtering
 - [ ] Computed/virtual calories total
-- [ ]
+- [ ] No data available flashing
+- [ ] Meal plan save with Ctrl S
