@@ -11,4 +11,4 @@
 - [x] Vendors
 - [ ] toObject
 - [ ] Pagination in RegisteredFoodsTable
-- [ ] Hidden filtering
+- [x] Hidden filtering

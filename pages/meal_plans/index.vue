@@ -7,15 +7,16 @@
     </v-toolbar>
 
     <v-card-text>
+      <div v-if="error" class="text-error text-center">Error loading data</div>
       <v-data-table-server
-        v-if="data"
+        v-else-if="data"
         :loading="pending"
         :headers="headers"
         :items="data.items"
         :items-length="data.total"
-        v-model:sort-by="tableOptions.sortBy"
-        v-model:items-per-page="tableOptions.itemsPerPage"
-        v-model:page="tableOptions.page"
+        v-model:sort-by="queryOptions.sortBy"
+        v-model:items-per-page="queryOptions.itemsPerPage"
+        v-model:page="queryOptions.page"
       >
         <template v-slot:item.name="{ item }">
           <NuxtLink :href="`/meal_plans/${item._id}`">
@@ -43,7 +44,7 @@
           <v-icon v-if="item.incomplete"> mdi-alert </v-icon>
         </template>
       </v-data-table-server>
-      {{ error }}
+      <div v-else class="text-error">No data available</div>
     </v-card-text>
   </v-card>
 </template>
@@ -54,15 +55,13 @@ import type { MealPlansResponse } from "~/server/api/mealplans/index.get";
 import formatDate from "~/utils/formatDate";
 
 const route = useRoute();
-const queryParams = computed(() => route.query); // computed needed to trigger refetch
+const query = computed(() => route.query); // computed needed to trigger refetch
 const { data, pending, error } = await useFetch<MealPlansResponse>(
   `/api/mealplans`,
-  {
-    query: queryParams,
-  }
+  { query }
 );
 
-const tableOptions = ref({
+const queryOptions = ref({
   page: data.value?.page,
   itemsPerPage: data.value?.itemsPerPage,
   sortBy: [{ key: data.value?.sort, order: data.value?.order }] as SortItem[],
@@ -77,7 +76,7 @@ const headers = ref([
 ]);
 
 watch(
-  tableOptions,
+  queryOptions,
   (newVal) => {
     const { page, itemsPerPage, sortBy } = newVal;
     const query: any = {
