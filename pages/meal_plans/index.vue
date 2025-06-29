@@ -7,6 +7,7 @@
     </v-toolbar>
 
     <v-card-text>
+      <!-- TODO: ClientOnly fixes hydration problems but it's a bandaid solution -->
       <ClientOnly>
         <div v-if="error" class="text-error text-center">
           Error loading data
@@ -91,7 +92,7 @@ watch(
       sort: sortBy?.at(0)?.key,
       order: sortBy?.at(0)?.order,
     };
-    navigateTo({ query: { ...route.query, ...query } });
+    navigateTo({ query });
   },
   { deep: true }
 );
