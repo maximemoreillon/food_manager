@@ -13,10 +13,10 @@ export type MealPlanT = {
 
   foods: MealPlanRecord[];
 
-  macronutrients: Macros;
-
-  // Could have been nested in 'calories'
   calories_target: number;
+
+  // virtuals
+  macronutrients: Macros;
   calories: number;
 };
 
@@ -36,13 +36,6 @@ const schema = new Schema({
 
   foods: [mealPlanFoodSchema],
 
-  // TODO: have those as a computed/virtual
-  // macronutrients: {
-  //   protein: { type: Number, default: 0 },
-  //   fat: { type: Number, default: 0 },
-  //   carbohydrates: { type: Number, default: 0 },
-  // },
-
   calories_target: Number,
 });
 
@@ -58,13 +51,14 @@ schema.virtual("macronutrients").get(function () {
   return this.foods.reduce(
     (acc, { quantity, food }) => {
       const {
-        serving: { macronutrients },
+        serving: {
+          macronutrients: { fat, carbohydrates, protein },
+        },
       } = food;
       return {
-        carbohydrates:
-          acc.carbohydrates + macronutrients.carbohydrates * quantity,
-        fat: acc.fat + macronutrients.fat * quantity,
-        protein: acc.protein + macronutrients.protein * quantity,
+        carbohydrates: acc.carbohydrates + carbohydrates * quantity,
+        fat: acc.fat + fat * quantity,
+        protein: acc.protein + protein * quantity,
       };
     },
     { carbohydrates: 0, fat: 0, protein: 0 }
