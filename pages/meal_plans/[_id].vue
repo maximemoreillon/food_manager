@@ -240,8 +240,46 @@ function updateMealPlanFood(index: number, editedRecord: MealPlanRecord) {
   meal_plan.value.foods[index] = editedRecord;
 }
 async function duplicate_meal_plan() {
-  // TODO: implement
-  alert("WIP");
+  if (!meal_plan.value) return;
+  if (!confirm(`Duplicate meal plan?`)) return;
+  const {
+    incomplete,
+    name,
+    user_id,
+    foods,
+    macronutrients,
+    calories,
+    calories_target,
+  } = meal_plan.value;
+
+  const body = {
+    name: `${name} (copy)`,
+    incomplete,
+    user_id,
+    foods,
+    macronutrients,
+    calories,
+    calories_target,
+  };
+
+  duplicating.value = true;
+  try {
+    const res = await $fetch<MealPlanT>(`/api/mealplans`, {
+      method: "POST",
+      body,
+    });
+    const { _id } = res;
+
+    // TODO: navigate to _id
+    await navigateTo(`/meal_plans/${_id}`);
+  } catch (error) {
+    console.error(error);
+    snackbar.value.color = `error`;
+    snackbar.value.text = `Duplication failed`;
+    snackbar.value.show = true;
+  } finally {
+    duplicating.value = false;
+  }
 }
 
 const macros_label_lookup = ref({

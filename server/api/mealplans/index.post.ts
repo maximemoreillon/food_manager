@@ -3,7 +3,6 @@ import { UserConfigurationT } from "~/server/models/userConfig.schema";
 export default defineEventHandler(async (event) => {
   const user_id = await getUserId(event);
   const body = await readBody(event);
-  const { name } = body;
 
   try {
     const userSettings = await UserConfiguration.findOne<UserConfigurationT>({
@@ -12,8 +11,8 @@ export default defineEventHandler(async (event) => {
     return await MealPlan.create({
       date: new Date(),
       user_id,
-      name,
       calories_target: userSettings?.calories_target || 2500,
+      ...body,
     });
   } catch (error) {
     return error;
