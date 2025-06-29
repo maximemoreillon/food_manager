@@ -14,9 +14,9 @@
           :headers="headers"
           :items="data.items"
           :items-length="data.total"
-          v-model:sort-by="tableOptions.sortBy"
-          v-model:items-per-page="tableOptions.itemsPerPage"
-          v-model:page="tableOptions.page"
+          v-model:sort-by="queryOptions.sortBy"
+          v-model:items-per-page="queryOptions.itemsPerPage"
+          v-model:page="queryOptions.page"
         >
           <template v-slot:top>
             <v-row align="baseline" dense>
@@ -24,9 +24,9 @@
                 <FoodSearch />
               </v-col>
               <v-spacer />
-              <!-- <v-col cols="auto">
-              <v-checkbox label="Show hidden" v-model="show_hidden" />
-            </v-col> -->
+              <v-col cols="auto">
+                <v-checkbox label="Show hidden" v-model="queryOptions.hidden" />
+              </v-col>
             </v-row>
           </template>
 
@@ -66,9 +66,10 @@ const { data, pending } = await useFetch<FoodsFetchResponse>(`/api/foods`, {
   query,
 });
 
-const tableOptions = ref({
+const queryOptions = ref({
   page: data.value?.page,
   itemsPerPage: data.value?.itemsPerPage,
+  hidden: data.value?.hidden,
   sortBy: [
     {
       key: data.value?.sort,
@@ -78,22 +79,24 @@ const tableOptions = ref({
 });
 
 watch(
-  tableOptions,
+  queryOptions,
   (newVal) => {
-    const { page, itemsPerPage, sortBy } = newVal;
+    const { page, itemsPerPage, sortBy, hidden } = newVal;
     const query: any = {
       ...route.query,
       page: page?.toString(),
       itemsPerPage: itemsPerPage?.toString(),
       sort: sortBy?.at(0)?.key,
       order: sortBy?.at(0)?.order,
+      // TODO: not very nice
+      hidden: hidden ? hidden : undefined,
     };
     navigateTo({ query: { ...route.query, ...query } });
   },
   { deep: true }
 );
 
-const headers = ref([
+const baseHeaders = ref([
   { title: "Image", key: "image" },
   { title: "Name", key: "name" },
   { title: "Vendor", key: "vendor" },
@@ -104,4 +107,10 @@ const headers = ref([
   { title: "Carbs [g]", key: "serving.macronutrients.carbohydrates" },
   { title: "Price", key: "serving.price" },
 ]);
+
+const headers = computed(() => {
+  if (query.value.hidden)
+    return [...baseHeaders.value, { title: "Hidden", key: "hidden" }];
+  else return baseHeaders.value;
+});
 </script>

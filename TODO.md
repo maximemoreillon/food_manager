@@ -1,6 +1,6 @@
 - [x] v-data-table pagination
-- [ ] OIDC auth
-  - [ ] Persistent user session not found
+- [x] OIDC auth
+  - [ ] Allow API access with valid bearer token
 - [x] S3
 - [x] Error handling
 - [x] Node is null

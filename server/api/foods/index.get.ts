@@ -8,6 +8,7 @@ const querySchema = z.object({
   sort: z.string().optional(),
   order: z.union([z.literal("asc"), z.literal("desc")]).optional(),
   search: z.string().optional(),
+  hidden: z.coerce.boolean().default(false),
 });
 
 export default defineEventHandler(async (event) => {
@@ -20,7 +21,7 @@ export default defineEventHandler(async (event) => {
     sort = "name",
     order = "asc",
     search,
-    // hidden,
+    hidden,
     ...rest
   } = await getValidatedQuery(event, querySchema.parse);
 
@@ -33,6 +34,7 @@ export default defineEventHandler(async (event) => {
 
   const query: QueryOptions = { user_id, ...rest };
   if (search && search !== "") query.name = { $regex: search, $options: "i" };
+  if (!hidden) query.$or = [{ hidden: { $exists: false } }, { hidden: false }];
 
   const items = await Food.find(query)
     .sort({ [sort]: sortMap[order] })
@@ -48,6 +50,7 @@ export default defineEventHandler(async (event) => {
     items,
     sort,
     order,
+    hidden,
   };
 });
 
@@ -58,4 +61,5 @@ export type FoodsFetchResponse = {
   order: string;
   total: number;
   items: FoodT[];
+  hidden: boolean;
 };
