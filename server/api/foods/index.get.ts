@@ -4,7 +4,7 @@ import { FoodT } from "~/server/models/food.schema";
 
 const querySchema = z.object({
   itemsPerPage: z.coerce.number().optional(),
-  page: z.coerce.number().optional(),
+  page: z.coerce.number().gt(0).optional(),
   sort: z.string().optional(),
   order: z.union([z.literal("asc"), z.literal("desc")]).optional(),
   search: z.string().optional(),
