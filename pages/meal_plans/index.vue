@@ -7,47 +7,49 @@
     </v-toolbar>
 
     <v-card-text>
-      <div v-if="error" class="text-error text-center">Error loading data</div>
-      <v-data-table-server
-        v-else-if="data"
-        :loading="pending"
-        :headers="headers"
-        :items="data.items"
-        :items-length="data.total"
-        v-model:sort-by="queryOptions.sortBy"
-        v-model:items-per-page="queryOptions.itemsPerPage"
-        v-model:page="queryOptions.page"
-      >
-        <template v-slot:item.name="{ item }">
-          <NuxtLink :href="`/meal_plans/${item._id}`">
-            {{ item.name }}
-          </NuxtLink>
-        </template>
+      <ClientOnly>
+        <div v-if="error" class="text-error text-center">
+          Error loading data
+        </div>
+        <v-data-table-server
+          v-else-if="data"
+          :loading="pending"
+          :headers="headers"
+          :items="data.items"
+          :items-length="data.total"
+          v-model:sort-by="queryOptions.sortBy"
+          v-model:items-per-page="queryOptions.itemsPerPage"
+          v-model:page="queryOptions.page"
+        >
+          <template v-slot:item.name="{ item }">
+            <NuxtLink :href="`/meal_plans/${item._id}`">
+              {{ item.name }}
+            </NuxtLink>
+          </template>
 
-        <template v-slot:item.date="{ item }">
-          <span>{{ formatDate(item.date) }}</span>
-        </template>
+          <template v-slot:item.date="{ item }">
+            <span>{{ formatDate(item.date) }}</span>
+          </template>
 
-        <template v-slot:item.calories="{ item }">
-          {{ item.calories || 0 }}/{{ item.calories_target || 0 }}
-        </template>
+          <template v-slot:item.calories="{ item }">
+            {{ item.calories || 0 }}/{{ item.calories_target || 0 }}
+          </template>
 
-        <template v-slot:item.macronutrients="{ item }">
-          <ClientOnly>
+          <template v-slot:item.macronutrients="{ item }">
             <MealPlanCaloriesMacros
               v-if="item.calories_target"
               :target="item.calories_target"
               :calories="item.calories || 0"
               :macronutrients="item.macronutrients"
             />
-          </ClientOnly>
-        </template>
+          </template>
 
-        <template v-slot:item.incomplete="{ item }">
-          <v-icon v-if="item.incomplete"> mdi-alert </v-icon>
-        </template>
-      </v-data-table-server>
-      <div v-else class="text-error">No data available</div>
+          <template v-slot:item.incomplete="{ item }">
+            <v-icon v-if="item.incomplete"> mdi-alert </v-icon>
+          </template>
+        </v-data-table-server>
+        <div v-else class="text-error">No data available</div>
+      </ClientOnly>
     </v-card-text>
   </v-card>
 </template>
