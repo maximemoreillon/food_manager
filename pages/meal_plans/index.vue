@@ -33,11 +33,14 @@
         </template>
 
         <template v-slot:item.macronutrients="{ item }">
-          <MealPlanCaloriesMacros
-            :target="item.calories_target || 0"
-            :calories="item.calories || 0"
-            :macronutrients="item.macronutrients"
-          />
+          <ClientOnly>
+            <MealPlanCaloriesMacros
+              v-if="item.calories_target"
+              :target="item.calories_target"
+              :calories="item.calories || 0"
+              :macronutrients="item.macronutrients"
+            />
+          </ClientOnly>
         </template>
 
         <template v-slot:item.incomplete="{ item }">
