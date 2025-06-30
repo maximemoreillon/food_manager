@@ -45,8 +45,8 @@
             <v-col cols="auto">
               <div class="calorie_counter">
                 <v-text-field
-                  :error="meal_plan.calories > meal_plan.calories_target"
-                  :prefix="`${meal_plan.calories.toString()}/`"
+                  :error="calorie_total > meal_plan.calories_target"
+                  :prefix="`${calorie_total.toString()}/`"
                   label="Calories"
                   type="number"
                   density="compact"
@@ -73,8 +73,8 @@
             <v-col>
               <MealPlanCaloriesMacros
                 :target="meal_plan.calories_target"
-                :calories="meal_plan.calories"
-                :macronutrients="meal_plan.macronutrients"
+                :calories="calorie_total"
+                :macronutrients="macros_total"
               />
             </v-col>
           </v-row>
@@ -287,6 +287,32 @@ const macros_label_lookup = ref({
   fat: "fat",
   carbohydrates: "carbs",
 });
+
+function total_for_macro(macro: "protein" | "fat" | "carbohydrates") {
+  if (!meal_plan.value) return 0;
+
+  const total = meal_plan.value.foods.reduce(
+    (acc, { quantity, food }) =>
+      acc + quantity * food.serving.macronutrients[macro],
+    0
+  );
+  return Math.round(total * 100) / 100;
+}
+
+const calorie_total = computed(() => {
+  if (!meal_plan.value) return 0;
+  const total = meal_plan.value.foods.reduce(
+    (acc, { quantity, food }) => acc + quantity * food.serving.calories,
+    0
+  );
+  return Math.round(total * 100) / 100;
+});
+
+const macros_total = computed(() => ({
+  protein: total_for_macro("protein"),
+  fat: total_for_macro("fat"),
+  carbohydrates: total_for_macro("carbohydrates"),
+}));
 </script>
 
 <style scoped>

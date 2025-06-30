@@ -39,21 +39,15 @@ export const foodSchema = new Schema({
   image: String, // Name of the image file
 
   serving: {
-    required: true,
-    type: {
-      size: { type: Number, default: 0 },
-      unit: { type: String, default: "g" },
-      calories: { type: Number, default: 0 },
-      price: Number,
+    size: { type: Number, default: 0 },
+    unit: { type: String, default: "g" },
+    calories: { type: Number, default: 0 },
+    price: Number,
 
-      macronutrients: {
-        required: true,
-        type: {
-          protein: { type: Number, default: 0 },
-          fat: { type: Number, default: 0 },
-          carbohydrates: { type: Number, default: 0 },
-        },
-      },
+    macronutrients: {
+      protein: { type: Number, default: 0 },
+      fat: { type: Number, default: 0 },
+      carbohydrates: { type: Number, default: 0 },
     },
   },
 });

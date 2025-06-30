@@ -40,16 +40,17 @@ const schema = new Schema({
 });
 
 schema.virtual("calories").get(function () {
-  const total = this.foods.reduce(
-    (acc, { quantity, food }) => acc + quantity * food.serving.calories,
-    0
-  );
+  const total = this.foods.reduce((acc, { quantity, food }) => {
+    if (!food.serving) return acc;
+    return acc + quantity * food.serving.calories;
+  }, 0);
   return Math.round(total * 100) / 100;
 });
 
 schema.virtual("macronutrients").get(function () {
   return this.foods.reduce(
     (acc, { quantity, food }) => {
+      if (!food.serving?.macronutrients) return acc;
       const {
         serving: {
           macronutrients: { fat, carbohydrates, protein },
