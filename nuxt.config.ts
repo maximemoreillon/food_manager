@@ -34,7 +34,7 @@ export default defineNuxtConfig({
         clientId: "",
         clientSecret: "",
         domain: "",
-        audient: "",
+        audience: "",
       },
     },
   },
