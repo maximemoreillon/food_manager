@@ -5,21 +5,20 @@
     <div class="calories_bar" :style="calorie_bar_style">
       <div
         class="macro_bar"
-        v-for="(value, key) in macronutrients"
-        :key="`bar_${key}`"
-        :style="macro_bar_style(key)"
+        v-for="macro in ['protein', 'fat', 'carbohydrates' ] as const"
+        :key="`bar_${macro}`"
+        :style="macro_bar_style(macro)"
       />
     </div>
   </div>
 </template>
 <script setup lang="ts">
-// TODO: composition API syntax
-
 const props = defineProps<{
   calories: number;
   target: number;
   macronutrients: Macros;
 }>();
+
 function macro_bar_style(macro: "protein" | "fat" | "carbohydrates") {
   return {
     width: `${(100 * props.macronutrients[macro]) / macros_total_mass.value}%`,
