@@ -34,7 +34,6 @@
     <v-row>
       <v-col>
         <v-text-field
-          :color="colors.protein"
           label="Protein [g]"
           type="number"
           v-model="food.serving.macronutrients.protein"
@@ -42,7 +41,6 @@
       </v-col>
       <v-col>
         <v-text-field
-          :color="colors.fat"
           label="Fat [g]"
           type="number"
           v-model="food.serving.macronutrients.fat"
@@ -50,7 +48,6 @@
       </v-col>
       <v-col>
         <v-text-field
-          :color="colors.carbohydrates"
           label="Carbs [g]"
           type="number"
           v-model="food.serving.macronutrients.carbohydrates"

@@ -125,6 +125,15 @@
               />
             </template>
 
+            <template
+              v-for="macro in ['fat', 'carbohydrates', 'protein'] as const"
+              v-slot:[`item.food.serving.macronutrients.${macro}`]="{ item }"
+            >
+              <v-chip :color="colors[macro]" variant="flat">
+                {{ item.food.serving.macronutrients[macro] }}
+              </v-chip>
+            </template>
+
             <template v-slot:item.food.serving="{ item }">
               {{ item.food.serving.size }} {{ item.food.serving.unit }}
             </template>
@@ -172,6 +181,22 @@ const snackbar = ref({
 const search = ref("");
 const saving = ref(false);
 const duplicating = ref(false);
+
+onMounted(() => {
+  document.addEventListener("keydown", handleKeydownEvents);
+});
+
+onBeforeUnmount(() => {
+  document.removeEventListener("keydown", handleKeydownEvents);
+});
+
+function handleKeydownEvents(e: KeyboardEvent) {
+  // CTRL S
+  if (e.key === "s" && e.ctrlKey) {
+    e.preventDefault();
+    saveMealPlan();
+  }
+}
 
 const foodsTableHeaders = ref([
   { title: "", key: "image" },

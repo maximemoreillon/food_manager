@@ -8,7 +8,7 @@
 
         <v-btn
           icon="mdi-content-save"
-          @click="update_food()"
+          @click="updateFood()"
           :loading="saving"
         />
         <FoodDeleteButton />
@@ -145,7 +145,23 @@ const snackbar = ref({
   text: "",
 });
 
-async function update_food() {
+onMounted(() => {
+  document.addEventListener("keydown", handleKeydownEvents);
+});
+
+onBeforeUnmount(() => {
+  document.removeEventListener("keydown", handleKeydownEvents);
+});
+
+function handleKeydownEvents(e: KeyboardEvent) {
+  // CTRL S
+  if (e.key === "s" && e.ctrlKey) {
+    e.preventDefault();
+    updateFood();
+  }
+}
+
+async function updateFood() {
   saving.value = true;
   const opts = { method: "PATCH", body: food.value };
 
