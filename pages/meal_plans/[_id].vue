@@ -126,7 +126,7 @@
             </template>
 
             <template
-              v-for="macro in ['fat', 'carbohydrates', 'protein'] as const"
+              v-for="macro in macroKeys"
               v-slot:[`item.food.serving.macronutrients.${macro}`]="{ item }"
             >
               <v-chip :color="colors[macro]" variant="flat">
@@ -202,11 +202,16 @@ const foodsTableHeaders = ref([
   { title: "", key: "image" },
   { title: "Name", key: "food.name" },
   { title: "Calories [kcal]", key: "food.serving.calories" },
-  { title: "Protein [g]", key: "food.serving.macronutrients.protein" },
-  { title: "Fat [g]", key: "food.serving.macronutrients.fat" },
+  {
+    title: "Protein [g]",
+    key: "food.serving.macronutrients.protein",
+    align: "center",
+  },
+  { title: "Fat [g]", key: "food.serving.macronutrients.fat", align: "center" },
   {
     title: "Carbs [g]",
     key: "food.serving.macronutrients.carbohydrates",
+    align: "center",
   },
   { title: "Serving", key: "food.serving" },
   { title: "Quantity", key: "quantity", width: "5rem" },

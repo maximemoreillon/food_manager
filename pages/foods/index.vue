@@ -34,6 +34,15 @@
             <NuxtLink :href="`/foods/${item._id}`">{{ item.name }}</NuxtLink>
           </template>
 
+          <template
+            v-for="macro in macroKeys"
+            v-slot:[`item.serving.macronutrients.${macro}`]="{ item }"
+          >
+            <v-chip :color="colors[macro]" variant="flat">
+              {{ item.serving.macronutrients[macro] }}
+            </v-chip>
+          </template>
+
           <template v-slot:item.serving="{ item }">
             {{ item.serving.size }} {{ item.serving.unit }}
           </template>
@@ -101,10 +110,18 @@ const baseHeaders = ref([
   { title: "Name", key: "name" },
   { title: "Vendor", key: "vendor" },
   { title: "Serving", key: "serving" },
-  { title: "Calories [kcal]", key: "serving.calories" },
-  { title: "Protein [g]", key: "serving.macronutrients.protein" },
-  { title: "Fat [g]", key: "serving.macronutrients.fat" },
-  { title: "Carbs [g]", key: "serving.macronutrients.carbohydrates" },
+  { title: "Calories [kcal]", key: "serving.calories", align: "center" },
+  {
+    title: "Protein [g]",
+    key: "serving.macronutrients.protein",
+    align: "center",
+  },
+  { title: "Fat [g]", key: "serving.macronutrients.fat", align: "center" },
+  {
+    title: "Carbs [g]",
+    key: "serving.macronutrients.carbohydrates",
+    align: "center",
+  },
   { title: "Price", key: "serving.price" },
 ]);
 
