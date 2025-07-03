@@ -205,13 +205,11 @@ const foodsTableHeaders = ref([
   {
     title: "Protein [g]",
     key: "food.serving.macronutrients.protein",
-    align: "center",
   },
-  { title: "Fat [g]", key: "food.serving.macronutrients.fat", align: "center" },
+  { title: "Fat [g]", key: "food.serving.macronutrients.fat" },
   {
     title: "Carbs [g]",
     key: "food.serving.macronutrients.carbohydrates",
-    align: "center",
   },
   { title: "Serving", key: "food.serving" },
   { title: "Quantity", key: "quantity", width: "5rem" },
@@ -318,7 +316,7 @@ const macros_label_lookup = ref({
   carbohydrates: "carbs",
 });
 
-function total_for_macro(macro: "protein" | "fat" | "carbohydrates") {
+function total_for_macro(macro: typeof macroKeys) {
   if (!meal_plan.value) return 0;
 
   const total = meal_plan.value.foods.reduce(

@@ -110,17 +110,15 @@ const baseHeaders = ref([
   { title: "Name", key: "name" },
   { title: "Vendor", key: "vendor" },
   { title: "Serving", key: "serving" },
-  { title: "Calories [kcal]", key: "serving.calories", align: "center" },
+  { title: "Calories [kcal]", key: "serving.calories" },
   {
     title: "Protein [g]",
     key: "serving.macronutrients.protein",
-    align: "center",
   },
-  { title: "Fat [g]", key: "serving.macronutrients.fat", align: "center" },
+  { title: "Fat [g]", key: "serving.macronutrients.fat" },
   {
     title: "Carbs [g]",
     key: "serving.macronutrients.carbohydrates",
-    align: "center",
   },
   { title: "Price", key: "serving.price" },
 ]);

@@ -5,13 +5,14 @@
     <div class="calories_bar" :style="calorie_bar_style">
       <div
         class="macro_bar"
-        v-for="macro in ['protein', 'fat', 'carbohydrates' ] as const"
-        :key="`bar_${macro}`"
+        v-for="macro in macroKeys"
+        :key="macro"
         :style="macro_bar_style(macro)"
       />
     </div>
   </div>
 </template>
+
 <script setup lang="ts">
 const props = defineProps<{
   calories: number;
@@ -19,7 +20,7 @@ const props = defineProps<{
   macronutrients: Macros;
 }>();
 
-function macro_bar_style(macro: "protein" | "fat" | "carbohydrates") {
+function macro_bar_style(macro: (typeof macroKeys)[number]) {
   return {
     width: `${(100 * props.macronutrients[macro]) / macros_total_mass.value}%`,
     "background-color": colors[macro],
