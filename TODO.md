@@ -12,6 +12,6 @@
 - [ ] toObject ?
 - [x] Pagination in RegisteredFoodsTable
 - [x] Hidden filtering
-- [ ] Computed/virtual calories total
-- [ ] No data available flashing
-- [ ] Meal plan save with Ctrl S
+- [x] Computed/virtual calories total
+- [x] No data available flashing
+- [x] Save with Ctrl S
