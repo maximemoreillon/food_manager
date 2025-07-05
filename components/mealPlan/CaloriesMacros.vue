@@ -24,11 +24,6 @@ function macro_bar_style(macro: (typeof macroKeys)[number]) {
   return {
     width: `${(100 * props.macronutrients[macro]) / macros_total_mass.value}%`,
     "background-color": colors[macro],
-    // A bit dirty, rounding out corners
-    "border-top-right-radius": macro === "carbohydrates" ? "0.25em" : "0",
-    "border-bottom-right-radius": macro === "carbohydrates" ? "0.25em" : "0",
-    "border-top-left-radius": macro === "protein" ? "0.25em" : "0",
-    "border-bottom-left-radius": macro === "protein" ? "0.25em" : "0",
   };
 }
 
@@ -85,5 +80,15 @@ const calorie_bar_max = computed(() => Math.max(props.target, props.calories));
   color: #444444;
   transition: width 0.25s;
   overflow: hidden;
+}
+
+.macro_bar:first-child {
+  border-top-left-radius: 0.25em;
+  border-bottom-left-radius: 0.25em;
+}
+
+.macro_bar:last-child {
+  border-top-right-radius: 0.25em;
+  border-bottom-right-radius: 0.25em;
 }
 </style>
