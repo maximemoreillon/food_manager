@@ -59,13 +59,10 @@
             </v-col>
 
             <v-spacer />
-            <v-col
-              cols="auto"
-              v-for="(value, key) in meal_plan.macronutrients"
-              :key="key"
-            >
-              <v-chip :color="colors[key]" variant="flat">
-                {{ Math.round(value) }}g {{ macros_label_lookup[key] }}
+            <v-col cols="auto" v-for="macro in macroKeys" :key="macro">
+              <v-chip :color="colors[macro]" variant="flat">
+                {{ Math.round(macros_total[macro]) }}g
+                {{ macros_label_lookup[macro] }}
               </v-chip>
             </v-col>
           </v-row>
@@ -298,7 +295,6 @@ async function duplicate_meal_plan() {
     });
     const { _id } = res;
 
-    // TODO: navigate to _id
     await navigateTo(`/meal_plans/${_id}`);
   } catch (error) {
     console.error(error);
@@ -316,7 +312,7 @@ const macros_label_lookup = ref({
   carbohydrates: "carbs",
 });
 
-function total_for_macro(macro: typeof macroKeys) {
+function total_for_macro(macro: (typeof macroKeys)[number]) {
   if (!meal_plan.value) return 0;
 
   const total = meal_plan.value.foods.reduce(
