@@ -52,12 +52,7 @@
           </template>
 
           <template v-slot:item.image="{ item }">
-            <v-img
-              width="6em"
-              height="6em"
-              contain
-              :src="imageSrc(item, true)"
-            />
+            <v-img width="4em" contain :src="imageSrc(item, true)" />
           </template>
         </v-data-table-server>
       </ClientOnly>

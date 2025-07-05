@@ -24,7 +24,7 @@
     </template>
 
     <template v-slot:item.image="{ item }">
-      <v-img width="6em" height="6em" contain :src="imageSrc(item)" />
+      <v-img width="4em" contain :src="imageSrc(item)" />
     </template>
 
     <template v-slot:item.serving="{ item }">

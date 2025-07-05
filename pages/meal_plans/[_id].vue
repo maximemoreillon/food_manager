@@ -105,12 +105,7 @@
             :items-per-page="-1"
           >
             <template v-slot:item.image="{ item }">
-              <v-img
-                v-if="item.food.image"
-                width="5em"
-                contain
-                :src="imageSrc(item.food, true)"
-              />
+              <v-img width="4em" contain :src="imageSrc(item.food, true)" />
             </template>
 
             <template v-slot:item.food.name="{ item }">
