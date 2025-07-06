@@ -42,28 +42,30 @@
         <section>
           <div class="text-h6 my-4">Calories and Macros</div>
           <v-row align="center" justify="space-between" dense>
-            <v-col cols="auto">
-              <div class="calorie_counter">
-                <v-text-field
-                  :error="calorie_total > meal_plan.calories_target"
-                  :prefix="`${calorie_total.toString()}/`"
-                  label="Calories"
-                  type="number"
-                  density="compact"
-                  v-model.number="meal_plan.calories_target"
-                  hide-details
-                  hide-spin-buttons
-                  variant="outlined"
-                />
-              </div>
+            <v-col cols="12" md="3">
+              <v-text-field
+                :error="calorie_total > meal_plan.calories_target"
+                :prefix="`${calorie_total.toString()}/`"
+                label="Calories"
+                type="number"
+                density="compact"
+                v-model.number="meal_plan.calories_target"
+                hide-details
+                hide-spin-buttons
+                variant="outlined"
+              />
             </v-col>
 
             <v-spacer />
-            <v-col cols="auto" v-for="macro in macroKeys" :key="macro">
-              <v-chip :color="colors[macro]" variant="flat">
-                {{ Math.round(macros_total[macro]) }}g
-                {{ macros_label_lookup[macro] }}
-              </v-chip>
+            <v-col md="auto" cols="12">
+              <v-row dense justify-md="start" justify="space-between">
+                <v-col cols="auto" v-for="macro in macroKeys" :key="macro">
+                  <v-chip :color="colors[macro]" variant="flat">
+                    {{ Math.round(macros_total[macro]) }}g
+                    {{ macros_label_lookup[macro] }}
+                  </v-chip>
+                </v-col>
+              </v-row>
             </v-col>
           </v-row>
           <v-row>
@@ -333,9 +335,3 @@ const macros_total = computed(() => ({
   carbohydrates: total_for_macro("carbohydrates"),
 }));
 </script>
-
-<style scoped>
-.calorie_counter {
-  width: 25ch;
-}
-</style>
