@@ -108,16 +108,6 @@
               <v-img width="4em" contain :src="imageSrc(item.food, true)" />
             </template>
 
-            <template v-slot:item.food.name="{ item }">
-              <a
-                :href="`/foods/${item.food._id}`"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                {{ item.food.name }}
-              </a>
-            </template>
-
             <template v-slot:item.quantity="{ item }">
               <v-text-field
                 type="number"
