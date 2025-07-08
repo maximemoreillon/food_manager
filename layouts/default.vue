@@ -1,4 +1,12 @@
 <script setup lang="ts">
+import { useTheme } from "vuetify";
+
+const theme = useTheme();
+
+function toggleTheme() {
+  theme.global.name.value = theme.global.current.value.dark ? "light" : "dark";
+}
+
 const drawer = ref(false);
 </script>
 
@@ -9,6 +17,9 @@ const drawer = ref(false);
         <v-app-bar-nav-icon @click="drawer = !drawer" />
       </template>
       <v-app-bar-title>Food manager</v-app-bar-title>
+      <template v-slot:append>
+        <v-btn @click="toggleTheme" icon="mdi-theme-light-dark" />
+      </template>
     </v-app-bar>
     <!-- Client only to address hydration mismatch -->
     <client-only>
