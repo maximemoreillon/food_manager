@@ -10,7 +10,9 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
+    "@chenfengyuan/vue-barcode": "^2.0.2",
     "@mdi/font": "^7.4.47",
+    "jsbarcode": "^3.12.1",
     "minio": "^8.0.5",
     "nuxt": "^3.17.5",
     "nuxt-auth-utils": "^0.5.20",
@@ -18,10 +20,12 @@
     "openai": "^5.5.1",
     "sharp": "^0.34.2",
     "vue": "^3.5.16",
+    "vue-barcode-reader": "^1.0.3",
     "vue-router": "^4.5.1",
     "zod": "^3.25.67"
   },
   "devDependencies": {
+    "@types/vue-barcode-reader": "^0.0.3",
     "vite-plugin-vuetify": "^2.1.1",
     "vuetify": "^3.8.9"
   }

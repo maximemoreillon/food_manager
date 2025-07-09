@@ -20,10 +20,10 @@
       <v-card-text>
         <v-row>
           <v-col>
-            <v-text-field label="name" v-model="food.name" />
+            <v-text-field label="name" v-model="food.name" hide-details />
           </v-col>
           <v-col cols="auto">
-            <v-checkbox label="Hidden" v-model="food.hidden" />
+            <v-checkbox label="Hidden" v-model="food.hidden" hide-details />
           </v-col>
         </v-row>
         <v-row>
@@ -32,16 +32,22 @@
               label="Serving size"
               type="number"
               v-model.number="food.serving.size"
+              hide-details
             />
           </v-col>
           <v-col cols="2">
-            <v-text-field label="unit" v-model="food.serving.unit" />
+            <v-text-field
+              label="unit"
+              v-model="food.serving.unit"
+              hide-details
+            />
           </v-col>
           <v-col cols="5">
             <v-text-field
               label="Calories per serving"
               v-model.number="food.serving.calories"
               type="number"
+              hide-details
             />
           </v-col>
           <v-col cols="auto" v-if="openAi?.available">
@@ -54,6 +60,7 @@
               label="Protein [g]"
               v-model.number="food.serving.macronutrients.protein"
               type="number"
+              hide-details
             />
           </v-col>
           <v-col>
@@ -61,6 +68,7 @@
               label="Fat [g]"
               v-model.number="food.serving.macronutrients.fat"
               type="number"
+              hide-details
             />
           </v-col>
           <v-col>
@@ -68,6 +76,7 @@
               label="Carbs [g]"
               v-model.number="food.serving.macronutrients.carbohydrates"
               type="number"
+              hide-details
             />
           </v-col>
         </v-row>
@@ -77,6 +86,7 @@
               label="Vendor"
               v-model="food.vendor"
               :items="vendors ? vendors : []"
+              hide-details
             />
           </v-col>
           <v-col>
@@ -84,6 +94,7 @@
               label="Price"
               v-model.number="food.serving.price"
               type="number"
+              hide-details
             />
           </v-col>
         </v-row>
@@ -94,14 +105,18 @@
           @delete="handleImageDeleted"
         />
 
-        <!-- <v-row>
+        <v-row>
           <v-col>
-            <v-row>
+            <v-row align="center">
               <v-col>
-                <v-text-field label="Barcode" v-model="food.barcode" />
+                <v-text-field
+                  label="Barcode"
+                  v-model="food.barcode"
+                  hide-details
+                />
               </v-col>
               <v-col cols="auto">
-                <BarcodeReaderDialog @decode="$set(food, 'barcode', $event)" />
+                <BarcodeReaderDialog @decode="handleBarcode" />
               </v-col>
             </v-row>
             <v-row dense justify="center" v-if="food.barcode">
@@ -113,7 +128,7 @@
               </v-col>
             </v-row>
           </v-col>
-        </v-row> -->
+        </v-row>
       </v-card-text>
     </template>
 
@@ -124,6 +139,8 @@
 </template>
 
 <script lang="ts" setup>
+import VueBarcode from "@chenfengyuan/vue-barcode";
+
 const route = useRoute();
 
 const saving = ref(false);
@@ -203,5 +220,10 @@ function handleParsedLabel(event: any) {
   food.value.serving.macronutrients.fat = fat;
   food.value.serving.macronutrients.protein = protein;
   food.value.serving.macronutrients.carbohydrates = carbohydrates;
+}
+
+function handleBarcode(barcode: string) {
+  if (!food.value) return;
+  food.value.barcode = barcode;
 }
 </script>

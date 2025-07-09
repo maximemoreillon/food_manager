@@ -1,5 +1,6 @@
 - [x] v-data-table pagination
 - [x] OIDC auth
+  - [ ] Switch to my own implementation once ready
   - [ ] Allow API access with valid bearer token
 - [x] S3
 - [x] Error handling
