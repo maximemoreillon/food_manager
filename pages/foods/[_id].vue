@@ -116,10 +116,10 @@
                 />
               </v-col>
               <v-col cols="auto">
-                <BarcodeReaderDialog @decode="handleBarcode" />
+                <!-- <BarcodeReaderDialog @decode="handleBarcode" /> -->
               </v-col>
             </v-row>
-            <!-- <v-row dense justify="center" v-if="food.barcode">
+            <v-row dense justify="center" v-if="food.barcode">
               <v-col cols="auto">
                 <ClientOnly>
                   <VueBarcode
@@ -128,7 +128,7 @@
                   />
                 </ClientOnly>
               </v-col>
-            </v-row> -->
+            </v-row>
           </v-col>
         </v-row>
       </v-card-text>
