@@ -104,33 +104,6 @@
           @upload="handleImageUploaded"
           @delete="handleImageDeleted"
         />
-
-        <!-- <v-row>
-          <v-col>
-            <v-row align="center">
-              <v-col>
-                <v-text-field
-                  label="Barcode"
-                  v-model="food.barcode"
-                  hide-details
-                />
-              </v-col>
-              <v-col cols="auto">
-                <ClientOnly>
-                  <BarcodeReaderDialog @decode="handleBarcode" />
-                </ClientOnly>
-              </v-col>
-            </v-row>
-            <v-row dense justify="center" v-if="food.barcode">
-              <v-col cols="auto">
-                <VueBarcode
-                  :value="food.barcode"
-                  :options="{ displayValue: false }"
-                />
-              </v-col>
-            </v-row>
-          </v-col>
-        </v-row> -->
       </v-card-text>
     </template>
 
@@ -141,8 +114,6 @@
 </template>
 
 <script lang="ts" setup>
-// import VueBarcode from "@chenfengyuan/vue-barcode";
-
 const route = useRoute();
 
 const saving = ref(false);
