@@ -18,7 +18,9 @@
       <v-card-text>
         <v-row align="center" justify="center" class="mt-4">
           <v-col cols="auto">
-            <StreamBarcodeReader @decode="onDecode" />
+            <ClientOnly>
+              <StreamBarcodeReader @decode="onDecode" />
+            </ClientOnly>
           </v-col>
         </v-row>
       </v-card-text>
