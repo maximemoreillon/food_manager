@@ -105,7 +105,7 @@
           @delete="handleImageDeleted"
         />
 
-        <v-row>
+        <!-- <v-row>
           <v-col>
             <v-row align="center">
               <v-col>
@@ -130,7 +130,7 @@
               </v-col>
             </v-row>
           </v-col>
-        </v-row>
+        </v-row> -->
       </v-card-text>
     </template>
 
@@ -141,7 +141,7 @@
 </template>
 
 <script lang="ts" setup>
-import VueBarcode from "@chenfengyuan/vue-barcode";
+// import VueBarcode from "@chenfengyuan/vue-barcode";
 
 const route = useRoute();
 
