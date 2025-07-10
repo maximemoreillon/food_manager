@@ -141,7 +141,7 @@
 </template>
 
 <script lang="ts" setup>
-// import VueBarcode from "@chenfengyuan/vue-barcode";
+import VueBarcode from "@chenfengyuan/vue-barcode";
 
 const route = useRoute();
 
