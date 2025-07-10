@@ -121,10 +121,12 @@
             </v-row>
             <v-row dense justify="center" v-if="food.barcode">
               <v-col cols="auto">
-                <VueBarcode
-                  :value="food.barcode"
-                  :options="{ displayValue: false }"
-                />
+                <ClientOnly>
+                  <VueBarcode
+                    :value="food.barcode"
+                    :options="{ displayValue: false }"
+                  />
+                </ClientOnly>
               </v-col>
             </v-row>
           </v-col>
