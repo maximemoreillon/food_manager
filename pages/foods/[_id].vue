@@ -116,17 +116,17 @@
                 />
               </v-col>
               <v-col cols="auto">
-                <!-- <BarcodeReaderDialog @decode="handleBarcode" /> -->
+                <ClientOnly>
+                  <BarcodeReaderDialog @decode="handleBarcode" />
+                </ClientOnly>
               </v-col>
             </v-row>
             <v-row dense justify="center" v-if="food.barcode">
               <v-col cols="auto">
-                <ClientOnly>
-                  <VueBarcode
-                    :value="food.barcode"
-                    :options="{ displayValue: false }"
-                  />
-                </ClientOnly>
+                <VueBarcode
+                  :value="food.barcode"
+                  :options="{ displayValue: false }"
+                />
               </v-col>
             </v-row>
           </v-col>
