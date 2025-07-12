@@ -2,7 +2,9 @@
 - [x] OIDC auth
   - [ ] Switch to my own implementation once ready
   - [ ] Allow API access with valid bearer token
-- [x] S3
+- [ ] Image storage
+  - [x] S3
+  - [ ] Local
 - [x] Error handling
 - [x] Node is null
 - [x] User settings
@@ -16,3 +18,6 @@
 - [x] Computed/virtual calories total
 - [x] No data available flashing
 - [x] Save with Ctrl S
+- [ ] Find better word than "meal plan"
+- [ ] PWA
+- [ ] Theme to be saved in local storage?
