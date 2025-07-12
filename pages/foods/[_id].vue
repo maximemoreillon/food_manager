@@ -13,9 +13,14 @@
         />
         <FoodDeleteButton />
       </v-toolbar>
-      <v-divider />
 
-      <v-img class="mt-3" height="300" :src="imageSrc(food)" contain />
+      <v-img
+        v-if="food.image"
+        class="mt-3"
+        height="500"
+        :src="imageSrc(food)"
+        contain
+      />
 
       <v-card-text>
         <v-row>
