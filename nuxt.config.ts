@@ -4,7 +4,7 @@ export default defineNuxtConfig({
   compatibilityDate: "2025-05-15",
   devtools: { enabled: true },
   build: {
-    transpile: ["vuetify", "vue-barcode-reader"],
+    transpile: ["vuetify"],
   },
   app: {
     head: {
@@ -19,7 +19,8 @@ export default defineNuxtConfig({
       });
     },
     "nuxt-mongoose",
-    "nuxt-auth-utils",
+    // "nuxt-auth-utils",
+    "@moreillon/nuxt-oidc",
   ],
   vite: {
     vue: {
@@ -29,13 +30,18 @@ export default defineNuxtConfig({
     },
   },
   runtimeConfig: {
-    oauth: {
-      auth0: {
-        clientId: "",
-        clientSecret: "",
-        domain: "",
-        audience: "",
-      },
+    public: {
+      oidcClientId: "",
+      oidcAuthority: "",
+      oidcAudience: "",
     },
+    // oauth: {
+    //   auth0: {
+    //     clientId: "",
+    //     clientSecret: "",
+    //     domain: "",
+    //     audience: "",
+    //   },
+    // },
   },
 });
