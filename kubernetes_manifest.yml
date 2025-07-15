@@ -18,6 +18,8 @@ spec:
           envFrom:
             - secretRef:
                 name: food-manager-env
+            - secretRef:
+                name: auth0-env
 
 ---
 apiVersion: v1
