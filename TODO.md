@@ -1,8 +1,8 @@
 - [x] v-data-table pagination
 - [x] OIDC auth
-  - [ ] Switch to my own implementation once ready
-  - [ ] Allow API access with valid bearer token
-- [ ] Image storage
+  - [x] Switch to my own implementation once ready
+  - [x] Allow API access with valid bearer token
+- [x] Image storage
   - [x] S3
   - [ ] Local
 - [x] Error handling

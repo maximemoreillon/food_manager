@@ -16,6 +16,7 @@ const drawer = ref(false);
       <template v-slot:append>
         <!-- TODO: theme is not saved -->
         <v-btn @click="theme.toggle()" icon="mdi-theme-light-dark" />
+        <!-- TODO: logout -->
       </template>
     </v-app-bar>
     <!-- TODO: Client only to address hydration mismatch -->
