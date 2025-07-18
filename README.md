@@ -1,28 +1,75 @@
-# Food manager
+# Nuxt Minimal Starter
 
-[<img src="https://img.shields.io/docker/pulls/moreillon/food-manager?logo=docker">](https://hub.docker.com/repository/docker/moreillon/food-manager)
-[![Artifact Hub](https://img.shields.io/endpoint?url=https://artifacthub.io/badge/repository/moreillon)](https://artifacthub.io/packages/search?repo=moreillon)
+Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
 
-A calorie and macronutrients tracking web application.
+## Setup
 
-More information about this project [here](https://articles.maximemoreillon.com/articles/573)
+Make sure to install dependencies:
 
-The source-code of the GUI for this application is available in [this repository](https://github.com/maximemoreillon/food_manager_front)
+```bash
+# npm
+npm install
 
-## API
+# pnpm
+pnpm install
 
-| Route            | Method | query/body      | Description                     |
-| ---------------- | ------ | --------------- | ------------------------------- |
-| /                | GET    | -               | Show application configuration  |
-| /foods           | GET    | -               | Get list of food                |
-| /foods           | POST   | food properties | Create food                     |
-| /foods/:food_id  | GET    | -               | Get the food with the given ID. |
-| /foods/:food_id  | DELETE | -               | Delete food with the given ID.  |
-| /foods/:food_id} | PATCH  | new properties  | Update food with the given ID.  |
+# yarn
+yarn install
 
-## Environment variables
+# bun
+bun install
+```
 
-| Variable                  | Description                      |
-| ------------------------- | -------------------------------- |
-| MONGODB_CONNECTION_STRING | Connction string for MongoDB     |
-| APP_PORT                  | Application port, defaults to 80 |
+## Development Server
+
+Start the development server on `http://localhost:3000`:
+
+```bash
+# npm
+npm run dev
+
+# pnpm
+pnpm dev
+
+# yarn
+yarn dev
+
+# bun
+bun run dev
+```
+
+## Production
+
+Build the application for production:
+
+```bash
+# npm
+npm run build
+
+# pnpm
+pnpm build
+
+# yarn
+yarn build
+
+# bun
+bun run build
+```
+
+Locally preview production build:
+
+```bash
+# npm
+npm run preview
+
+# pnpm
+pnpm preview
+
+# yarn
+yarn preview
+
+# bun
+bun run preview
+```
+
+Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.

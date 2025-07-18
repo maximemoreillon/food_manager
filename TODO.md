@@ -1,0 +1,23 @@
+- [x] v-data-table pagination
+- [x] OIDC auth
+  - [x] Switch to my own implementation once ready
+  - [x] Allow API access with valid bearer token
+- [x] Image storage
+  - [x] S3
+  - [ ] Local
+- [x] Error handling
+- [x] Node is null
+- [x] User settings
+- [x] OpenAI label parsing
+  - [ ] Find better way to check if openAI is available on the GUI
+- [ ] Barcode scanner
+- [x] Vendors
+- [ ] toObject ?
+- [x] Pagination in RegisteredFoodsTable
+- [x] Hidden filtering
+- [x] Computed/virtual calories total
+- [x] No data available flashing
+- [x] Save with Ctrl S
+- [ ] Find better word than "meal plan"
+- [ ] PWA
+- [ ] Theme to be saved in local storage?
