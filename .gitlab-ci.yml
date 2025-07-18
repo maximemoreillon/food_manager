@@ -5,9 +5,9 @@ stages:
 variables:
   APPLICATION_NAME: food-manager
   CONTAINER_IMAGE: ${DOCKER_HUB_USERNAME}/${APPLICATION_NAME}
-  CONTAINER_IMAGE_TAGGED: ${CONTAINER_IMAGE}:nuxt-${CI_COMMIT_SHORT_SHA}
-  K8S_RESOURCE_NAME: food-manager-nuxt
-  K8S_INGRESS_HOST: nuxt.food.home.maximemoreillon.com
+  CONTAINER_IMAGE_TAGGED: ${CONTAINER_IMAGE}:${CI_COMMIT_SHORT_SHA}
+  K8S_RESOURCE_NAME: ${APPLICATION_NAME}
+  K8S_INGRESS_HOST: food.home.maximemoreillon.com
 
 image: moreillon/ci-dind
 services:
