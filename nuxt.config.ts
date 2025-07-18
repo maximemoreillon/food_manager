@@ -6,6 +6,7 @@ export default defineNuxtConfig({
   build: {
     transpile: ["vuetify"],
   },
+
   app: {
     head: {
       title: "Food manager",
@@ -22,6 +23,9 @@ export default defineNuxtConfig({
     // "nuxt-auth-utils",
     "@moreillon/nuxt-oidc",
   ],
+  // Not sure if this is correct
+  // @ts-ignore
+  buildModules: ["@nuxtjs/pwa"],
   vite: {
     vue: {
       template: {
@@ -35,13 +39,5 @@ export default defineNuxtConfig({
       oidcAuthority: "",
       oidcAudience: "",
     },
-    // oauth: {
-    //   auth0: {
-    //     clientId: "",
-    //     clientSecret: "",
-    //     domain: "",
-    //     audience: "",
-    //   },
-    // },
   },
 });

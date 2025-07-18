@@ -23,6 +23,7 @@
     "zod": "^3.25.67"
   },
   "devDependencies": {
+    "@nuxtjs/pwa": "^3.3.5",
     "vite-plugin-vuetify": "^2.1.1",
     "vuetify": "^3.9.0"
   }
