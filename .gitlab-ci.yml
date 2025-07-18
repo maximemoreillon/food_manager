@@ -16,7 +16,7 @@ services:
 build:
   stage: build
   only:
-    - nuxt
+    - master
   before_script:
     - echo "${DOCKER_HUB_PASSWORD}" | docker login --username ${DOCKER_HUB_USERNAME} --password-stdin
   script:
@@ -26,7 +26,7 @@ build:
 deploy:
   stage: deploy
   only:
-    - nuxt
+    - master
   before_script:
     - kubectl config use-context moreillon_ci/moreillon_k8s_home/kubernetes-agent:home-talos
   script:
