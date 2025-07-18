@@ -20,12 +20,10 @@ export default defineNuxtConfig({
       });
     },
     "nuxt-mongoose",
-    // "nuxt-auth-utils",
     "@moreillon/nuxt-oidc",
+    "@vite-pwa/nuxt",
   ],
-  // Not sure if this is correct
-  // @ts-ignore
-  buildModules: ["@nuxtjs/pwa"],
+
   vite: {
     vue: {
       template: {
