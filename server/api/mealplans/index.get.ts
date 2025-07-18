@@ -8,6 +8,8 @@ const querySchema = z.object({
   sort: z.string().optional(),
   order: z.union([z.literal("asc"), z.literal("desc")]).optional(),
   search: z.string().optional(),
+  to: z.coerce.date().optional(),
+  from: z.coerce.date().optional(),
 });
 
 export default defineEventHandler(async (event) => {
@@ -19,6 +21,8 @@ export default defineEventHandler(async (event) => {
     sort = "date",
     order = "desc",
     search,
+    to,
+    from,
     ...rest
   } = await getValidatedQuery(event, querySchema.parse);
 
@@ -31,6 +35,12 @@ export default defineEventHandler(async (event) => {
 
   const query: any = { user_id, ...rest };
   if (search && search !== "") query.name = { $regex: search, $options: "i" };
+
+  if (to || from) {
+    query.date = {};
+    if (to) query.date.$lt = to;
+    if (from) query.date.$gt = from;
+  }
 
   const items = await MealPlan.find(query)
     .skip(skip)
