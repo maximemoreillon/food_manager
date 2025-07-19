@@ -93,6 +93,7 @@ const queryOptions = ref({
 });
 
 async function getFoods() {
+  if (searchTimeout) clearTimeout(searchTimeout);
   loading.value = true;
   const res = await $fetch<FoodsFetchResponse>("/api/foods", {
     query: {
@@ -132,7 +133,6 @@ function item_too_calorific(calorieCount: number) {
   return calorieCount > props.meal_plan.calories_target - calorie_total.value;
 }
 
-// TODO: make util
 const calorie_total = computed(() => {
   const total = props.meal_plan.foods.reduce(
     (acc, { quantity, food }) => acc + quantity * food.serving.calories,
@@ -151,7 +151,6 @@ function handleRowClicked(
 function handleSearchUpdate() {
   if (searchTimeout) clearTimeout(searchTimeout);
   searchTimeout = setTimeout(() => {
-    console.log("Timeout");
     getFoods();
   }, 500);
 }
