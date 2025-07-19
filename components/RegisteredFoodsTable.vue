@@ -14,7 +14,12 @@
       <v-form @submit.prevent="getFoods">
         <v-row class="mt-2">
           <v-col>
-            <v-text-field v-model="search" clearable label="Search" />
+            <v-text-field
+              v-model="search"
+              clearable
+              label="Search"
+              @update:model-value="handleSearchUpdate"
+            />
           </v-col>
           <v-col cols="auto">
             <v-btn icon="mdi-magnify" type="submit" variant="plain" />
@@ -79,6 +84,8 @@ const loading = ref(false);
 const foods = ref<FoodT[]>([]);
 const total = ref(0);
 
+let searchTimeout: NodeJS.Timeout;
+
 const queryOptions = ref({
   page: 1,
   itemsPerPage: 50,
@@ -109,7 +116,6 @@ onMounted(async () => {
 watch(
   queryOptions,
   () => {
-    console.log(queryOptions.value);
     getFoods();
   },
   { deep: true }
@@ -140,5 +146,13 @@ function handleRowClicked(
   { item }: { item: { quantity: number; food: FoodT } }
 ) {
   emit("foodAdded", { food: item, quantity: 1 });
+}
+
+function handleSearchUpdate() {
+  if (searchTimeout) clearTimeout(searchTimeout);
+  searchTimeout = setTimeout(() => {
+    console.log("Timeout");
+    getFoods();
+  }, 500);
 }
 </script>
