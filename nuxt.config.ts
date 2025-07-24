@@ -21,7 +21,7 @@ export default defineNuxtConfig({
     },
     "nuxt-mongoose",
     "@moreillon/nuxt-oidc",
-    "@vite-pwa/nuxt",
+    // "@vite-pwa/nuxt",
   ],
 
   vite: {
