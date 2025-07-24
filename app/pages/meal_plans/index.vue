@@ -57,7 +57,7 @@
 
 <script setup lang="ts">
 import type { SortItem } from "vuetify/lib/components/VDataTable/composables/sort.mjs";
-import type { MealPlansResponse } from "~/server/api/mealplans/index.get";
+import type { MealPlansResponse } from "~~/server/api/mealplans/index.get";
 import formatDate from "~/utils/formatDate";
 
 const route = useRoute();

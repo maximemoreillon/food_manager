@@ -62,7 +62,7 @@
 
 <script lang="ts" setup>
 import type { SortItem } from "vuetify/lib/components/VDataTable/composables/sort.mjs";
-import type { FoodsFetchResponse } from "~/server/api/foods/index.get";
+import type { FoodsFetchResponse } from "~~/server/api/foods/index.get";
 
 const route = useRoute();
 const query = computed(() => route.query); // computed needed to trigger refetch

@@ -79,18 +79,12 @@
 
   <v-snackbar :color="snackbar.color" v-model="snackbar.show">
     {{ snackbar.text }}
-
-    <!-- <template v-slot:action="{ attrs }">
-      <v-btn text dark v-bind="attrs" @click="snackbar.show = false">
-        Close
-      </v-btn>
-    </template> -->
   </v-snackbar>
 </template>
 
 <script setup lang="ts">
 import { FoodLabelParsing } from "#components";
-import type { FoodT } from "~/server/models/food.schema";
+import type { FoodT } from "~~/server/models/food.schema";
 
 const { data: openAi } = await useFetch("/api/openai");
 const props = defineProps<{

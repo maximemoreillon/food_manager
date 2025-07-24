@@ -41,7 +41,7 @@
 </template>
 
 <script lang="ts" setup>
-import type { FoodT } from "~/server/models/food.schema";
+import type { FoodT } from "~~/server/models/food.schema";
 
 const loading = ref(false);
 

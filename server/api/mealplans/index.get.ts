@@ -1,6 +1,6 @@
 import { z } from "zod";
-import { MealPlanT } from "~/server/models/mealPlan.schema";
-import getUserId from "~/server/utils/getUserId";
+import { MealPlanT } from "~~/server/models/mealPlan.schema";
+import getUserId from "~~/server/utils/getUserId";
 
 const querySchema = z.object({
   itemsPerPage: z.coerce.number().optional(),

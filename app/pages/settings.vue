@@ -28,7 +28,7 @@
   </v-card>
 </template>
 <script setup lang="ts">
-import type { UserConfigurationT } from "~/server/models/userConfig.schema";
+import type { UserConfigurationT } from "~~/server/models/userConfig.schema";
 
 const saving = ref(false);
 const loading = ref(false);

@@ -158,11 +158,11 @@
 </template>
 
 <script setup lang="ts">
-import type { FoodT } from "~/server/models/food.schema";
+import type { FoodT } from "~~/server/models/food.schema";
 import type {
   MealPlanRecord,
   MealPlanT,
-} from "~/server/models/mealPlan.schema";
+} from "~~/server/models/mealPlan.schema";
 
 const route = useRoute();
 
@@ -213,7 +213,8 @@ const foodsTableHeaders = ref([
 ]);
 
 const { data: meal_plan, pending: loading } = await useFetch<MealPlanT>(
-  `/api/mealplans/${route.params._id}`
+  `/api/mealplans/${route.params._id}`,
+  { deep: true }
 );
 
 async function saveMealPlan() {

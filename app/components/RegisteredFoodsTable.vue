@@ -55,9 +55,9 @@
 
 <script lang="ts" setup>
 import type { SortItem } from "vuetify/lib/components/VDataTable/composables/sort.mjs";
-import type { FoodsFetchResponse } from "~/server/api/foods/index.get";
-import type { FoodT } from "~/server/models/food.schema";
-import type { MealPlanT } from "~/server/models/mealPlan.schema";
+import type { FoodsFetchResponse } from "~~/server/api/foods/index.get";
+import type { FoodT } from "~~/server/models/food.schema";
+import type { MealPlanT } from "~~/server/models/mealPlan.schema";
 
 const props = defineProps<{
   open: boolean;
