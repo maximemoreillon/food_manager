@@ -34,7 +34,7 @@
 </template>
 
 <script lang="ts" setup>
-import type { FoodT } from "~/server/models/food.schema";
+import type { FoodT } from "~~/server/models/food.schema";
 
 const props = defineProps<{ food: FoodT }>();
 const emit = defineEmits(["upload", "delete"]);

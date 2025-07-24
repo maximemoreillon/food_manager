@@ -1,4 +1,4 @@
-import { sendS3Image } from "~/server/s3";
+import { sendS3Image } from "~~/server/s3";
 
 export default defineEventHandler(async (event) => {
   const searchParams = getQuery(event);

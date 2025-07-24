@@ -1,4 +1,4 @@
-import type { FoodT } from "~/server/models/food.schema";
+import type { FoodT } from "~~/server/models/food.schema";
 
 export default function (food?: FoodT, thumbnail: boolean | undefined = false) {
   if (!food) return "";

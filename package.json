@@ -14,7 +14,7 @@
     "@moreillon/nuxt-oidc": "^0.4.1",
     "@vite-pwa/nuxt": "^1.0.4",
     "minio": "^8.0.5",
-    "nuxt": "^3.17.5",
+    "nuxt": "^4.0.1",
     "nuxt-auth-utils": "^0.5.20",
     "nuxt-mongoose": "^1.0.6",
     "openai": "^5.5.1",

@@ -34,7 +34,7 @@
 </template>
 
 <script lang="ts" setup>
-import type { MealPlanT } from "~/server/models/mealPlan.schema";
+import type { MealPlanT } from "~~/server/models/mealPlan.schema";
 
 const name = ref("");
 const loading = ref(false);

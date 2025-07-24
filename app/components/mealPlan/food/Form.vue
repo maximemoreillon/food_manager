@@ -90,7 +90,7 @@
 
 <script setup lang="ts">
 import { FoodLabelParsing } from "#components";
-import type { FoodT } from "~/server/models/food.schema";
+import type { FoodT } from "~~/server/models/food.schema";
 
 const { data: openAi } = await useFetch("/api/openai");
 const props = defineProps<{

@@ -55,7 +55,7 @@
 </template>
 
 <script lang="ts" setup>
-import type { MealPlanT } from "~/server/models/mealPlan.schema";
+import type { MealPlanT } from "~~/server/models/mealPlan.schema";
 
 const dialog = ref(false);
 const tab = ref(null);

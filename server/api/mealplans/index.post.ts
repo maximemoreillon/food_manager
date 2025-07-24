@@ -1,4 +1,4 @@
-import { UserConfigurationT } from "~/server/models/userConfig.schema";
+import { UserConfigurationT } from "~~/server/models/userConfig.schema";
 
 export default defineEventHandler(async (event) => {
   const user_id = await getUserId(event);

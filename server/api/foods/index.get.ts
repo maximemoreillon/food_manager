@@ -1,6 +1,6 @@
 import { QueryOptions } from "mongoose";
 import { z } from "zod";
-import { FoodT } from "~/server/models/food.schema";
+import { FoodT } from "~~/server/models/food.schema";
 
 const querySchema = z.object({
   itemsPerPage: z.coerce.number().optional(),

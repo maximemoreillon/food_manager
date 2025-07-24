@@ -158,11 +158,11 @@
 </template>
 
 <script setup lang="ts">
-import type { FoodT } from "~/server/models/food.schema";
+import type { FoodT } from "~~/server/models/food.schema";
 import type {
   MealPlanRecord,
   MealPlanT,
-} from "~/server/models/mealPlan.schema";
+} from "~~/server/models/mealPlan.schema";
 
 const route = useRoute();
 
