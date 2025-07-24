@@ -79,12 +79,6 @@
 
   <v-snackbar :color="snackbar.color" v-model="snackbar.show">
     {{ snackbar.text }}
-
-    <!-- <template v-slot:action="{ attrs }">
-      <v-btn text dark v-bind="attrs" @click="snackbar.show = false">
-        Close
-      </v-btn>
-    </template> -->
   </v-snackbar>
 </template>
 

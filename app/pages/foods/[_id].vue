@@ -128,7 +128,7 @@ const {
   data: food,
   pending: loading,
   error,
-} = await useFetch<FoodT>(`/api/foods/${route.params._id}`);
+} = await useFetch<FoodT>(`/api/foods/${route.params._id}`, { deep: true });
 
 const { data: vendors } = await useFetch<string[]>(`/api/foods/vendors`);
 const { data: openAi } = await useFetch("/api/openai");
