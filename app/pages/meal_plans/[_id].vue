@@ -105,6 +105,7 @@
             :headers="foodsTableHeaders"
             :items="meal_plan.foods"
             :items-per-page="-1"
+            hide-default-footer
           >
             <template v-slot:item.image="{ item }">
               <v-img width="4em" contain :src="imageSrc(item.food, true)" />
