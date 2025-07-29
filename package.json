@@ -2,6 +2,7 @@
   "name": "nuxt-app",
   "private": true,
   "type": "module",
+  "version": "2.0.0",
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxt dev",
@@ -11,11 +12,10 @@
   },
   "dependencies": {
     "@mdi/font": "^7.4.47",
-    "@moreillon/nuxt-oidc": "^0.4.1",
+    "@moreillon/nuxt-oidc": "^0.5.1",
     "@vite-pwa/nuxt": "^1.0.4",
     "minio": "^8.0.5",
     "nuxt": "^4.0.1",
-    "nuxt-auth-utils": "^0.5.20",
     "nuxt-mongoose": "^1.0.6",
     "openai": "^5.5.1",
     "sharp": "^0.34.2",

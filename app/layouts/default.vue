@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useTheme } from "vuetify";
-
+import { version } from "~~/package.json";
 const theme = useTheme();
 
 const drawer = ref(false);
