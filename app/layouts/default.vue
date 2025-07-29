@@ -20,25 +20,28 @@ const drawer = ref(false);
       </template>
     </v-app-bar>
     <!-- TODO: Client only to address hydration mismatch -->
-    <client-only>
-      <v-navigation-drawer v-model="drawer">
-        <v-list nav>
-          <v-list-item link title="Foods" to="/foods" prepend-icon="mdi-food" />
-          <v-list-item
-            link
-            title="Meal plans"
-            to="/meal_plans"
-            prepend-icon="mdi-silverware-fork-knife"
-          />
-          <v-list-item
-            link
-            title="Settings"
-            to="/settings"
-            prepend-icon="mdi-cogs"
-          />
-        </v-list>
-      </v-navigation-drawer>
-    </client-only>
+    <!-- <client-only> -->
+    <v-navigation-drawer v-model="drawer">
+      <v-list nav>
+        <v-list-item link title="Foods" to="/foods" prepend-icon="mdi-food" />
+        <v-list-item
+          link
+          title="Meal plans"
+          to="/meal_plans"
+          prepend-icon="mdi-silverware-fork-knife"
+        />
+        <v-list-item
+          link
+          title="Settings"
+          to="/settings"
+          prepend-icon="mdi-cogs"
+        />
+      </v-list>
+      <template v-slot:append>
+        <div class="pa-2">v{{ version }}</div>
+      </template>
+    </v-navigation-drawer>
+    <!-- </client-only> -->
     <v-main>
       <v-container>
         <slot />

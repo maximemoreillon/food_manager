@@ -4,8 +4,6 @@ const { OPENAI_API_KEY } = process.env;
 export let openAiClient: OpenAI;
 
 if (OPENAI_API_KEY) {
-  console.log(`[OpenAI] Key provided, using OpenAI`);
+  console.log(`✔ OpenAI API key provided`);
   openAiClient = new OpenAI();
-} else {
-  console.log(`[OpenAI] Key not provided`);
 }
