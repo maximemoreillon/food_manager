@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "@mdi/font": "^7.4.47",
-    "@moreillon/nuxt-oidc": "^0.5.1",
+    "@moreillon/nuxt-oidc": "^0.5.2",
     "@vite-pwa/nuxt": "^1.0.4",
     "minio": "^8.0.5",
     "nuxt": "^4.0.1",
