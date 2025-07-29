@@ -23,132 +23,134 @@
 
     <template v-if="meal_plan && !loading">
       <v-card-text>
-        <section>
-          <v-row align="center">
-            <v-col cols="12" md="6">
-              <v-text-field label="Meal plan name" v-model="meal_plan.name" />
-            </v-col>
-            <v-spacer />
-            <v-col cols="auto">
-              <v-checkbox label="Incomplete" v-model="meal_plan.incomplete" />
-            </v-col>
-            <v-col cols="auto" class="mb-4">
-              <v-icon class="mr-2">mdi-calendar</v-icon>
-              <span>{{ new Date(meal_plan.date).toDateString() }}</span>
-            </v-col>
-          </v-row>
-        </section>
+        <v-row align="center">
+          <v-col cols="12" md="6">
+            <v-text-field
+              label="Meal plan name"
+              v-model="meal_plan.name"
+              hide-details
+            />
+          </v-col>
+          <v-spacer />
+          <v-col cols="auto">
+            <v-checkbox
+              label="Incomplete"
+              v-model="meal_plan.incomplete"
+              hide-details
+            />
+          </v-col>
+          <v-col cols="auto">
+            <v-icon class="mr-2">mdi-calendar</v-icon>
+            <span>{{ new Date(meal_plan.date).toDateString() }}</span>
+          </v-col>
+        </v-row>
 
-        <section>
-          <div class="text-h6 my-4">Calories and Macros</div>
-          <v-row align="center" justify="space-between" dense>
-            <v-col cols="12" md="3">
-              <v-text-field
-                :error="calorie_total > meal_plan.calories_target"
-                :prefix="`${calorie_total.toString()}/`"
-                label="Calories"
-                type="number"
-                density="compact"
-                v-model.number="meal_plan.calories_target"
-                hide-details
-                hide-spin-buttons
-                variant="outlined"
-              />
-            </v-col>
+        <div class="text-h6 my-4">Calories and Macros</div>
+        <v-row align="center" justify="space-between" dense>
+          <v-col cols="12" md="3">
+            <v-text-field
+              :error="calorie_total > meal_plan.calories_target"
+              :prefix="`${calorie_total.toString()}/`"
+              label="Calories"
+              type="number"
+              density="compact"
+              v-model.number="meal_plan.calories_target"
+              hide-details
+              hide-spin-buttons
+              variant="outlined"
+            />
+          </v-col>
 
-            <v-spacer />
-            <v-col md="auto" cols="12">
-              <v-row dense justify-md="start" justify="space-between">
-                <v-col cols="auto" v-for="macro in macroKeys" :key="macro">
-                  <v-chip :color="colors[macro]" variant="flat">
-                    {{ Math.round(macros_total[macro]) }}g
-                    {{ macros_label_lookup[macro] }}
-                  </v-chip>
-                </v-col>
-              </v-row>
-            </v-col>
-          </v-row>
-          <v-row>
-            <v-col>
-              <MealPlanCaloriesMacros
-                :target="meal_plan.calories_target"
-                :calories="calorie_total"
-                :macronutrients="macros_total"
-              />
-            </v-col>
-          </v-row>
-        </section>
+          <v-spacer />
+          <v-col md="auto" cols="12">
+            <v-row dense justify-md="start" justify="space-between">
+              <v-col cols="auto" v-for="macro in macroKeys" :key="macro">
+                <v-chip :color="colors[macro]" variant="flat">
+                  {{ Math.round(macros_total[macro]) }}g
+                  {{ macros_label_lookup[macro] }}
+                </v-chip>
+              </v-col>
+            </v-row>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col>
+            <MealPlanCaloriesMacros
+              :target="meal_plan.calories_target"
+              :calories="calorie_total"
+              :macronutrients="macros_total"
+            />
+          </v-col>
+        </v-row>
 
-        <section>
-          <div class="text-h6 my-4">Foods</div>
-          <v-row align="center">
-            <v-col>
-              <v-text-field
-                v-model="search"
-                clearable
-                prepend-inner-icon="mdi-magnify"
-                label="Search"
-                hide-details
-              />
-            </v-col>
-            <v-spacer />
-            <v-col cols="auto">
-              <MealPlanFoodAddDialog
-                :meal_plan="meal_plan"
-                @add="addFoodToMealPlan($event)"
-              />
-            </v-col>
-          </v-row>
+        <div class="text-h6 my-4">Foods</div>
+        <v-row align="center">
+          <v-col>
+            <v-text-field
+              v-model="search"
+              clearable
+              prepend-inner-icon="mdi-magnify"
+              label="Search"
+              hide-details
+            />
+          </v-col>
+          <v-spacer />
+          <v-col cols="auto">
+            <MealPlanFoodAddDialog
+              :meal_plan="meal_plan"
+              @add="addFoodToMealPlan($event)"
+            />
+          </v-col>
+        </v-row>
 
-          <v-data-table
-            :search="search"
-            :headers="foodsTableHeaders"
-            :items="meal_plan.foods"
-            :items-per-page="-1"
-            hide-default-footer
+        <v-data-table
+          :search="search"
+          :headers="foodsTableHeaders"
+          :items="meal_plan.foods"
+          :items-per-page="-1"
+          hide-default-footer
+        >
+          <template v-slot:item.image="{ item }">
+            <v-img width="4em" contain :src="imageSrc(item.food, true)" />
+          </template>
+
+          <template v-slot:item.quantity="{ item }">
+            <v-text-field
+              type="number"
+              v-model="item.quantity"
+              hide-details
+              density="compact"
+            />
+          </template>
+
+          <template
+            v-for="macro in macroKeys"
+            v-slot:[`item.food.serving.macronutrients.${macro}`]="{ item }"
           >
-            <template v-slot:item.image="{ item }">
-              <v-img width="4em" contain :src="imageSrc(item.food, true)" />
-            </template>
+            <v-chip :color="colors[macro]" variant="flat">
+              {{ item.food.serving.macronutrients[macro] }}
+            </v-chip>
+          </template>
 
-            <template v-slot:item.quantity="{ item }">
-              <v-text-field
-                type="number"
-                v-model="item.quantity"
-                hide-details
-                density="compact"
-              />
-            </template>
+          <template v-slot:item.food.serving="{ item }">
+            {{ item.food.serving.size }} {{ item.food.serving.unit }}
+          </template>
 
-            <template
-              v-for="macro in macroKeys"
-              v-slot:[`item.food.serving.macronutrients.${macro}`]="{ item }"
-            >
-              <v-chip :color="colors[macro]" variant="flat">
-                {{ item.food.serving.macronutrients[macro] }}
-              </v-chip>
-            </template>
+          <template v-slot:item.remove="{ index }">
+            <v-btn
+              icon="mdi-delete"
+              @click="remove_food_from_plan(index)"
+              variant="flat"
+            />
+          </template>
 
-            <template v-slot:item.food.serving="{ item }">
-              {{ item.food.serving.size }} {{ item.food.serving.unit }}
-            </template>
-
-            <template v-slot:item.remove="{ index }">
-              <v-btn
-                icon="mdi-delete"
-                @click="remove_food_from_plan(index)"
-                variant="flat"
-              />
-            </template>
-
-            <template v-slot:item.edit="{ item, index }">
-              <MealPlanFoodEditDialog
-                :mealPlanRecord="item"
-                @edit="updateMealPlanFood(index, $event)"
-              />
-            </template>
-          </v-data-table>
-        </section>
+          <template v-slot:item.edit="{ item, index }">
+            <MealPlanFoodEditDialog
+              :mealPlanRecord="item"
+              @edit="updateMealPlanFood(index, $event)"
+            />
+          </template>
+        </v-data-table>
       </v-card-text>
     </template>
 
