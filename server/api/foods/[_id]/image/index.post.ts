@@ -3,7 +3,7 @@ import { storeImageToS3 } from "~~/server/s3";
 export default defineEventHandler(async (event) => {
   const user_id = await getUserId(event);
 
-  const _id = event.context.params?._id;
+  const _id = getRouterParam(event, "_id");
   if (!_id)
     throw createError({ statusCode: 400, statusMessage: "Missing _id" });
 

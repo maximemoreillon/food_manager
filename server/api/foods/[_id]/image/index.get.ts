@@ -4,7 +4,7 @@ export default defineEventHandler(async (event) => {
   const searchParams = getQuery(event);
   const { thumbnail } = searchParams;
 
-  const _id = event.context.params?._id;
+  const _id = getRouterParam(event, "_id");
   if (!_id)
     throw createError({ statusCode: 400, statusMessage: "Missing _id" });
 

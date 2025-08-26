@@ -4,7 +4,7 @@ export default defineEventHandler(async (event) => {
   const user_id = await getUserId(event);
 
   // Note: destructuring results in error
-  const _id = event.context.params?._id;
+  const _id = getRouterParam(event, "_id");
   if (!_id)
     throw createError({
       statusCode: 400,

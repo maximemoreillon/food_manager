@@ -2,7 +2,7 @@ export default defineEventHandler(async (event) => {
   const user_id = await getUserId(event);
 
   // Note: destructuring results in error
-  const _id = event.context.params?._id;
+  const _id = getRouterParam(event, "_id");
 
   const item = await MealPlan.findOne({ _id, user_id });
   if (!item)
