@@ -12,12 +12,12 @@
 </template>
 
 <script lang="ts" setup>
-const route = useRoute();
-const searchString = ref(route.query.search);
+// const route = useRoute();
+const props = defineProps<{ modelValue: string | undefined }>();
+const emit = defineEmits(["update:modelValue"]);
+const searchString = ref(props.modelValue);
 
 function submit() {
-  navigateTo({
-    query: { ...route.query, search: searchString.value, page: 1 },
-  });
+  emit("update:modelValue", searchString.value);
 }
 </script>

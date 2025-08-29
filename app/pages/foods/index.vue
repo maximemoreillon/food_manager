@@ -21,7 +21,10 @@
           <template v-slot:top>
             <v-row align="baseline" dense>
               <v-col cols="12" md="6">
-                <FoodSearch />
+                <FoodSearch
+                  :model-value="queryOptions.search as string"
+                  @update:model-value="handleSearch"
+                />
               </v-col>
               <v-spacer />
               <v-col cols="auto">
@@ -70,32 +73,45 @@ const { data, pending } = await useFetch<FoodsFetchResponse>(`/api/foods`, {
   query,
 });
 
-const queryOptions = ref({
-  page: data.value?.page,
-  itemsPerPage: data.value?.itemsPerPage,
-  hidden: data.value?.hidden,
-  sortBy: [
-    {
-      key: data.value?.sort,
-      order: data.value?.order,
-    },
-  ] as SortItem[],
-});
+function urlSearchparamsToQueryOptions() {
+  return {
+    page: data.value?.page,
+    itemsPerPage: data.value?.itemsPerPage,
+    hidden: data.value?.hidden,
+    sortBy: [
+      {
+        key: data.value?.sort,
+        order: data.value?.order,
+      },
+    ] as SortItem[],
+    search: route.query.search,
+  };
+}
+
+function queryOptionsToUrlQuery() {
+  const { page, itemsPerPage, sortBy, hidden, search } = queryOptions.value;
+  const query: any = {
+    ...route.query,
+    page: page?.toString(),
+    itemsPerPage: itemsPerPage?.toString(),
+    sort: sortBy?.at(0)?.key,
+    order: sortBy?.at(0)?.order,
+    hidden: hidden || undefined,
+    search: search || undefined,
+  };
+  navigateTo({ query });
+}
+
+const queryOptions = ref(urlSearchparamsToQueryOptions());
+function handleSearch(searchString: string) {
+  queryOptions.value.search = searchString;
+  queryOptions.value.page = 1;
+}
 
 watch(
   queryOptions,
-  (newVal) => {
-    const { page, itemsPerPage, sortBy, hidden } = newVal;
-    const query: any = {
-      ...route.query,
-      page: page?.toString(),
-      itemsPerPage: itemsPerPage?.toString(),
-      sort: sortBy?.at(0)?.key,
-      order: sortBy?.at(0)?.order,
-      // TODO: not very nice
-      hidden: hidden ? hidden : undefined,
-    };
-    navigateTo({ query });
+  () => {
+    queryOptionsToUrlQuery();
   },
   { deep: true }
 );
