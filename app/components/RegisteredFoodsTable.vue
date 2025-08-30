@@ -50,6 +50,15 @@
     <template v-slot:item.food.serving="{ item }">
       {{ item.serving.size }} {{ item.serving.unit }}
     </template>
+
+    <template
+      v-for="macro in macroKeys"
+      v-slot:[`item.serving.macronutrients.${macro}`]="{ item }"
+    >
+      <v-chip :color="colors[macro]" variant="flat">
+        {{ item.serving.macronutrients[macro] }}
+      </v-chip>
+    </template>
   </v-data-table-server>
 </template>
 
