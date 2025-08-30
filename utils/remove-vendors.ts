@@ -33,7 +33,7 @@ const Food = mongoose.model("Food", foodSchema);
 Food.find({}).then(async (foods) => {
   for (const { _id, vendor, name } of foods) {
     if (vendor) {
-      const newName = `${vendor} ${name}`;
+      const newName = `${name} (${vendor})`;
       await Food.findOneAndUpdate(_id, { name: newName, vendor: null });
       console.log(`Updated ${newName}`);
     } else {
