@@ -85,15 +85,7 @@
             />
           </v-col>
         </v-row>
-        <v-row>
-          <v-col>
-            <v-combobox
-              label="Vendor"
-              v-model="food.vendor"
-              :items="vendors ? vendors : []"
-              hide-details
-            />
-          </v-col>
+        <!-- <v-row>
           <v-col>
             <v-text-field
               label="Price"
@@ -102,7 +94,7 @@
               hide-details
             />
           </v-col>
-        </v-row>
+        </v-row> -->
 
         <FoodImageManagement
           :food="food"
@@ -130,7 +122,6 @@ const {
   error,
 } = await useFetch<FoodT>(`/api/foods/${route.params._id}`, { deep: true });
 
-const { data: vendors } = await useFetch<string[]>(`/api/foods/vendors`);
 const { data: openAi } = await useFetch("/api/openai");
 
 // TODO: have a better snackbar management

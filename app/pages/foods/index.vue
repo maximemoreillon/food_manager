@@ -119,7 +119,6 @@ watch(
 const baseHeaders = ref([
   { title: "Image", key: "image" },
   { title: "Name", key: "name" },
-  { title: "Vendor", key: "vendor" },
   { title: "Serving", key: "serving" },
   { title: "Calories [kcal]", key: "serving.calories" },
   {
@@ -131,7 +130,7 @@ const baseHeaders = ref([
     title: "Carbs [g]",
     key: "serving.macronutrients.carbohydrates",
   },
-  { title: "Price", key: "serving.price" },
+  // { title: "Price", key: "serving.price" },
 ]);
 
 const headers = computed(() => {

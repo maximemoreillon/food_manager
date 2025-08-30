@@ -69,7 +69,6 @@ const emit = defineEmits(["foodAdded"]);
 const headers = ref([
   { title: "", key: "image" },
   { title: "Name", key: "name" },
-  { title: "Vendor", key: "vendor" },
   { title: "Serving", key: "serving" },
   { title: "Calories", key: "serving.calories" },
   { title: "Protein", key: "serving.macronutrients.protein" },

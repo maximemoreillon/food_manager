@@ -10,7 +10,6 @@ export type Macros = {
 export type FoodT = {
   _id?: string;
   name: string;
-  vendor?: string;
   barcode?: string;
 
   user_id: string;
@@ -30,8 +29,6 @@ export type FoodT = {
 
 export const foodSchema = new Schema({
   name: String,
-  vendor: String,
-  barcode: String,
 
   user_id: String,
   hidden: Boolean,
@@ -50,6 +47,7 @@ export const foodSchema = new Schema({
       carbohydrates: { type: Number, default: 0 },
     },
   },
+  barcode: String,
 });
 
 export const Food = defineMongooseModel({

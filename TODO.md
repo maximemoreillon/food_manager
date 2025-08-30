@@ -11,7 +11,6 @@
 - [x] OpenAI label parsing
   - [ ] Find better way to check if openAI is available on the GUI
 - [ ] Barcode scanner
-- [x] Vendors
 - [ ] toObject ?
 - [x] Pagination in RegisteredFoodsTable
 - [x] Hidden filtering
