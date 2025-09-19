@@ -22,7 +22,7 @@ export default defineEventHandler(async (event) => {
     order = "asc",
     search,
     hidden,
-    ...rest
+    // ...rest
   } = await getValidatedQuery(event, querySchema.parse);
 
   const sortMap = {
@@ -32,7 +32,10 @@ export default defineEventHandler(async (event) => {
 
   const skip = (page - 1) * itemsPerPage;
 
-  const query: QueryOptions = { user_id, ...rest };
+  const query: QueryOptions = {
+    user_id,
+    // ...rest
+  };
   if (search && search !== "") query.name = { $regex: search, $options: "i" };
   if (!hidden) query.$or = [{ hidden: { $exists: false } }, { hidden: false }];
 
@@ -51,9 +54,11 @@ export default defineEventHandler(async (event) => {
     sort,
     order,
     hidden,
+    search,
   };
 });
 
+// TODO: this should be inferred
 export type FoodsFetchResponse = {
   page: number;
   itemsPerPage: number;
@@ -61,5 +66,6 @@ export type FoodsFetchResponse = {
   order: string;
   total: number;
   items: FoodT[];
-  hidden: boolean;
+  hidden?: boolean;
+  search?: string;
 };

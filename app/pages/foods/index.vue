@@ -73,36 +73,19 @@ const { data, pending } = await useFetch<FoodsFetchResponse>(`/api/foods`, {
   query,
 });
 
-function urlSearchparamsToQueryOptions() {
-  return {
-    page: data.value?.page,
-    itemsPerPage: data.value?.itemsPerPage,
-    hidden: data.value?.hidden,
-    sortBy: [
-      {
-        key: data.value?.sort,
-        order: data.value?.order,
-      },
-    ] as SortItem[],
-    search: route.query.search,
-  };
-}
+const queryOptions = ref({
+  page: data.value?.page,
+  itemsPerPage: data.value?.itemsPerPage,
+  hidden: data.value?.hidden,
+  search: data.value?.search,
+  sortBy: [
+    {
+      key: data.value?.sort,
+      order: data.value?.order,
+    },
+  ] as SortItem[],
+});
 
-function queryOptionsToUrlQuery() {
-  const { page, itemsPerPage, sortBy, hidden, search } = queryOptions.value;
-  const query: any = {
-    ...route.query,
-    page: page?.toString(),
-    itemsPerPage: itemsPerPage?.toString(),
-    sort: sortBy?.at(0)?.key,
-    order: sortBy?.at(0)?.order,
-    hidden: hidden || undefined,
-    search: search || undefined,
-  };
-  navigateTo({ query });
-}
-
-const queryOptions = ref(urlSearchparamsToQueryOptions());
 function handleSearch(searchString: string) {
   queryOptions.value.search = searchString;
   queryOptions.value.page = 1;
@@ -111,7 +94,17 @@ function handleSearch(searchString: string) {
 watch(
   queryOptions,
   () => {
-    queryOptionsToUrlQuery();
+    const { page, itemsPerPage, sortBy, hidden, search } = queryOptions.value;
+    const query: any = {
+      ...route.query,
+      page: page?.toString(),
+      itemsPerPage: itemsPerPage?.toString(),
+      sort: sortBy?.at(0)?.key,
+      order: sortBy?.at(0)?.order,
+      hidden: hidden || undefined,
+      search: search || undefined,
+    };
+    navigateTo({ query });
   },
   { deep: true }
 );
