@@ -3,7 +3,7 @@ import { z } from "zod";
 import { FoodT } from "~~/server/models/food.schema";
 
 const querySchema = z.object({
-  itemsPerPage: z.coerce.number().optional(),
+  itemsPerPage: z.coerce.number().gt(0).lt(100).optional(),
   page: z.coerce.number().gt(0).optional(),
   sort: z.string().optional(),
   order: z.union([z.literal("asc"), z.literal("desc")]).optional(),
@@ -12,7 +12,6 @@ const querySchema = z.object({
 });
 
 export default defineEventHandler(async (event) => {
-  // TODO: make a getUserId util
   const user_id = await getUserId(event);
 
   const {
@@ -22,7 +21,6 @@ export default defineEventHandler(async (event) => {
     order = "asc",
     search,
     hidden,
-    // ...rest
   } = await getValidatedQuery(event, querySchema.parse);
 
   const sortMap = {
@@ -32,17 +30,14 @@ export default defineEventHandler(async (event) => {
 
   const skip = (page - 1) * itemsPerPage;
 
-  const query: QueryOptions = {
-    user_id,
-    // ...rest
-  };
+  const query: QueryOptions = { user_id };
   if (search && search !== "") query.name = { $regex: search, $options: "i" };
   if (!hidden) query.$or = [{ hidden: { $exists: false } }, { hidden: false }];
 
   const items = await Food.find(query)
     .sort({ [sort]: sortMap[order] })
     .skip(skip)
-    .limit(Math.max(Number(itemsPerPage), 0));
+    .limit(itemsPerPage);
 
   const total = await Food.countDocuments(query);
 

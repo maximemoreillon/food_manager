@@ -1,9 +1,10 @@
 import { z } from "zod";
 import { MealPlanT } from "~~/server/models/mealPlan.schema";
 import getUserId from "~~/server/utils/getUserId";
+import { QueryOptions } from "mongoose";
 
 const querySchema = z.object({
-  itemsPerPage: z.coerce.number().optional(),
+  itemsPerPage: z.coerce.number().gt(0).lt(100).optional(),
   page: z.coerce.number().optional(),
   sort: z.string().optional(),
   order: z.union([z.literal("asc"), z.literal("desc")]).optional(),
@@ -23,7 +24,6 @@ export default defineEventHandler(async (event) => {
     search,
     to,
     from,
-    ...rest
   } = await getValidatedQuery(event, querySchema.parse);
 
   const sortMap = {
@@ -33,7 +33,7 @@ export default defineEventHandler(async (event) => {
 
   const skip = (page - 1) * itemsPerPage;
 
-  const query: any = { user_id, ...rest };
+  const query: QueryOptions = { user_id };
   if (search && search !== "") query.name = { $regex: search, $options: "i" };
 
   if (to || from) {
@@ -45,7 +45,7 @@ export default defineEventHandler(async (event) => {
   const items = await MealPlan.find(query)
     .skip(skip)
     .sort({ [sort]: sortMap[order] })
-    .limit(Math.max(itemsPerPage, 0));
+    .limit(itemsPerPage);
 
   const total = await MealPlan.countDocuments(query);
 
@@ -56,6 +56,7 @@ export default defineEventHandler(async (event) => {
     itemsPerPage,
     sort,
     order,
+    search,
   };
 });
 
@@ -66,4 +67,5 @@ export type MealPlansResponse = {
   itemsPerPage: number;
   items: MealPlanT[];
   total: number;
+  search?: string;
 };
