@@ -4,7 +4,7 @@ import getUserId from "~~/server/utils/getUserId";
 import { QueryOptions } from "mongoose";
 
 const querySchema = z.object({
-  itemsPerPage: z.coerce.number().gt(0).lt(100).optional(),
+  itemsPerPage: z.coerce.number().gt(0).lte(500).optional(),
   page: z.coerce.number().optional(),
   sort: z.string().optional(),
   order: z.union([z.literal("asc"), z.literal("desc")]).optional(),
