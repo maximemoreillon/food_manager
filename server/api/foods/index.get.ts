@@ -18,7 +18,7 @@ export default defineEventHandler(async (event) => {
     itemsPerPage = 10,
     page = 1,
     sort = "name",
-    order = "asc",
+    order = "desc",
     search,
     hidden,
   } = await getValidatedQuery(event, querySchema.parse);
