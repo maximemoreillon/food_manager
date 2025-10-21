@@ -1,7 +1,19 @@
 <template>
   <v-dialog max-width="50rem">
     <template v-slot:activator="{ props: activatorProps }">
-      <v-btn v-bind="activatorProps" icon="mdi-plus" />
+      <v-btn
+        v-bind="activatorProps"
+        prepend-icon="mdi-plus"
+        text="Create"
+        color="primary"
+      />
+      <!-- <v-fab
+        v-bind="activatorProps"
+        icon="mdi-plus"
+        color="primary"
+        location="end top"
+        app
+      /> -->
     </template>
     <v-card>
       <v-card-title> New meal plan </v-card-title>
