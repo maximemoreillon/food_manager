@@ -50,7 +50,6 @@ const calorie_bar_max = computed(() => Math.max(props.target, props.calories));
 .wrapper {
   position: relative;
   /* border: 1px solid #dddddd; */
-  margin-top: 0.5em;
   border-radius: 0.5em;
   height: 2em;
   min-width: 5rem;

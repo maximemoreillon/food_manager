@@ -1,31 +1,37 @@
 <template>
-  <v-row align="center">
-    <v-col cols="auto">
+  <div class="text-center my-8" v-if="loading">
+    <v-progress-circular indeterminate />
+  </div>
+  <template v-else-if="meal_plan">
+    <v-row align="center">
+      <!-- <v-col cols="auto">
       <v-btn icon="mdi-arrow-left" exact to="/meal_plans" />
-    </v-col>
-    <v-col>
-      <h2>Meal plan</h2>
-    </v-col>
-    <v-col cols="auto">
-      <v-btn
-        @click="saveMealPlan()"
-        :loading="saving"
-        icon="mdi-content-save"
-      />
-    </v-col>
-    <v-col cols="auto">
-      <v-btn
-        @click="duplicate_meal_plan()"
-        :loading="duplicating"
-        icon="mdi-content-copy"
-      />
-    </v-col>
-    <v-col cols="auto">
-      <MealPlanDeleteButton />
-    </v-col>
-  </v-row>
+    </v-col> -->
+      <v-col cols="12" md="6">
+        <h2>Meal plan</h2>
+      </v-col>
+      <v-spacer />
+      <v-col cols="auto">
+        <v-btn
+          @click="saveMealPlan()"
+          :loading="saving"
+          prepend-icon="mdi-content-save"
+          text="Save"
+        />
+      </v-col>
+      <v-col cols="auto">
+        <v-btn
+          @click="duplicate_meal_plan()"
+          :loading="duplicating"
+          prepend-icon="mdi-content-copy"
+          text="Duplicate"
+        />
+      </v-col>
+      <v-col cols="auto">
+        <MealPlanDeleteButton />
+      </v-col>
+    </v-row>
 
-  <template v-if="meal_plan && !loading">
     <v-row align="center">
       <v-col cols="12" md="6">
         <v-text-field
@@ -48,7 +54,7 @@
       </v-col>
     </v-row>
 
-    <div class="text-h6 my-4">Calories and Macros</div>
+    <h3 class="my-4">Calories and Macros</h3>
     <v-row align="center" justify="space-between" dense>
       <v-col cols="12" md="3">
         <v-text-field
@@ -76,7 +82,7 @@
         </v-row>
       </v-col>
     </v-row>
-    <v-row>
+    <v-row dense>
       <v-col>
         <MealPlanCaloriesMacros
           :target="meal_plan.calories_target"
@@ -86,7 +92,7 @@
       </v-col>
     </v-row>
 
-    <div class="text-h6 my-4">Foods</div>
+    <h3 class="my-4">Foods</h3>
     <v-row align="center">
       <v-col>
         <v-text-field
@@ -108,7 +114,7 @@
 
     <v-sheet rounded>
       <v-data-table
-        class="mt-6"
+        class="mt-4"
         :search="search"
         :headers="foodsTableHeaders"
         :items="meal_plan.foods"

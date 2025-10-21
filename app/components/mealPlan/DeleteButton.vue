@@ -3,7 +3,8 @@
     color="#c00000"
     @click="deleteMealPlan()"
     :loading="deleting"
-    icon="mdi-delete"
+    prepend-icon="mdi-delete"
+    text="Delete"
   />
 
   <v-snackbar :color="snackbar.color" v-model="snackbar.show">
