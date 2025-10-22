@@ -112,57 +112,55 @@
       </v-col>
     </v-row>
 
-    <v-sheet rounded>
-      <v-data-table
-        class="mt-4"
-        :search="search"
-        :headers="foodsTableHeaders"
-        :items="meal_plan.foods"
-        :items-per-page="-1"
-        hide-default-footer
+    <v-data-table
+      class="mt-4"
+      :search="search"
+      :headers="foodsTableHeaders"
+      :items="meal_plan.foods"
+      :items-per-page="-1"
+      hide-default-footer
+    >
+      <template v-slot:item.image="{ item }">
+        <v-img width="4em" contain :src="imageSrc(item.food, true)" />
+      </template>
+
+      <template v-slot:item.quantity="{ item }">
+        <v-text-field
+          type="number"
+          v-model="item.quantity"
+          hide-details
+          density="compact"
+        />
+      </template>
+
+      <template
+        v-for="macro in macroKeys"
+        v-slot:[`item.food.serving.macronutrients.${macro}`]="{ item }"
       >
-        <template v-slot:item.image="{ item }">
-          <v-img width="4em" contain :src="imageSrc(item.food, true)" />
-        </template>
+        <v-chip :color="colors[macro]" variant="flat">
+          {{ item.food.serving.macronutrients[macro] }}
+        </v-chip>
+      </template>
 
-        <template v-slot:item.quantity="{ item }">
-          <v-text-field
-            type="number"
-            v-model="item.quantity"
-            hide-details
-            density="compact"
-          />
-        </template>
+      <template v-slot:item.food.serving="{ item }">
+        {{ item.food.serving.size }} {{ item.food.serving.unit }}
+      </template>
 
-        <template
-          v-for="macro in macroKeys"
-          v-slot:[`item.food.serving.macronutrients.${macro}`]="{ item }"
-        >
-          <v-chip :color="colors[macro]" variant="flat">
-            {{ item.food.serving.macronutrients[macro] }}
-          </v-chip>
-        </template>
+      <template v-slot:item.remove="{ index }">
+        <v-btn
+          icon="mdi-delete"
+          @click="remove_food_from_plan(index)"
+          variant="flat"
+        />
+      </template>
 
-        <template v-slot:item.food.serving="{ item }">
-          {{ item.food.serving.size }} {{ item.food.serving.unit }}
-        </template>
-
-        <template v-slot:item.remove="{ index }">
-          <v-btn
-            icon="mdi-delete"
-            @click="remove_food_from_plan(index)"
-            variant="flat"
-          />
-        </template>
-
-        <template v-slot:item.edit="{ item, index }">
-          <MealPlanFoodEditDialog
-            :mealPlanRecord="item"
-            @edit="updateMealPlanFood(index, $event)"
-          />
-        </template>
-      </v-data-table>
-    </v-sheet>
+      <template v-slot:item.edit="{ item, index }">
+        <MealPlanFoodEditDialog
+          :mealPlanRecord="item"
+          @edit="updateMealPlanFood(index, $event)"
+        />
+      </template>
+    </v-data-table>
   </template>
 
   <v-snackbar :color="snackbar.color" v-model="snackbar.show">

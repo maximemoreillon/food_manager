@@ -5,6 +5,7 @@
     :loading="deleting"
     prepend-icon="mdi-delete"
     text="Delete"
+    variant="outlined"
   />
 
   <v-snackbar :color="snackbar.color" v-model="snackbar.show">
