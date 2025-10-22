@@ -1,7 +1,12 @@
 <template>
   <v-dialog max-width="40rem" v-model="dialog">
     <template v-slot:activator="{ props: activatorProps }">
-      <v-btn v-bind="activatorProps" icon="mdi-label" variant="flat" />
+      <v-btn
+        v-bind="activatorProps"
+        prepend-icon="mdi-label"
+        text="Parse label"
+        :variant="props.variant"
+      />
     </template>
     <template v-slot:default="{ isActive }">
       <v-card>
@@ -42,6 +47,9 @@
 const image = ref<File | null>(null);
 const dialog = ref(false);
 const loading = ref(false);
+const props = defineProps<{
+  variant?: "flat" | "text" | "elevated" | "plain" | "tonal" | "outlined";
+}>();
 const emit = defineEmits(["parsed"]);
 async function parseLabel() {
   if (!image.value) {

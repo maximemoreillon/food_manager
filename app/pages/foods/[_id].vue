@@ -9,6 +9,9 @@
       </v-col>
       <v-spacer />
       <v-col cols="auto">
+        <FoodLabelParsing @parsed="handleParsedLabel" />
+      </v-col>
+      <v-col cols="auto">
         <v-btn
           prepend-icon="mdi-content-save"
           text="Save"
@@ -56,12 +59,10 @@
               hide-details
             />
           </v-col>
-          <v-col cols="auto" v-if="openAi?.available">
-            <FoodLabelParsing @parsed="handleParsedLabel" />
-          </v-col>
+          <v-col cols="auto" v-if="openAi?.available"> </v-col>
         </v-row>
         <v-row>
-          <v-col>
+          <v-col cols="12" sm="4">
             <v-text-field
               label="Protein [g]"
               v-model.number="food.serving.macronutrients.protein"
@@ -69,7 +70,7 @@
               hide-details
             />
           </v-col>
-          <v-col>
+          <v-col cols="12" sm="4">
             <v-text-field
               label="Fat [g]"
               v-model.number="food.serving.macronutrients.fat"
@@ -77,7 +78,7 @@
               hide-details
             />
           </v-col>
-          <v-col>
+          <v-col cols="12" sm="4">
             <v-text-field
               label="Carbs [g]"
               v-model.number="food.serving.macronutrients.carbohydrates"
