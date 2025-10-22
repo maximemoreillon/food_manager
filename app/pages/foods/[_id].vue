@@ -1,28 +1,36 @@
 <template>
-  <v-card :loading="loading" class="mx-auto" max-width="50em">
-    <template v-if="!error && food && !loading">
-      <v-toolbar flat>
-        <v-btn icon="mdi-arrow-left" to="/foods" exact />
-        <v-toolbar-title>{{ food.name || "unnnamed food" }}</v-toolbar-title>
-        <v-spacer />
-
+  <div class="text-center my-8" v-if="loading">
+    <v-progress-circular indeterminate />
+  </div>
+  <template v-if="!error && food && !loading">
+    <v-breadcrumbs v-if="breadcrumbs" :items="breadcrumbs" />
+    <v-row align="center">
+      <!-- <v-col cols="auto">
+      <v-btn icon="mdi-arrow-left" exact to="/meal_plans" />
+    </v-col> -->
+      <v-col cols="12" md="6">
+        <h2>{{ food.name || "unnnamed food" }}</h2>
+      </v-col>
+      <v-spacer />
+      <v-col cols="auto" v-if="openAi?.available">
+        <FoodLabelParsing @parsed="handleParsedLabel" />
+      </v-col>
+      <v-col cols="auto">
         <v-btn
-          icon="mdi-content-save"
+          prepend-icon="mdi-content-save"
+          text="Save"
           @click="updateFood()"
           :loading="saving"
         />
+      </v-col>
+
+      <v-col cols="auto">
         <FoodDeleteButton />
-      </v-toolbar>
+      </v-col>
+    </v-row>
 
-      <v-img
-        v-if="food.image"
-        class="mt-3"
-        height="500"
-        :src="imageSrc(food)"
-        contain
-      />
-
-      <v-card-text>
+    <v-row>
+      <v-col>
         <v-row>
           <v-col>
             <v-text-field label="name" v-model="food.name" hide-details />
@@ -47,16 +55,13 @@
               hide-details
             />
           </v-col>
-          <v-col cols="5">
+          <v-col cols="12" md="5">
             <v-text-field
               label="Calories per serving"
               v-model.number="food.serving.calories"
               type="number"
               hide-details
             />
-          </v-col>
-          <v-col cols="auto" v-if="openAi?.available">
-            <FoodLabelParsing @parsed="handleParsedLabel" />
           </v-col>
         </v-row>
         <v-row>
@@ -85,35 +90,29 @@
             />
           </v-col>
         </v-row>
-        <!-- <v-row>
+        <v-row>
           <v-col>
-            <v-text-field
-              label="Price"
-              v-model.number="food.serving.price"
-              type="number"
-              hide-details
+            <FoodImageManagement
+              :food="food"
+              @upload="handleImageUploaded"
+              @delete="handleImageDeleted"
             />
           </v-col>
-        </v-row> -->
+        </v-row>
+      </v-col>
+      <v-col cols="12" md="4">
+        <v-img v-if="food.image" :src="imageSrc(food)" max-height="100em" />
+      </v-col>
+    </v-row>
+  </template>
 
-        <FoodImageManagement
-          :food="food"
-          @upload="handleImageUploaded"
-          @delete="handleImageDeleted"
-        />
-      </v-card-text>
-    </template>
-
-    <v-snackbar :color="snackbar.color" v-model="snackbar.show">
-      {{ snackbar.text }}
-    </v-snackbar>
-  </v-card>
+  <v-snackbar :color="snackbar.color" v-model="snackbar.show">
+    {{ snackbar.text }}
+  </v-snackbar>
 </template>
 
 <script lang="ts" setup>
 const route = useRoute();
-
-const saving = ref(false);
 
 // TODO: is this really how type safety should be enforced?
 const {
@@ -121,6 +120,15 @@ const {
   pending: loading,
   error,
 } = await useFetch<FoodT>(`/api/foods/${route.params._id}`, { deep: true });
+
+const saving = ref(false);
+const breadcrumbs = computed(() => [
+  { title: "Foods", to: "/foods", disabled: false },
+  {
+    title: food.value?.name || "unidentified food",
+    disabed: true,
+  },
+]);
 
 const { data: openAi } = await useFetch("/api/openai");
 

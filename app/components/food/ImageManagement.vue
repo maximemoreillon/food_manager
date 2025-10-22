@@ -1,4 +1,5 @@
 <template>
+  <!-- TODO: consider having this as a modal -->
   <v-row align="center">
     <v-col>
       <v-file-input
@@ -27,7 +28,7 @@
         @click="deleteFoodImage()"
         variant="outlined"
       >
-        <v-icon>mdi-delete</v-icon>
+        <v-icon>mdi-image-off</v-icon>
       </v-btn>
     </v-col>
   </v-row>

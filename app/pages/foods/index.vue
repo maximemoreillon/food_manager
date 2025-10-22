@@ -1,66 +1,64 @@
 <template>
-  <v-card>
-    <v-toolbar flat>
-      <v-toolbar-title>Foods</v-toolbar-title>
-      <v-spacer />
+  <v-row>
+    <v-col>
+      <h2>Foods</h2>
+    </v-col>
+    <v-spacer />
+    <v-col cols="auto">
       <FoodCreateDialog />
-    </v-toolbar>
+    </v-col>
+  </v-row>
 
-    <v-card-text v-if="data">
-      <!-- TODO: ClientOnly might not be needed -->
-      <ClientOnly>
-        <v-data-table-server
-          :loading="pending"
-          :headers="headers"
-          :items="data.items"
-          :items-length="data.total"
-          v-model:sort-by="queryOptions.sortBy"
-          v-model:items-per-page="queryOptions.itemsPerPage"
-          v-model:page="queryOptions.page"
-        >
-          <template v-slot:top>
-            <v-row align="baseline" dense>
-              <v-col cols="12" md="6">
-                <FoodSearch
-                  :model-value="queryOptions.search as string"
-                  @update:model-value="handleSearch"
-                />
-              </v-col>
-              <v-spacer />
-              <v-col cols="auto">
-                <v-checkbox label="Show hidden" v-model="queryOptions.hidden" />
-              </v-col>
-            </v-row>
-          </template>
+  <v-row align="baseline" dense>
+    <v-col cols="12" md="6">
+      <FoodSearch
+        :model-value="queryOptions.search as string"
+        @update:model-value="handleSearch"
+      />
+    </v-col>
+    <v-spacer />
+    <v-col cols="auto">
+      <v-checkbox label="Show hidden" v-model="queryOptions.hidden" />
+    </v-col>
+  </v-row>
 
-          <template v-slot:item.name="{ item }">
-            <NuxtLink :href="`/foods/${item._id}`">{{ item.name }}</NuxtLink>
-          </template>
+  <!-- TODO: ClientOnly might not be needed -->
+  <ClientOnly v-if="data">
+    <v-data-table-server
+      :loading="pending"
+      :headers="headers"
+      :items="data.items"
+      :items-length="data.total"
+      v-model:sort-by="queryOptions.sortBy"
+      v-model:items-per-page="queryOptions.itemsPerPage"
+      v-model:page="queryOptions.page"
+    >
+      <template v-slot:item.name="{ item }">
+        <NuxtLink :href="`/foods/${item._id}`">{{ item.name }}</NuxtLink>
+      </template>
 
-          <template
-            v-for="macro in macroKeys"
-            v-slot:[`item.serving.macronutrients.${macro}`]="{ item }"
-          >
-            <v-chip :color="colors[macro]" variant="flat">
-              {{ item.serving.macronutrients[macro] }}
-            </v-chip>
-          </template>
+      <template
+        v-for="macro in macroKeys"
+        v-slot:[`item.serving.macronutrients.${macro}`]="{ item }"
+      >
+        <v-chip :color="colors[macro]" variant="flat">
+          {{ item.serving.macronutrients[macro] }}
+        </v-chip>
+      </template>
 
-          <template v-slot:item.serving="{ item }">
-            {{ item.serving.size }} {{ item.serving.unit }}
-          </template>
+      <template v-slot:item.serving="{ item }">
+        {{ item.serving.size }} {{ item.serving.unit }}
+      </template>
 
-          <template v-slot:item.hidden="{ item }">
-            <v-icon v-if="item.hidden">mdi-check</v-icon>
-          </template>
+      <template v-slot:item.hidden="{ item }">
+        <v-icon v-if="item.hidden">mdi-check</v-icon>
+      </template>
 
-          <template v-slot:item.image="{ item }">
-            <v-img width="4em" contain :src="imageSrc(item, true)" />
-          </template>
-        </v-data-table-server>
-      </ClientOnly>
-    </v-card-text>
-  </v-card>
+      <template v-slot:item.image="{ item }">
+        <v-img width="4em" contain :src="imageSrc(item, true)" />
+      </template>
+    </v-data-table-server>
+  </ClientOnly>
 </template>
 
 <script lang="ts" setup>

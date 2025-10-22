@@ -1,5 +1,4 @@
 <template>
-  <!-- TODO: v-if breaks everything -->
   <v-form @submit.prevent="submit()" v-if="food">
     <v-row>
       <v-col>
@@ -7,9 +6,6 @@
       </v-col>
       <v-col cols="3">
         <v-text-field label="Quantity" v-model.number="quantity" />
-      </v-col>
-      <v-col cols="auto" v-if="openAi?.available">
-        <FoodLabelParsing @parsed="handleParsedLabel" />
       </v-col>
     </v-row>
     <v-row>
@@ -55,8 +51,10 @@
       </v-col>
     </v-row>
 
-    <v-row>
-      <v-spacer></v-spacer>
+    <v-row justify="end">
+      <v-col cols="auto" v-if="openAi?.available">
+        <FoodLabelParsing @parsed="handleParsedLabel" variant="outlined" />
+      </v-col>
       <v-col cols="auto" v-if="!isRegistered">
         <v-btn
           @click="registerFoodInDb()"

@@ -1,58 +1,56 @@
 <template>
-  <v-card>
-    <v-toolbar flat>
-      <v-toolbar-title> Meal plans </v-toolbar-title>
-      <v-spacer />
+  <v-row>
+    <v-col>
+      <h2>Meal plans</h2>
+    </v-col>
+    <v-spacer />
+    <v-col cols="auto">
       <MealPlanCreateDialog />
-    </v-toolbar>
+    </v-col>
+  </v-row>
 
-    <v-card-text>
-      <!-- TODO: ClientOnly fixes hydration problems but it's a bandaid solution -->
-      <ClientOnly>
-        <div v-if="error" class="text-error text-center">
-          Error loading data
-        </div>
-        <v-data-table-server
-          v-else-if="data"
-          :loading="pending"
-          :headers="headers"
-          :items="data.items"
-          :items-length="data.total"
-          v-model:sort-by="queryOptions.sortBy"
-          v-model:items-per-page="queryOptions.itemsPerPage"
-          v-model:page="queryOptions.page"
-        >
-          <template v-slot:item.name="{ item }">
-            <NuxtLink :href="`/meal_plans/${item._id}`">
-              {{ item.name }}
-            </NuxtLink>
-          </template>
+  <ClientOnly>
+    <div v-if="error" class="text-error text-center">Error loading data</div>
+    <v-data-table-server
+      class="my-4"
+      v-else-if="data"
+      :loading="pending"
+      :headers="headers"
+      :items="data.items"
+      :items-length="data.total"
+      v-model:sort-by="queryOptions.sortBy"
+      v-model:items-per-page="queryOptions.itemsPerPage"
+      v-model:page="queryOptions.page"
+    >
+      <template v-slot:item.name="{ item }">
+        <NuxtLink :href="`/meal_plans/${item._id}`">
+          {{ item.name }}
+        </NuxtLink>
+      </template>
 
-          <template v-slot:item.date="{ item }">
-            <span>{{ formatDate(item.date) }}</span>
-          </template>
+      <template v-slot:item.date="{ item }">
+        <span>{{ formatDate(item.date) }}</span>
+      </template>
 
-          <template v-slot:item.calories="{ item }">
-            {{ item.calories || 0 }}/{{ item.calories_target || 0 }}
-          </template>
+      <template v-slot:item.calories="{ item }">
+        {{ item.calories || 0 }}/{{ item.calories_target || 0 }}
+      </template>
 
-          <template v-slot:item.macronutrients="{ item }">
-            <MealPlanCaloriesMacros
-              v-if="item.calories_target"
-              :target="item.calories_target"
-              :calories="item.calories || 0"
-              :macronutrients="item.macronutrients"
-            />
-          </template>
+      <template v-slot:item.macronutrients="{ item }">
+        <MealPlanCaloriesMacros
+          v-if="item.calories_target"
+          :target="item.calories_target"
+          :calories="item.calories || 0"
+          :macronutrients="item.macronutrients"
+        />
+      </template>
 
-          <template v-slot:item.incomplete="{ item }">
-            <v-icon v-if="item.incomplete"> mdi-alert </v-icon>
-          </template>
-        </v-data-table-server>
-        <div v-else-if="!pending" class="text-error">No data available</div>
-      </ClientOnly>
-    </v-card-text>
-  </v-card>
+      <template v-slot:item.incomplete="{ item }">
+        <v-icon v-if="item.incomplete"> mdi-alert </v-icon>
+      </template>
+    </v-data-table-server>
+    <div v-else-if="!pending" class="text-error">No data available</div>
+  </ClientOnly>
 </template>
 
 <script setup lang="ts">
