@@ -1,5 +1,9 @@
 <template>
+  <div class="text-center my-8" v-if="loading">
+    <v-progress-circular indeterminate />
+  </div>
   <template v-if="!error && food && !loading">
+    <v-breadcrumbs v-if="breadcrumbs" :items="breadcrumbs" />
     <v-row align="center">
       <!-- <v-col cols="auto">
       <v-btn icon="mdi-arrow-left" exact to="/meal_plans" />
@@ -111,14 +115,21 @@
 <script lang="ts" setup>
 const route = useRoute();
 
-const saving = ref(false);
-
 // TODO: is this really how type safety should be enforced?
 const {
   data: food,
   pending: loading,
   error,
 } = await useFetch<FoodT>(`/api/foods/${route.params._id}`, { deep: true });
+
+const saving = ref(false);
+const breadcrumbs = computed(() => [
+  { title: "Foods", href: "/foods", disabled: false },
+  {
+    title: food.value?.name || "unidentified food",
+    disabed: true,
+  },
+]);
 
 const { data: openAi } = await useFetch("/api/openai");
 

@@ -3,6 +3,7 @@
     <v-progress-circular indeterminate />
   </div>
   <template v-else-if="meal_plan">
+    <v-breadcrumbs v-if="breadcrumbs" :items="breadcrumbs" />
     <v-row align="center">
       <!-- <v-col cols="auto">
       <v-btn icon="mdi-arrow-left" exact to="/meal_plans" />
@@ -182,6 +183,14 @@ const snackbar = ref({
   show: false,
   text: "",
 });
+
+const breadcrumbs = computed(() => [
+  { title: "Foods", href: "/foods", disabled: false },
+  {
+    title: meal_plan.value?.name || "unidentified food",
+    disabed: true,
+  },
+]);
 
 const search = ref("");
 const saving = ref(false);
