@@ -1,4 +1,5 @@
 <template>
+  <!-- TODO: consider having this as a modal -->
   <v-row align="center">
     <v-col>
       <v-file-input

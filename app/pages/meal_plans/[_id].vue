@@ -185,7 +185,7 @@ const snackbar = ref({
 });
 
 const breadcrumbs = computed(() => [
-  { title: "Foods", href: "/foods", disabled: false },
+  { title: "Foods", to: "/foods", disabled: false },
   {
     title: meal_plan.value?.name || "unidentified food",
     disabed: true,

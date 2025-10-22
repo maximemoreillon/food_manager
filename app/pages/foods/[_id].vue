@@ -12,7 +12,7 @@
         <h2>{{ food.name || "unnnamed food" }}</h2>
       </v-col>
       <v-spacer />
-      <v-col cols="auto">
+      <v-col cols="auto" v-if="openAi?.available">
         <FoodLabelParsing @parsed="handleParsedLabel" />
       </v-col>
       <v-col cols="auto">
@@ -55,7 +55,7 @@
               hide-details
             />
           </v-col>
-          <v-col cols="5">
+          <v-col cols="12" md="5">
             <v-text-field
               label="Calories per serving"
               v-model.number="food.serving.calories"
@@ -63,10 +63,9 @@
               hide-details
             />
           </v-col>
-          <v-col cols="auto" v-if="openAi?.available"> </v-col>
         </v-row>
         <v-row>
-          <v-col cols="12" sm="4">
+          <v-col>
             <v-text-field
               label="Protein [g]"
               v-model.number="food.serving.macronutrients.protein"
@@ -74,7 +73,7 @@
               hide-details
             />
           </v-col>
-          <v-col cols="12" sm="4">
+          <v-col>
             <v-text-field
               label="Fat [g]"
               v-model.number="food.serving.macronutrients.fat"
@@ -82,7 +81,7 @@
               hide-details
             />
           </v-col>
-          <v-col cols="12" sm="4">
+          <v-col>
             <v-text-field
               label="Carbs [g]"
               v-model.number="food.serving.macronutrients.carbohydrates"
@@ -102,7 +101,7 @@
         </v-row>
       </v-col>
       <v-col cols="12" md="4">
-        <v-img v-if="food.image" :src="imageSrc(food)" max-height="500px" />
+        <v-img v-if="food.image" :src="imageSrc(food)" max-height="100em" />
       </v-col>
     </v-row>
   </template>
@@ -124,7 +123,7 @@ const {
 
 const saving = ref(false);
 const breadcrumbs = computed(() => [
-  { title: "Foods", href: "/foods", disabled: false },
+  { title: "Foods", to: "/foods", disabled: false },
   {
     title: food.value?.name || "unidentified food",
     disabed: true,
