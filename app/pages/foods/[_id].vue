@@ -1,7 +1,6 @@
 <template>
-  <div class="text-center my-8" v-if="loading">
-    <v-progress-circular indeterminate />
-  </div>
+  <v-skeleton-loader type="article" v-if="loading" />
+
   <template v-if="!error && food && !loading">
     <v-breadcrumbs v-if="breadcrumbs" :items="breadcrumbs" />
     <v-row align="center">
@@ -21,6 +20,7 @@
           text="Save"
           @click="updateFood()"
           :loading="saving"
+          color="primary"
         />
       </v-col>
 

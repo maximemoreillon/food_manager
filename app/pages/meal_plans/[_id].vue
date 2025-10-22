@@ -1,7 +1,6 @@
 <template>
-  <div class="text-center my-8" v-if="loading">
-    <v-progress-circular indeterminate />
-  </div>
+  <v-skeleton-loader type="article" v-if="loading" />
+
   <template v-else-if="meal_plan">
     <v-breadcrumbs v-if="breadcrumbs" :items="breadcrumbs" />
     <v-row align="center">
@@ -18,6 +17,7 @@
           :loading="saving"
           prepend-icon="mdi-content-save"
           text="Save"
+          color="primary"
         />
       </v-col>
       <v-col cols="auto">

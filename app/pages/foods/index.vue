@@ -22,43 +22,43 @@
     </v-col>
   </v-row>
 
-  <!-- TODO: ClientOnly might not be needed -->
-  <ClientOnly v-if="data">
-    <v-data-table-server
-      :loading="pending"
-      :headers="headers"
-      :items="data.items"
-      :items-length="data.total"
-      v-model:sort-by="queryOptions.sortBy"
-      v-model:items-per-page="queryOptions.itemsPerPage"
-      v-model:page="queryOptions.page"
+  <v-skeleton-loader type="article" v-if="pending" />
+  <div v-else-if="error" class="text-error text-center">Error loading data</div>
+  <v-data-table-server
+    v-else-if="data"
+    :loading="pending"
+    :headers="headers"
+    :items="data.items"
+    :items-length="data.total"
+    v-model:sort-by="queryOptions.sortBy"
+    v-model:items-per-page="queryOptions.itemsPerPage"
+    v-model:page="queryOptions.page"
+  >
+    <template v-slot:item.name="{ item }">
+      <NuxtLink :href="`/foods/${item._id}`">{{ item.name }}</NuxtLink>
+    </template>
+
+    <template
+      v-for="macro in macroKeys"
+      v-slot:[`item.serving.macronutrients.${macro}`]="{ item }"
     >
-      <template v-slot:item.name="{ item }">
-        <NuxtLink :href="`/foods/${item._id}`">{{ item.name }}</NuxtLink>
-      </template>
+      <v-chip :color="colors[macro]" variant="flat">
+        {{ item.serving.macronutrients[macro] }}
+      </v-chip>
+    </template>
 
-      <template
-        v-for="macro in macroKeys"
-        v-slot:[`item.serving.macronutrients.${macro}`]="{ item }"
-      >
-        <v-chip :color="colors[macro]" variant="flat">
-          {{ item.serving.macronutrients[macro] }}
-        </v-chip>
-      </template>
+    <template v-slot:item.serving="{ item }">
+      {{ item.serving.size }} {{ item.serving.unit }}
+    </template>
 
-      <template v-slot:item.serving="{ item }">
-        {{ item.serving.size }} {{ item.serving.unit }}
-      </template>
+    <template v-slot:item.hidden="{ item }">
+      <v-icon v-if="item.hidden">mdi-check</v-icon>
+    </template>
 
-      <template v-slot:item.hidden="{ item }">
-        <v-icon v-if="item.hidden">mdi-check</v-icon>
-      </template>
-
-      <template v-slot:item.image="{ item }">
-        <v-img width="4em" contain :src="imageSrc(item, true)" />
-      </template>
-    </v-data-table-server>
-  </ClientOnly>
+    <template v-slot:item.image="{ item }">
+      <v-img width="4em" contain :src="imageSrc(item, true)" />
+    </template>
+  </v-data-table-server>
 </template>
 
 <script lang="ts" setup>
@@ -67,9 +67,12 @@ import type { FoodsFetchResponse } from "~~/server/api/foods/index.get";
 
 const route = useRoute();
 const query = computed(() => route.query); // computed needed to trigger refetch
-const { data, pending } = await useFetch<FoodsFetchResponse>(`/api/foods`, {
-  query,
-});
+const { data, pending, error } = await useFetch<FoodsFetchResponse>(
+  `/api/foods`,
+  {
+    query,
+  }
+);
 
 const queryOptions = ref({
   page: data.value?.page,

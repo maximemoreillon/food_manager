@@ -1,31 +1,35 @@
 <template>
-  <v-card :loading="loading" max-width="600px" class="mx-auto">
-    <v-toolbar>
-      <v-toolbar-title> Settings </v-toolbar-title>
-      <v-spacer></v-spacer>
-      <v-btn
-        @click="update_settings()"
-        :loading="saving"
-        icon="mdi-content-save"
-        varian="flat"
-      />
-    </v-toolbar>
+  <v-skeleton-loader type="article" v-if="loading" />
+  <template v-else-if="data">
+    <v-row>
+      <v-col>
+        <h2>Settings</h2>
+      </v-col>
+      <v-spacer />
+      <v-col cols="auto">
+        <v-btn
+          @click="update_settings()"
+          :loading="saving"
+          prepend-icon="mdi-content-save"
+          color="primary"
+          text="save"
+        />
+      </v-col>
+    </v-row>
 
-    <v-card-text v-if="!loading && data">
-      <v-row>
-        <v-col>
-          <v-text-field
-            label="Default calories target"
-            v-model="data.calories_target"
-          />
-        </v-col>
-      </v-row>
-    </v-card-text>
+    <v-row>
+      <v-col>
+        <v-text-field
+          label="Default calories target"
+          v-model="data.calories_target"
+        />
+      </v-col>
+    </v-row>
+  </template>
 
-    <v-snackbar :color="snackbar.color" v-model="snackbar.show">
-      {{ snackbar.text }}
-    </v-snackbar>
-  </v-card>
+  <v-snackbar :color="snackbar.color" v-model="snackbar.show">
+    {{ snackbar.text }}
+  </v-snackbar>
 </template>
 <script setup lang="ts">
 import type { UserConfigurationT } from "~~/server/models/userConfig.schema";
