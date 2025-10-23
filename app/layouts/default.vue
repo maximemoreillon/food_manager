@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { useTheme } from "vuetify";
-import { version } from "~~/package.json";
+// import { version } from "~~/package.json";
 const theme = useTheme();
 
-const drawer = ref(false);
+const drawer = ref<boolean | null>(null);
 </script>
 
 <template>
@@ -19,8 +19,6 @@ const drawer = ref(false);
         <!-- TODO: logout -->
       </template>
     </v-app-bar>
-    <!-- TODO: Client only to address hydration mismatch -->
-    <!-- <client-only> -->
     <v-navigation-drawer v-model="drawer">
       <v-list nav>
         <v-list-item link title="Foods" to="/foods" prepend-icon="mdi-food" />
@@ -37,11 +35,10 @@ const drawer = ref(false);
           prepend-icon="mdi-cogs"
         />
       </v-list>
-      <template v-slot:append>
+      <!-- <template v-slot:append>
         <div class="pa-2">v{{ version }}</div>
-      </template>
+      </template> -->
     </v-navigation-drawer>
-    <!-- </client-only> -->
     <v-main>
       <v-container>
         <slot />
