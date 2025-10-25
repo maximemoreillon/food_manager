@@ -11,6 +11,9 @@
         <h2>{{ food.name || "unnnamed food" }}</h2>
       </v-col>
       <v-spacer />
+      <v-col cols="auto">
+        <FoodDeleteButton />
+      </v-col>
       <v-col cols="auto" v-if="openAi?.available">
         <FoodLabelParsing @parsed="handleParsedLabel" />
       </v-col>
@@ -22,10 +25,6 @@
           :loading="saving"
           color="primary"
         />
-      </v-col>
-
-      <v-col cols="auto">
-        <FoodDeleteButton />
       </v-col>
     </v-row>
 
