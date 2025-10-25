@@ -16,19 +16,19 @@
       </v-col>
       <v-col cols="auto">
         <v-btn
+          @click="duplicate_meal_plan()"
+          :loading="duplicating"
+          prepend-icon="mdi-content-copy"
+          text="Duplicate"
+        />
+      </v-col>
+      <v-col cols="auto">
+        <v-btn
           @click="saveMealPlan()"
           :loading="saving"
           prepend-icon="mdi-content-save"
           text="Save"
           color="primary"
-        />
-      </v-col>
-      <v-col cols="auto">
-        <v-btn
-          @click="duplicate_meal_plan()"
-          :loading="duplicating"
-          prepend-icon="mdi-content-copy"
-          text="Duplicate"
         />
       </v-col>
     </v-row>
