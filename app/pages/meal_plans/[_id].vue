@@ -12,6 +12,9 @@
       </v-col>
       <v-spacer />
       <v-col cols="auto">
+        <MealPlanDeleteButton />
+      </v-col>
+      <v-col cols="auto">
         <v-btn
           @click="saveMealPlan()"
           :loading="saving"
@@ -27,9 +30,6 @@
           prepend-icon="mdi-content-copy"
           text="Duplicate"
         />
-      </v-col>
-      <v-col cols="auto">
-        <MealPlanDeleteButton />
       </v-col>
     </v-row>
 
@@ -185,7 +185,7 @@ const snackbar = ref({
 });
 
 const breadcrumbs = computed(() => [
-  { title: "Foods", to: "/foods", disabled: false },
+  { title: "Meal plans", to: "/meal_plans", disabled: false },
   {
     title: meal_plan.value?.name || "unidentified food",
     disabed: true,
