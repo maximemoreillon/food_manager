@@ -99,8 +99,8 @@
           </v-col>
         </v-row>
       </v-col>
-      <v-col cols="12" md="4">
-        <v-img v-if="food.image" :src="imageSrc(food)" max-height="100em" />
+      <v-col cols="12" md="4" v-if="food.image">
+        <v-img :src="imageSrc(food)" max-height="100em" />
       </v-col>
     </v-row>
   </template>
