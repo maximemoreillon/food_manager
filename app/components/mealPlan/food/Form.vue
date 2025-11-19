@@ -125,7 +125,7 @@ onMounted(async () => {
 
 const snackbar = ref({
   show: false,
-  text: null,
+  text: "",
   color: "green",
 });
 function submit() {
@@ -159,10 +159,22 @@ const isRegistered = computed(() => {
 });
 
 async function registerFoodInDb() {
+  if (!confirm(`Register ${food.value?.name || "food"} in the database?`))
+    return;
   registering.value = true;
-  const res = await $fetch("/api/foods", { method: "POST", body: food.value });
-  // TODO: snackbar
-  registering.value = false;
+  try {
+    await $fetch("/api/foods", { method: "POST", body: food.value });
+    snackbar.value.show = true;
+    snackbar.value.text = "Food saved";
+    snackbar.value.color = "success";
+  } catch (error) {
+    console.error(error);
+    snackbar.value.show = true;
+    snackbar.value.text = "Failed to save food";
+    snackbar.value.color = "error";
+  } finally {
+    registering.value = false;
+  }
 }
 function reset_inputs() {
   quantity.value = 1;
