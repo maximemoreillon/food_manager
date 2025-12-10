@@ -32,21 +32,21 @@
         <v-text-field
           label="Protein [g]"
           type="number"
-          v-model="food.serving.macronutrients.protein"
+          v-model.number="food.serving.macronutrients.protein"
         />
       </v-col>
       <v-col>
         <v-text-field
           label="Fat [g]"
           type="number"
-          v-model="food.serving.macronutrients.fat"
+          v-model.number="food.serving.macronutrients.fat"
         />
       </v-col>
       <v-col>
         <v-text-field
           label="Carbs [g]"
           type="number"
-          v-model="food.serving.macronutrients.carbohydrates"
+          v-model.number="food.serving.macronutrients.carbohydrates"
         />
       </v-col>
     </v-row>
@@ -161,6 +161,7 @@ const isRegistered = computed(() => {
 async function registerFoodInDb() {
   if (!confirm(`Register ${food.value?.name || "food"} in the database?`))
     return;
+
   registering.value = true;
   try {
     await $fetch("/api/foods", { method: "POST", body: food.value });
