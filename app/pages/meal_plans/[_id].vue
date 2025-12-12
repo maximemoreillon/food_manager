@@ -232,10 +232,13 @@ const foodsTableHeaders = ref([
   { title: "", key: "edit" },
 ]);
 
-const { data: meal_plan, pending: loading } = await useFetch<MealPlanT>(
-  `/api/mealplans/${route.params._id}`,
-  { deep: true }
-);
+const {
+  data: meal_plan,
+  pending: loading,
+  error,
+} = await useFetch<MealPlanT>(`/api/mealplans/${route.params._id}`, {
+  deep: true,
+});
 
 async function saveMealPlan() {
   saving.value = true;

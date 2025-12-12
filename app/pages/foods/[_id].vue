@@ -1,7 +1,7 @@
 <template>
   <v-skeleton-loader type="article" v-if="loading" />
-
-  <template v-if="!error && food && !loading">
+  <div v-else-if="error" class="text-error text-center">Error loading data</div>
+  <template v-if="food">
     <v-breadcrumbs v-if="breadcrumbs" :items="breadcrumbs" />
     <v-row align="center">
       <!-- <v-col cols="auto">
