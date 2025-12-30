@@ -47,7 +47,7 @@ metadata:
     gethomepage.dev/enabled: "true"
     gethomepage.dev/name: Food manager
     gethomepage.dev/icon: mdi-food
-    gethomepage.dev/group: 3P
+    gethomepage.dev/group: 1P
 spec:
   tls:
     - hosts:
