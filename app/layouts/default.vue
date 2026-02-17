@@ -4,6 +4,8 @@ import { useTheme } from "vuetify";
 const theme = useTheme();
 
 const drawer = ref<boolean | null>(null);
+
+const { loggedIn } = useUserSession();
 </script>
 
 <template>
@@ -16,7 +18,7 @@ const drawer = ref<boolean | null>(null);
       <template v-slot:append>
         <!-- TODO: theme is not saved -->
         <v-btn @click="theme.toggle()" icon="mdi-theme-light-dark" />
-        <!-- TODO: logout -->
+        <v-btn v-if="loggedIn" to="/login" icon="mdi-logout" />
       </template>
     </v-app-bar>
     <v-navigation-drawer v-model="drawer">
