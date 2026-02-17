@@ -8,12 +8,5 @@ export default async function (event: H3Event<EventHandlerRequest>) {
 
   const { user } = session;
 
-  return user.sub;
-
-  // const { context } = event
-  // const { user } = context;
-
-  // if (!user)
-  //   throw createError({ statusCode: 401, statusMessage: "No userInfo" });
-  // return user.legacy_id || user.sub;
+  return user.legacy_id || user.sub;
 }
