@@ -64,3 +64,4 @@ spec:
                 name: ${K8S_RESOURCE_NAME}
                 port:
                   number: 80
+---
