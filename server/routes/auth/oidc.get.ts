@@ -1,4 +1,4 @@
-export default defineOAuthKeycloakEventHandler({
+export default defineOAuthOidcEventHandler({
   async onSuccess(event, data) {
     const { user, tokens } = data;
     const sessionData = { user };

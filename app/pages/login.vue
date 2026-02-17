@@ -6,7 +6,7 @@
   </div>
   <div v-else>
     <h1>Not logged in</h1>
-    <a href="/auth/keycloak">Login</a>
+    <a href="/auth/oidc">Login</a>
   </div>
 </template>
 

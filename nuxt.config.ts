@@ -31,16 +31,11 @@ export default defineNuxtConfig({
     },
   },
   runtimeConfig: {
-    public: {
-      oidcClientId: "",
-      oidcAuthority: "",
-      oidcAudience: "",
-    },
     oauth: {
-      keycloak: {
+      oidc: {
         clientId: "",
         clientSecret: "",
-        serverUrl: "",
+        openidConfig: "",
       },
     },
   },
