@@ -15,11 +15,18 @@ spec:
       containers:
         - name: ${K8S_RESOURCE_NAME}
           image: ${CONTAINER_IMAGE_TAGGED}
+          env:
+            - name: S3_BUCKET
+              value: food-manager
+            - name: S3_ENDPOINT
+              value: minio.minio
+            - name: S3_PORT
+              value: "9000"
+            - name: S3_REGION
+              value: home
           envFrom:
             - secretRef:
-                name: food-manager-env
-            # - secretRef:
-            #     name: auth0-env
+                name: food-manager-env-from-vault
           resources: {}
 
 ---
@@ -65,3 +72,20 @@ spec:
                 port:
                   number: 80
 ---
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: food-manager-env
+spec:
+  refreshInterval: 5m0s
+  secretStoreRef:
+    name: vault
+    kind: ClusterSecretStore
+  target:
+    name: food-manager-env-from-vault
+    creationPolicy: Orphan
+  dataFrom:
+    - extract:
+        key: food-manager
+    - extract:
+        key: openai
