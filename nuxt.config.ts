@@ -20,7 +20,7 @@ export default defineNuxtConfig({
       });
     },
     "nuxt-mongoose",
-    "@moreillon/nuxt-oidc",
+    "nuxt-auth-utils",
   ],
 
   vite: {
@@ -35,6 +35,13 @@ export default defineNuxtConfig({
       oidcClientId: "",
       oidcAuthority: "",
       oidcAudience: "",
+    },
+    oauth: {
+      keycloak: {
+        clientId: "",
+        clientSecret: "",
+        serverUrl: "",
+      },
     },
   },
 });
