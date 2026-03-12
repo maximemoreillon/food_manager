@@ -2,6 +2,8 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: ${K8S_RESOURCE_NAME}
+  annotations:
+    reloader.stakater.com/auto: "true"
 spec:
   replicas: 1
   selector:
@@ -89,3 +91,16 @@ spec:
         key: food-manager
     - extract:
         key: openai
+  data:
+    - secretKey: NUXT_OAUTH_OIDC_CLIENT_ID
+      remoteRef:
+        key: keycloak-main-client
+        property: CLIENT_ID
+    - secretKey: NUXT_OAUTH_OIDC_CLIENT_SECRET
+      remoteRef:
+        key: keycloak-main-client
+        property: CLIENT_SECRET
+    - secretKey: NUXT_OAUTH_OIDC_OPENID_CONFIG
+      remoteRef:
+        key: keycloak-main-client
+        property: OPENID_CONFIG
