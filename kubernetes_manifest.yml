@@ -92,6 +92,16 @@ spec:
     - extract:
         key: openai
   data:
+    # S3
+    - secretKey: S3_ACCESS_KEY_ID
+      remoteRef:
+        key: minio-main-access-keys
+        property: ACCESS_KEY_ID
+    - secretKey: S3_SECRET_ACCESS_KEY
+      remoteRef:
+        key: minio-main-access-keys
+        property: SECRET_ACCESS_KEY
+    # OIDC
     - secretKey: NUXT_OAUTH_OIDC_CLIENT_ID
       remoteRef:
         key: keycloak-main-client
