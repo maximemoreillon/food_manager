@@ -21,7 +21,7 @@ No test or lint scripts are configured.
 - **UI:** Vue 3 + Vuetify 3 (Material Design)
 - **Database:** MongoDB via `nuxt-mongoose`
 - **Storage:** MinIO (S3-compatible) via `minio` + `sharp` for image resizing
-- **Auth:** OIDC (Keycloak) via `@moreillon/nuxt-oidc` + `nuxt-auth-utils`
+- **Auth:** OIDC (Keycloak) via `nuxt-auth-utils`
 - **AI:** OpenAI GPT-4o-mini for nutrition label parsing from food images
 
 ### Directory structure
@@ -47,9 +47,9 @@ S3_PORT                        # Storage port (9000 for MinIO)
 S3_BUCKET                      # Bucket name
 S3_ACCESS_KEY_ID               # Storage credentials
 S3_SECRET_ACCESS_KEY
-NUXT_PUBLIC_OIDC_AUTHORITY     # Keycloak URL
-NUXT_PUBLIC_OIDC_CLIENT_ID     # OIDC client ID
-NUXT_PUBLIC_OIDC_AUDIENCE      # Optional audience
+NUXT_OAUTH_OIDC_OPENID_CONFIG  # OIDC discovery URL (Keycloak)
+NUXT_OAUTH_OIDC_CLIENT_ID      # OIDC client ID
+NUXT_OAUTH_OIDC_CLIENT_SECRET  # OIDC client secret
 OPENAI_API_KEY                 # For nutrition label parsing
 ```
 

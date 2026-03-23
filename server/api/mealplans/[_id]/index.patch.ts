@@ -6,7 +6,7 @@ export default defineEventHandler(async (event) => {
   const body = await readBody(event);
 
   const item = await MealPlan.findOneAndUpdate({ _id, user_id }, body, {
-    new: true,
+    returnDocument: "after",
   });
   if (!item)
     throw createError({

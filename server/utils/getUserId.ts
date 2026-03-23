@@ -1,12 +1,12 @@
 import type { H3Event, EventHandlerRequest } from "h3";
 
 export default async function (event: H3Event<EventHandlerRequest>) {
-  const session = await requireUserSession(event);
+  const session = await getUserSession(event);
 
   if (!session)
     throw createError({ statusCode: 401, statusMessage: "Unauthorized" });
 
   const { user } = session;
 
-  return user.legacy_id || user.sub;
+  return user?.legacy_id || user?.sub;
 }

@@ -3,7 +3,7 @@ export default defineEventHandler(async (event) => {
   const body = await readBody(event);
 
   const item = await UserConfiguration.findOneAndUpdate({ user_id }, body, {
-    new: true,
+    returnDocument: "after",
     upsert: true,
   });
 

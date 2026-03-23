@@ -7,7 +7,7 @@ export default defineEventHandler(async (event) => {
   const body = await readBody(event);
 
   const item = await Food.findOneAndUpdate({ _id, user_id }, body, {
-    new: true,
+    returnDocument: "after",
   });
   if (!item)
     throw createError({
