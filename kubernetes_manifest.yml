@@ -26,6 +26,8 @@ spec:
               value: "9000"
             - name: S3_REGION
               value: home
+            - name: NUXT_PUBLIC_AUTH_REQUIRED
+              value: "true"
           envFrom:
             - secretRef:
                 name: food-manager-env-from-vault

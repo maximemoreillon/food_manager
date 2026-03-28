@@ -32,7 +32,7 @@ export default defineNuxtConfig({
   },
   runtimeConfig: {
     public: {
-      authRequired: !!process.env.NUXT_OAUTH_OIDC_OPENID_CONFIG,
+      authRequired: false,
     },
     oauth: {
       oidc: {
