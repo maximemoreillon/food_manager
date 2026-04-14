@@ -28,6 +28,7 @@ const emit = defineEmits(["parsed"]);
 const fileInput = ref(null);
 
 function triggerInput() {
+  // @ts-ignore
   fileInput.value?.$el.querySelector("input").click();
 }
 
