@@ -1,0 +1,18 @@
+export default defineEventHandler(async (event) => {
+  const user_id = await getUserId(event);
+
+  // Note: destructuring results in error
+  const _id = getRouterParam(event, "_id");
+  const body = await readBody(event);
+
+  const item = await Log.findOneAndUpdate({ _id, user_id }, body, {
+    returnDocument: "after",
+  });
+  if (!item)
+    throw createError({
+      statusCode: 400,
+      statusMessage: `Log ${_id} not found`,
+    });
+
+  return item;
+});
