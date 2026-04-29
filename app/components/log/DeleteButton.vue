@@ -1,7 +1,7 @@
 <template>
   <v-btn
     color="#c00000"
-    @click="deleteMealPlan()"
+    @click="deleteLog()"
     :loading="deleting"
     prepend-icon="mdi-delete"
     text="Delete"
@@ -23,16 +23,15 @@ const snackbar = ref({
   text: "",
 });
 
-async function deleteMealPlan() {
-  if (!confirm("Delete meal plan?")) return;
+async function deleteLog() {
+  if (!confirm("Delete log?")) return;
   deleting.value = true;
-  // TODO: error handling
   try {
-    await $fetch(`/api/mealplans/${route.params._id}`, { method: "DELETE" });
-    navigateTo("/meal_plans");
+    await $fetch(`/api/logs/${route.params._id}`, { method: "DELETE" });
+    navigateTo("/logs");
   } catch (error) {
     snackbar.value.color = `error`;
-    snackbar.value.text = `Meal plan deletion failed`;
+    snackbar.value.text = `Log deletion failed`;
     snackbar.value.show = true;
   } finally {
     deleting.value = false;

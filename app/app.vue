@@ -6,6 +6,6 @@
 
 <style>
 a {
-  color: #c00000;
+  color: rgb(var(--v-theme-primary));
 }
 </style>

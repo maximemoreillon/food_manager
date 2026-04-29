@@ -86,16 +86,14 @@ import type { FoodT } from "~~/server/models/food.schema";
 
 const { data: openAi } = await useFetch("/api/openai");
 const props = defineProps<{
-  mealPlanRecord?: { food: FoodT; quantity: number };
+  logRecord?: { food: FoodT; quantity: number };
 }>();
 
 const emit = defineEmits(["submission"]);
 
 const quantity = ref(1);
 const food = ref<FoodT | null>(null);
-// const registeredFoods = ref([]);
 
-// TODO: actually check
 const registering = ref(false);
 
 const defaults = ref({
@@ -113,9 +111,9 @@ const defaults = ref({
 });
 
 function loadFood() {
-  if (props.mealPlanRecord) {
-    food.value = JSON.parse(JSON.stringify(props.mealPlanRecord.food));
-    quantity.value = props.mealPlanRecord.quantity;
+  if (props.logRecord) {
+    food.value = JSON.parse(JSON.stringify(props.logRecord.food));
+    quantity.value = props.logRecord.quantity;
   } else reset_inputs();
 }
 
@@ -128,17 +126,15 @@ const snackbar = ref({
   text: "",
   color: "green",
 });
+
 function submit() {
   emit("submission", {
     quantity: quantity.value,
-    // food: JSON.parse(JSON.stringify(food.value)),
-    // TODO: might need a copy
     food: food.value,
   });
   reset_inputs();
 }
 
-// TODO: typing
 function handleParsedLabel(event: any) {
   if (!food.value) return;
   const { calories, protein, fat, carbohydrates, servingSize, servingUnit } =
@@ -152,9 +148,6 @@ function handleParsedLabel(event: any) {
 }
 
 const isRegistered = computed(() => {
-  // TODO: isn't it enough to check if food has an _id?
-  // if (!food.value) return false;
-  // return registeredFoods.value.some(({ _id }) => _id === food.value?._id);
   return !!food.value?._id;
 });
 
@@ -177,6 +170,7 @@ async function registerFoodInDb() {
     registering.value = false;
   }
 }
+
 function reset_inputs() {
   quantity.value = 1;
   food.value = JSON.parse(JSON.stringify(defaults.value));

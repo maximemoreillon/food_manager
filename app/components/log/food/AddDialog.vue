@@ -10,10 +10,9 @@
     </template>
     <v-card>
       <v-toolbar flat>
-        <v-toolbar-title>Add food to meal plan</v-toolbar-title>
+        <v-toolbar-title>Add food to log</v-toolbar-title>
         <v-spacer />
 
-        <!-- TODO: close button -->
         <v-btn @click="dialog = false" icon="mdi-close" />
 
         <template v-slot:extension>
@@ -24,24 +23,20 @@
             <v-tab>
               <v-icon>mdi-plus</v-icon>
             </v-tab>
-            <!-- <v-tab>
-                <v-icon>mdi-barcode-scan</v-icon>
-              </v-tab> -->
           </v-tabs>
         </template>
       </v-toolbar>
       <v-card-text>
         <v-tabs-window v-model="tab">
           <v-tabs-window-item>
-            <!-- TODO: open is only used to reset text input... -->
             <RegisteredFoodsTable
               :open="dialog"
-              :meal_plan="meal_plan"
+              :log="log"
               @foodAdded="$emit('add', $event)"
             />
           </v-tabs-window-item>
           <v-tabs-window-item>
-            <MealPlanFoodForm
+            <LogFoodForm
               @submission="
                 $emit('add', $event);
                 dialog = false;
@@ -55,9 +50,9 @@
 </template>
 
 <script lang="ts" setup>
-import type { MealPlanT } from "~~/server/models/mealPlan.schema";
+import type { LogT } from "~~/server/models/log.schema";
 
 const dialog = ref(false);
 const tab = ref(null);
-defineProps<{ meal_plan: MealPlanT }>();
+defineProps<{ log: LogT }>();
 </script>

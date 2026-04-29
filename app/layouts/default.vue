@@ -26,8 +26,8 @@ const { loggedIn } = useUserSession();
         <v-list-item link title="Foods" to="/foods" prepend-icon="mdi-food" />
         <v-list-item
           link
-          title="Meal plans"
-          to="/meal_plans"
+          title="Logs"
+          to="/logs"
           prepend-icon="mdi-silverware-fork-knife"
         />
         <v-list-item
