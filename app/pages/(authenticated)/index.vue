@@ -1,5 +1,5 @@
 <script setup lang="ts">
-navigateTo("/meal_plans");
+navigateTo("/logs");
 </script>
 <template>
   <div>Redirecting</div>

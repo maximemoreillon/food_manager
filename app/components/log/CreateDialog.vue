@@ -7,19 +7,12 @@
         text="Create"
         color="primary"
       />
-      <!-- <v-fab
-        v-bind="activatorProps"
-        icon="mdi-plus"
-        color="primary"
-        location="end top"
-        app
-      /> -->
     </template>
     <v-card>
-      <v-card-title> New meal plan </v-card-title>
+      <v-card-title> New log </v-card-title>
 
       <v-card-text>
-        <v-form @submit.prevent="create_meal_plan()">
+        <v-form @submit.prevent="create_log()">
           <v-row align="center">
             <v-col>
               <v-text-field
@@ -46,24 +39,22 @@
 </template>
 
 <script lang="ts" setup>
-import type { MealPlanT } from "~~/server/models/mealPlan.schema";
+import type { LogT } from "~~/server/models/log.schema";
 
 const name = ref("");
 const loading = ref(false);
 
-async function create_meal_plan() {
+async function create_log() {
   loading.value = true;
 
-  const res = await $fetch<MealPlanT>("/api/mealplans", {
+  const res = await $fetch<LogT>("/api/logs", {
     method: "POST",
     body: { name: name.value },
   });
 
-  // TODO: typing
   const { _id } = res;
 
-  // TODO: navigate to _id
-  await navigateTo(`/meal_plans/${_id}`);
+  await navigateTo(`/logs/${_id}`);
 
   loading.value = false;
 }

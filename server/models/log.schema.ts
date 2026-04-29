@@ -2,16 +2,16 @@ import { defineMongooseModel } from "#nuxt/mongoose";
 import { Schema } from "mongoose";
 import { foodSchema, FoodT, Macros } from "./food.schema";
 
-export type MealPlanRecord = { food: FoodT; quantity: number };
+export type LogRecord = { food: FoodT; quantity: number };
 
-export type MealPlanT = {
+export type LogT = {
   _id?: string;
   name: string;
   date: Date;
   user_id: string;
   incomplete: boolean;
 
-  foods: MealPlanRecord[];
+  foods: LogRecord[];
 
   calories_target: number;
 
@@ -20,7 +20,7 @@ export type MealPlanT = {
   calories: number;
 };
 
-const mealPlanFoodSchema = new Schema({
+const logFoodSchema = new Schema({
   quantity: { type: Number, default: 1 },
   food: { type: foodSchema, required: true },
 });
@@ -34,7 +34,7 @@ const schema = new Schema({
   user_id: String,
   incomplete: { type: Boolean, default: true },
 
-  foods: [mealPlanFoodSchema],
+  foods: [logFoodSchema],
 
   calories_target: Number,
 });
@@ -66,7 +66,7 @@ schema.virtual("macronutrients").get(function () {
   );
 });
 
-export const MealPlan = defineMongooseModel({
-  name: "MealPlan",
+export const Log = defineMongooseModel({
+  name: "Log",
   schema,
 });

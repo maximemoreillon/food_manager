@@ -66,11 +66,11 @@
 import type { SortItem } from "vuetify/lib/components/VDataTable/composables/sort.mjs";
 import type { FoodsFetchResponse } from "~~/server/api/foods/index.get";
 import type { FoodT } from "~~/server/models/food.schema";
-import type { MealPlanT } from "~~/server/models/mealPlan.schema";
+import type { LogT } from "~~/server/models/log.schema";
 
 const props = defineProps<{
   open: boolean;
-  meal_plan: MealPlanT;
+  log: LogT;
 }>();
 
 const emit = defineEmits(["foodAdded"]);
@@ -138,11 +138,11 @@ watch(
 );
 
 function item_too_calorific(calorieCount: number) {
-  return calorieCount > props.meal_plan.calories_target - calorie_total.value;
+  return calorieCount > props.log.calories_target - calorie_total.value;
 }
 
 const calorie_total = computed(() => {
-  const total = props.meal_plan.foods.reduce(
+  const total = props.log.foods.reduce(
     (acc, { quantity, food }) => acc + quantity * food.serving.calories,
     0
   );

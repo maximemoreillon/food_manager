@@ -9,8 +9,8 @@
         <v-spacer />
       </v-toolbar>
       <v-card-text>
-        <MealPlanFoodForm
-          :mealPlanRecord="mealPlanRecord"
+        <LogFoodForm
+          :logRecord="logRecord"
           @submission="handleSubmit"
         />
       </v-card-text>
@@ -22,7 +22,7 @@
 import type { FoodT } from "~~/server/models/food.schema";
 
 defineProps<{
-  mealPlanRecord: { food: FoodT; quantity: number };
+  logRecord: { food: FoodT; quantity: number };
 }>();
 
 const emit = defineEmits(["edit"]);
