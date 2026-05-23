@@ -32,23 +32,14 @@
 
     <v-row align="center">
       <v-col cols="12" md="6">
-        <v-text-field
-          label="Log name"
-          v-model="log.name"
-          hide-details
-        />
+        <v-text-field label="Log name" v-model="log.name" hide-details />
       </v-col>
       <v-spacer />
       <v-col cols="auto">
-        <v-checkbox
-          label="Incomplete"
-          v-model="log.incomplete"
-          hide-details
-        />
+        <v-text-field label="Date" type="date" v-model="logDate" hide-details />
       </v-col>
       <v-col cols="auto">
-        <v-icon class="mr-2">mdi-calendar</v-icon>
-        <span>{{ new Date(log.date).toDateString() }}</span>
+        <v-checkbox label="Incomplete" v-model="log.incomplete" hide-details />
       </v-col>
     </v-row>
 
@@ -103,10 +94,7 @@
       </v-col>
       <v-spacer />
       <v-col cols="auto">
-        <LogFoodAddDialog
-          :log="log"
-          @add="addFoodToLog($event)"
-        />
+        <LogFoodAddDialog :log="log" @add="addFoodToLog($event)" />
       </v-col>
     </v-row>
 
@@ -258,11 +246,10 @@ async function addFoodToLog(input: { food: FoodT; quantity: number }) {
   if (!log.value) throw new Error("Missing log");
   const { food: new_food, quantity } = input;
 
-  if (!new_food._id)
-    return log.value.foods.push({ food: new_food, quantity });
+  if (!new_food._id) return log.value.foods.push({ food: new_food, quantity });
 
   const found_food = log.value.foods.find(
-    ({ food: { _id } }) => _id === new_food._id
+    ({ food: { _id } }) => _id === new_food._id,
   );
   if (found_food) found_food.quantity++;
   else log.value.foods.push({ food: new_food, quantity });
@@ -322,6 +309,17 @@ async function duplicate_log() {
   }
 }
 
+const logDate = computed({
+  get() {
+    if (!log.value?.date) return "";
+    return new Date(log.value.date).toISOString().split("T")[0];
+  },
+  set(value: string) {
+    if (!log.value) return;
+    log.value.date = new Date(value) as unknown as typeof log.value.date;
+  },
+});
+
 const macros_label_lookup = ref({
   protein: "protein",
   fat: "fat",
@@ -334,7 +332,7 @@ function total_for_macro(macro: (typeof macroKeys)[number]) {
   const total = log.value.foods.reduce(
     (acc, { quantity, food }) =>
       acc + quantity * food.serving.macronutrients[macro],
-    0
+    0,
   );
   return Math.round(total * 100) / 100;
 }
@@ -343,7 +341,7 @@ const calorie_total = computed(() => {
   if (!log.value) return 0;
   const total = log.value.foods.reduce(
     (acc, { quantity, food }) => acc + quantity * food.serving.calories,
-    0
+    0,
   );
   return Math.round(total * 100) / 100;
 });
