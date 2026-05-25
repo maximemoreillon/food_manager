@@ -39,7 +39,7 @@ kind: Service
 metadata:
   name: ${K8S_RESOURCE_NAME}
 spec:
-  type: NodePort
+  type: ClusterIP
   selector:
     app.kubernetes.io/name: ${K8S_RESOURCE_NAME}
   ports:
