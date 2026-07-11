@@ -11,7 +11,7 @@ const { loggedIn } = useUserSession();
 <template>
   <v-app>
     <v-app-bar>
-      <template v-slot:prepend>
+      <template v-slot:prepend v-if="loggedIn">
         <v-app-bar-nav-icon @click="drawer = !drawer" />
       </template>
       <v-app-bar-title>Food manager</v-app-bar-title>
@@ -21,7 +21,7 @@ const { loggedIn } = useUserSession();
         <v-btn v-if="loggedIn" to="/login" icon="mdi-logout" />
       </template>
     </v-app-bar>
-    <v-navigation-drawer v-model="drawer">
+    <v-navigation-drawer v-model="drawer" v-if="loggedIn">
       <v-list nav>
         <v-list-item link title="Foods" to="/foods" prepend-icon="mdi-food" />
         <v-list-item
