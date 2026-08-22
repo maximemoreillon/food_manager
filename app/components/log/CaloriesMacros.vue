@@ -18,12 +18,22 @@ const props = defineProps<{
   calories: number;
   target: number;
   macronutrients: Macros;
+  macronutrients_minimum?: Macros;
 }>();
+
+function macro_under_minimum(macro: (typeof macroKeys)[number]) {
+  return (
+    !!props.macronutrients_minimum?.[macro] &&
+    props.macronutrients[macro] < props.macronutrients_minimum[macro]
+  );
+}
 
 function macro_bar_style(macro: (typeof macroKeys)[number]) {
   return {
     width: `${(100 * props.macronutrients[macro]) / macros_total_mass.value}%`,
     "background-color": colors[macro],
+    outline: macro_under_minimum(macro) ? "2px solid #c00000" : "none",
+    "outline-offset": "-2px",
   };
 }
 

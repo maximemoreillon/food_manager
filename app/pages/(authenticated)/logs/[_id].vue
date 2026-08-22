@@ -63,10 +63,33 @@
       <v-col md="auto" cols="12">
         <v-row dense justify-md="start" justify="space-between">
           <v-col cols="auto" v-for="macro in macroKeys" :key="macro">
-            <v-chip :color="colors[macro]" variant="flat">
-              {{ Math.round(macros_total[macro]) }}g
-              {{ macros_label_lookup[macro] }}
-            </v-chip>
+            <v-row dense align="center" no-gutters>
+              <v-col cols="auto">
+                <v-chip
+                  :color="colors[macro]"
+                  :variant="macro_under_minimum(macro) ? 'outlined' : 'flat'"
+                >
+                  <v-icon
+                    v-if="macro_under_minimum(macro)"
+                    start
+                    icon="mdi-alert"
+                  />
+                  {{ Math.round(macros_total[macro]) }}g
+                  {{ macros_label_lookup[macro] }}
+                </v-chip>
+              </v-col>
+              <v-col cols="auto" style="width: 5.5rem" class="ml-1">
+                <v-text-field
+                  type="number"
+                  label="min"
+                  density="compact"
+                  variant="outlined"
+                  hide-details
+                  hide-spin-buttons
+                  v-model.number="log.macronutrients_minimum[macro]"
+                />
+              </v-col>
+            </v-row>
           </v-col>
         </v-row>
       </v-col>
@@ -77,6 +100,7 @@
           :target="log.calories_target"
           :calories="calorie_total"
           :macronutrients="macros_total"
+          :macronutrients_minimum="log.macronutrients_minimum"
         />
       </v-col>
     </v-row>
@@ -222,6 +246,12 @@ const {
   deep: true,
 });
 
+watchEffect(() => {
+  if (log.value && !log.value.macronutrients_minimum) {
+    log.value.macronutrients_minimum = { protein: 0, fat: 0, carbohydrates: 0 };
+  }
+});
+
 async function saveLog() {
   saving.value = true;
   const body = log.value;
@@ -278,6 +308,7 @@ async function duplicate_log() {
     macronutrients,
     calories,
     calories_target,
+    macronutrients_minimum,
   } = log.value;
 
   const body = {
@@ -288,6 +319,7 @@ async function duplicate_log() {
     macronutrients,
     calories,
     calories_target,
+    macronutrients_minimum,
   };
 
   duplicating.value = true;
@@ -351,4 +383,9 @@ const macros_total = computed(() => ({
   fat: total_for_macro("fat"),
   carbohydrates: total_for_macro("carbohydrates"),
 }));
+
+function macro_under_minimum(macro: (typeof macroKeys)[number]) {
+  const minimum = log.value?.macronutrients_minimum?.[macro];
+  return !!minimum && macros_total.value[macro] < minimum;
+}
 </script>
