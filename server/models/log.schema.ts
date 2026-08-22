@@ -14,6 +14,7 @@ export type LogT = {
   foods: LogRecord[];
 
   calories_target: number;
+  macronutrients_minimum: Macros;
 
   // virtuals
   macronutrients: Macros;
@@ -37,6 +38,12 @@ const schema = new Schema({
   foods: [logFoodSchema],
 
   calories_target: Number,
+
+  macronutrients_minimum: {
+    protein: { type: Number, default: 0 },
+    fat: { type: Number, default: 0 },
+    carbohydrates: { type: Number, default: 0 },
+  },
 });
 
 schema.virtual("calories").get(function () {

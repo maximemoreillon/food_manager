@@ -61,12 +61,13 @@
 
       <v-spacer />
       <v-col md="auto" cols="12">
-        <v-row dense justify-md="start" justify="space-between">
+        <v-row dense align="center" justify-md="start" justify="space-between">
           <v-col cols="auto" v-for="macro in macroKeys" :key="macro">
-            <v-chip :color="colors[macro]" variant="flat">
-              {{ Math.round(macros_total[macro]) }}g
-              {{ macros_label_lookup[macro] }}
-            </v-chip>
+            <LogMacroDialog
+              :macro="macro"
+              :total="macros_total[macro]"
+              v-model="log.macronutrients_minimum[macro]"
+            />
           </v-col>
         </v-row>
       </v-col>
@@ -77,6 +78,7 @@
           :target="log.calories_target"
           :calories="calorie_total"
           :macronutrients="macros_total"
+          :macronutrients_minimum="log.macronutrients_minimum"
         />
       </v-col>
     </v-row>
@@ -222,6 +224,12 @@ const {
   deep: true,
 });
 
+watchEffect(() => {
+  if (log.value && !log.value.macronutrients_minimum) {
+    log.value.macronutrients_minimum = { protein: 0, fat: 0, carbohydrates: 0 };
+  }
+});
+
 async function saveLog() {
   saving.value = true;
   const body = log.value;
@@ -278,6 +286,7 @@ async function duplicate_log() {
     macronutrients,
     calories,
     calories_target,
+    macronutrients_minimum,
   } = log.value;
 
   const body = {
@@ -288,6 +297,7 @@ async function duplicate_log() {
     macronutrients,
     calories,
     calories_target,
+    macronutrients_minimum,
   };
 
   duplicating.value = true;
@@ -318,12 +328,6 @@ const logDate = computed({
     if (!log.value) return;
     log.value.date = new Date(value) as unknown as typeof log.value.date;
   },
-});
-
-const macros_label_lookup = ref({
-  protein: "protein",
-  fat: "fat",
-  carbohydrates: "carbs",
 });
 
 function total_for_macro(macro: (typeof macroKeys)[number]) {

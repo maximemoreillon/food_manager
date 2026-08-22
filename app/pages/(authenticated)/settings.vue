@@ -25,6 +25,20 @@
         />
       </v-col>
     </v-row>
+
+    <v-row>
+      <v-col cols="12">
+        <h3>Minimum macros (g)</h3>
+      </v-col>
+      <v-col v-for="macro in macroKeys" :key="macro" cols="12" sm="4">
+        <v-text-field
+          type="number"
+          :label="macro"
+          :color="colors[macro]"
+          v-model.number="data.macronutrients_minimum[macro]"
+        />
+      </v-col>
+    </v-row>
   </template>
 
   <v-snackbar :color="snackbar.color" v-model="snackbar.show">
@@ -44,6 +58,16 @@ const snackbar = ref({
 });
 
 const { data } = useFetch<UserConfigurationT>("/api/settings");
+
+watchEffect(() => {
+  if (data.value && !data.value.macronutrients_minimum) {
+    data.value.macronutrients_minimum = {
+      protein: 0,
+      fat: 0,
+      carbohydrates: 0,
+    };
+  }
+});
 
 async function update_settings() {
   if (!data.value) return;

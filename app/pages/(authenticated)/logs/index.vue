@@ -42,6 +42,7 @@
         :target="item.calories_target"
         :calories="item.calories || 0"
         :macronutrients="item.macronutrients"
+        :macronutrients_minimum="item.macronutrients_minimum"
       />
     </template>
 
