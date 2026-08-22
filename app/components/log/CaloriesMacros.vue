@@ -29,11 +29,13 @@ function macro_under_minimum(macro: (typeof macroKeys)[number]) {
 }
 
 function macro_bar_style(macro: (typeof macroKeys)[number]) {
+  const color = colors[macro];
+  const under_minimum = macro_under_minimum(macro);
   return {
     width: `${(100 * props.macronutrients[macro]) / macros_total_mass.value}%`,
-    "background-color": colors[macro],
-    outline: macro_under_minimum(macro) ? "2px solid #c00000" : "none",
-    "outline-offset": "-2px",
+    background: under_minimum
+      ? `repeating-linear-gradient(45deg, ${color}, ${color} 6px, rgba(0, 0, 0, 0.35) 6px, rgba(0, 0, 0, 0.35) 12px)`
+      : color,
   };
 }
 
