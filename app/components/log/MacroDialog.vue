@@ -1,11 +1,7 @@
 <template>
   <v-dialog max-width="20rem" v-model="dialog">
     <template v-slot:activator="{ props: activatorProps }">
-      <v-chip
-        v-bind="activatorProps"
-        :color="colors[macro]"
-        :variant="under_minimum ? 'outlined' : 'flat'"
-      >
+      <v-chip v-bind="activatorProps" :color="colors[macro]" variant="flat">
         <v-icon v-if="under_minimum" start icon="mdi-alert" />
         {{ Math.round(total) }}g
         {{ label }}
