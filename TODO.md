@@ -17,6 +17,6 @@
 - [x] Computed/virtual calories total
 - [x] No data available flashing
 - [x] Save with Ctrl S
-- [ ] Find better word than "meal plan"
+- [x] Find better word than "meal plan"
 - [ ] PWA
 - [ ] Theme to be saved in local storage?
