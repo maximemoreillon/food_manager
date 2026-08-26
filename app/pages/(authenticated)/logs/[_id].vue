@@ -115,7 +115,7 @@
       <template v-slot:item.quantity="{ item }">
         <v-text-field
           type="number"
-          v-model="item.quantity"
+          v-model.number="item.quantity"
           hide-details
           density="compact"
         />
