@@ -9,25 +9,25 @@ export type Macros = {
 };
 
 export const macrosInputSchema = z.object({
-  protein: z.number().optional(),
-  fat: z.number().optional(),
-  carbohydrates: z.number().optional(),
+  protein: z.number().nullish(),
+  fat: z.number().nullish(),
+  carbohydrates: z.number().nullish(),
 });
 
 export const servingInputSchema = z.object({
-  size: z.number().optional(),
-  unit: z.string().optional(),
-  calories: z.number().optional(),
-  price: z.number().optional(),
-  macronutrients: macrosInputSchema.optional(),
+  size: z.number().nullish(),
+  unit: z.string().nullish(),
+  calories: z.number().nullish(),
+  price: z.number().nullish(),
+  macronutrients: macrosInputSchema.nullish(),
 });
 
 export const foodInputSchema = z.object({
-  name: z.string().optional(),
-  barcode: z.string().optional(),
-  hidden: z.boolean().optional(),
-  image: z.string().optional(),
-  serving: servingInputSchema.optional(),
+  name: z.string().nullish(),
+  barcode: z.string().nullish(),
+  hidden: z.boolean().nullish(),
+  image: z.string().nullish(),
+  serving: servingInputSchema.nullish(),
 });
 
 export type FoodT = {

@@ -9,8 +9,8 @@ export type UserConfigurationT = {
 };
 
 export const settingsInputSchema = z.object({
-  calories_target: z.number().optional(),
-  macronutrients_minimum: macrosInputSchema.optional(),
+  calories_target: z.number().nullish(),
+  macronutrients_minimum: macrosInputSchema.nullish(),
 });
 
 const schema = new Schema({

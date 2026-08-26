@@ -34,24 +34,24 @@ const logFoodSchema = new Schema({
 });
 
 export const logFoodRecordInputSchema = z.object({
-  quantity: z.number().optional(),
+  quantity: z.number().nullish(),
   food: z.object({
-    _id: z.string().optional(),
-    name: z.string().optional(),
-    barcode: z.string().optional(),
-    hidden: z.boolean().optional(),
-    image: z.string().optional(),
-    serving: servingInputSchema.optional(),
+    _id: z.string().nullish(),
+    name: z.string().nullish(),
+    barcode: z.string().nullish(),
+    hidden: z.boolean().nullish(),
+    image: z.string().nullish(),
+    serving: servingInputSchema.nullish(),
   }),
 });
 
 export const logInputSchema = z.object({
-  name: z.string().optional(),
-  date: z.coerce.date().optional(),
-  incomplete: z.boolean().optional(),
-  foods: z.array(logFoodRecordInputSchema).optional(),
-  calories_target: z.number().optional(),
-  macronutrients_minimum: macrosInputSchema.optional(),
+  name: z.string().nullish(),
+  date: z.coerce.date().nullish(),
+  incomplete: z.boolean().nullish(),
+  foods: z.array(logFoodRecordInputSchema).nullish(),
+  calories_target: z.number().nullish(),
+  macronutrients_minimum: macrosInputSchema.nullish(),
 });
 
 const schema = new Schema({
