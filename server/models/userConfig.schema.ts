@@ -1,11 +1,17 @@
 import { defineMongooseModel } from "#nuxt/mongoose";
 import { Schema } from "mongoose";
-import { Macros } from "./food.schema";
+import { z } from "zod";
+import { Macros, macrosInputSchema } from "./food.schema";
 
 export type UserConfigurationT = {
   calories_target: number;
   macronutrients_minimum: Macros;
 };
+
+export const settingsInputSchema = z.object({
+  calories_target: z.number().optional(),
+  macronutrients_minimum: macrosInputSchema.optional(),
+});
 
 const schema = new Schema({
   user_id: {

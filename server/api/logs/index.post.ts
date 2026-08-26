@@ -2,7 +2,7 @@ import { UserConfigurationT } from "~~/server/models/userConfig.schema";
 
 export default defineEventHandler(async (event) => {
   const user_id = await getUserId(event);
-  const body = await readBody(event);
+  const body = await readValidatedBody(event, logInputSchema.parse);
 
   try {
     const userSettings = await UserConfiguration.findOne<UserConfigurationT>({

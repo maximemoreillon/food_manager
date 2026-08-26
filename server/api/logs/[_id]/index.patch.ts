@@ -3,7 +3,7 @@ export default defineEventHandler(async (event) => {
 
   // Note: destructuring results in error
   const _id = getRouterParam(event, "_id");
-  const { user_id: _ignored, ...body } = await readBody(event);
+  const body = await readValidatedBody(event, logInputSchema.parse);
 
   const item = await Log.findOneAndUpdate({ _id, user_id }, body, {
     returnDocument: "after",

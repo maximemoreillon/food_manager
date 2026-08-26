@@ -1,6 +1,13 @@
 import { defineMongooseModel } from "#nuxt/mongoose";
 import { Schema } from "mongoose";
-import { foodSchema, FoodT, Macros } from "./food.schema";
+import { z } from "zod";
+import {
+  foodSchema,
+  FoodT,
+  Macros,
+  macrosInputSchema,
+  servingInputSchema,
+} from "./food.schema";
 
 export type LogRecord = { food: FoodT; quantity: number };
 
@@ -24,6 +31,27 @@ export type LogT = {
 const logFoodSchema = new Schema({
   quantity: { type: Number, default: 1 },
   food: { type: foodSchema, required: true },
+});
+
+export const logFoodRecordInputSchema = z.object({
+  quantity: z.number().optional(),
+  food: z.object({
+    _id: z.string().optional(),
+    name: z.string().optional(),
+    barcode: z.string().optional(),
+    hidden: z.boolean().optional(),
+    image: z.string().optional(),
+    serving: servingInputSchema.optional(),
+  }),
+});
+
+export const logInputSchema = z.object({
+  name: z.string().optional(),
+  date: z.coerce.date().optional(),
+  incomplete: z.boolean().optional(),
+  foods: z.array(logFoodRecordInputSchema).optional(),
+  calories_target: z.number().optional(),
+  macronutrients_minimum: macrosInputSchema.optional(),
 });
 
 const schema = new Schema({

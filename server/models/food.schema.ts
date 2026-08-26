@@ -1,11 +1,34 @@
 import { defineMongooseModel } from "#nuxt/mongoose";
 import { Schema } from "mongoose";
+import { z } from "zod";
 
 export type Macros = {
   protein: number;
   fat: number;
   carbohydrates: number;
 };
+
+export const macrosInputSchema = z.object({
+  protein: z.number().optional(),
+  fat: z.number().optional(),
+  carbohydrates: z.number().optional(),
+});
+
+export const servingInputSchema = z.object({
+  size: z.number().optional(),
+  unit: z.string().optional(),
+  calories: z.number().optional(),
+  price: z.number().optional(),
+  macronutrients: macrosInputSchema.optional(),
+});
+
+export const foodInputSchema = z.object({
+  name: z.string().optional(),
+  barcode: z.string().optional(),
+  hidden: z.boolean().optional(),
+  image: z.string().optional(),
+  serving: servingInputSchema.optional(),
+});
 
 export type FoodT = {
   _id?: string;
