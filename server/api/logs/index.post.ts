@@ -10,7 +10,6 @@ export default defineEventHandler(async (event) => {
     });
     return await Log.create({
       date: new Date(),
-      user_id,
       calories_target: userSettings?.calories_target || 2500,
       macronutrients_minimum: userSettings?.macronutrients_minimum || {
         protein: 0,
@@ -18,6 +17,7 @@ export default defineEventHandler(async (event) => {
         carbohydrates: 0,
       },
       ...body,
+      user_id,
     });
   } catch (error) {
     return error;
