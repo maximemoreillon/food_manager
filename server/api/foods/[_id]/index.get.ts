@@ -1,6 +1,5 @@
 export default defineEventHandler(async (event) => {
   const user_id = await getUserId(event);
-  // TODO: filter by user_id
 
   // Note: destructuring results in error
   const _id = getRouterParam(event, "_id");
