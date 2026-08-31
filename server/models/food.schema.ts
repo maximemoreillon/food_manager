@@ -8,17 +8,24 @@ export type Macros = {
   carbohydrates: number;
 };
 
+// A cleared v-model.number text field sends "" rather than null/undefined,
+// so treat an empty string as "no value" too.
+export const nullishNumber = z.preprocess(
+  (value) => (value === "" ? undefined : value),
+  z.number().nullish()
+);
+
 export const macrosInputSchema = z.object({
-  protein: z.number().nullish(),
-  fat: z.number().nullish(),
-  carbohydrates: z.number().nullish(),
+  protein: nullishNumber,
+  fat: nullishNumber,
+  carbohydrates: nullishNumber,
 });
 
 export const servingInputSchema = z.object({
-  size: z.number().nullish(),
+  size: nullishNumber,
   unit: z.string().nullish(),
-  calories: z.number().nullish(),
-  price: z.number().nullish(),
+  calories: nullishNumber,
+  price: nullishNumber,
   macronutrients: macrosInputSchema.nullish(),
 });
 

@@ -1,7 +1,7 @@
 import { defineMongooseModel } from "#nuxt/mongoose";
 import { Schema } from "mongoose";
 import { z } from "zod";
-import { Macros, macrosInputSchema } from "./food.schema";
+import { Macros, macrosInputSchema, nullishNumber } from "./food.schema";
 
 export type UserConfigurationT = {
   calories_target: number;
@@ -9,7 +9,7 @@ export type UserConfigurationT = {
 };
 
 export const settingsInputSchema = z.object({
-  calories_target: z.number().nullish(),
+  calories_target: nullishNumber,
   macronutrients_minimum: macrosInputSchema.nullish(),
 });
 

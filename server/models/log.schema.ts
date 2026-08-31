@@ -6,6 +6,7 @@ import {
   FoodT,
   Macros,
   macrosInputSchema,
+  nullishNumber,
   servingInputSchema,
 } from "./food.schema";
 
@@ -34,7 +35,7 @@ const logFoodSchema = new Schema({
 });
 
 export const logFoodRecordInputSchema = z.object({
-  quantity: z.number().nullish(),
+  quantity: nullishNumber,
   food: z.object({
     _id: z.string().nullish(),
     name: z.string().nullish(),
@@ -50,7 +51,7 @@ export const logInputSchema = z.object({
   date: z.coerce.date().nullish(),
   incomplete: z.boolean().nullish(),
   foods: z.array(logFoodRecordInputSchema).nullish(),
-  calories_target: z.number().nullish(),
+  calories_target: nullishNumber,
   macronutrients_minimum: macrosInputSchema.nullish(),
 });
 
