@@ -48,6 +48,7 @@
 <script lang="ts" setup>
 import type { FoodT } from "~~/server/models/food.schema";
 
+const { notify } = useSnackbar();
 const loading = ref(false);
 
 const name = ref("");
@@ -63,9 +64,8 @@ async function create_food() {
     const { _id } = res;
     await navigateTo(`/foods/${_id}`);
   } catch (error) {
-    // TODO: snackbar
     console.error(error);
-    alert(error);
+    notify("Food creation failed", "error");
   } finally {
     loading.value = false;
   }

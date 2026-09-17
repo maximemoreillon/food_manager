@@ -6,6 +6,7 @@ const theme = useTheme();
 const drawer = ref<boolean | null>(null);
 
 const { loggedIn } = useUserSession();
+const { snackbar } = useSnackbar();
 </script>
 
 <template>
@@ -46,5 +47,10 @@ const { loggedIn } = useUserSession();
         <slot />
       </v-container>
     </v-main>
+    <v-snackbar
+      :text="snackbar.text"
+      v-model="snackbar.show"
+      :color="snackbar.color"
+    />
   </v-app>
 </template>

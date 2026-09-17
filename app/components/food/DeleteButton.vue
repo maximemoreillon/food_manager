@@ -7,21 +7,13 @@
     text="Delete"
     variant="outlined"
   />
-
-  <v-snackbar :color="snackbar.color" v-model="snackbar.show">
-    {{ snackbar.text }}
-  </v-snackbar>
 </template>
 
 <script setup lang="ts">
 const route = useRoute();
+const { notify } = useSnackbar();
 
 const deleting = ref(false);
-const snackbar = ref({
-  color: "green",
-  show: false,
-  text: "",
-});
 
 async function deleteMealPlan() {
   if (!confirm("Delete Food?")) return;
@@ -31,9 +23,7 @@ async function deleteMealPlan() {
     await $fetch(`/api/foods/${route.params._id}`, { method: "DELETE" });
     navigateTo("/foods");
   } catch (error) {
-    snackbar.value.color = `error`;
-    snackbar.value.text = `Food deletion failed`;
-    snackbar.value.show = true;
+    notify("Food deletion failed", "error");
   } finally {
     deleting.value = false;
   }

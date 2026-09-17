@@ -104,14 +104,11 @@
       </v-col>
     </v-row>
   </template>
-
-  <v-snackbar :color="snackbar.color" v-model="snackbar.show">
-    {{ snackbar.text }}
-  </v-snackbar>
 </template>
 
 <script lang="ts" setup>
 const route = useRoute();
+const { notify } = useSnackbar();
 
 // TODO: is this really how type safety should be enforced?
 const {
@@ -130,13 +127,6 @@ const breadcrumbs = computed(() => [
 ]);
 
 const { data: openAi } = await useFetch("/api/openai");
-
-// TODO: have a better snackbar management
-const snackbar = ref({
-  color: "green",
-  show: false,
-  text: "",
-});
 
 onMounted(() => {
   document.addEventListener("keydown", handleKeydownEvents);
@@ -161,14 +151,10 @@ async function updateFood() {
   try {
     // @ts-ignore
     await $fetch(`/api/foods/${route.params._id}`, opts);
-    snackbar.value.show = true;
-    snackbar.value.text = "Food saved";
-    snackbar.value.color = "success";
+    notify("Food saved");
   } catch (error) {
     console.error(error);
-    snackbar.value.show = true;
-    snackbar.value.text = "Food update failed";
-    snackbar.value.color = "error";
+    notify("Food update failed", "error");
   } finally {
     saving.value = false;
   }

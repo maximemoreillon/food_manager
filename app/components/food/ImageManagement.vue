@@ -39,13 +39,14 @@ import type { FoodT } from "~~/server/models/food.schema";
 
 const props = defineProps<{ food: FoodT }>();
 const emit = defineEmits(["upload", "delete"]);
+const { notify } = useSnackbar();
 const uploading = ref(false);
 const deleting = ref(false);
 const newImage = ref<File | null>(null);
 
 async function upload() {
   if (!newImage.value) {
-    alert("Image not provided");
+    notify("Image not provided", "error");
     return;
   }
   uploading.value = true;
@@ -56,11 +57,11 @@ async function upload() {
       method: "POST",
       body,
     });
-    // TODO: snackbar
+    notify("Image uploaded");
     emit("upload", res);
   } catch (error) {
     console.error(error);
-    alert("Error");
+    notify("Image upload failed", "error");
   } finally {
     uploading.value = false;
   }

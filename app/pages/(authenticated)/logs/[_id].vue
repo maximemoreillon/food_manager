@@ -150,10 +150,6 @@
       </template>
     </v-data-table>
   </template>
-
-  <v-snackbar :color="snackbar.color" v-model="snackbar.show">
-    {{ snackbar.text }}
-  </v-snackbar>
 </template>
 
 <script setup lang="ts">
@@ -161,12 +157,7 @@ import type { FoodT } from "~~/server/models/food.schema";
 import type { LogRecord, LogT } from "~~/server/models/log.schema";
 
 const route = useRoute();
-
-const snackbar = ref({
-  color: "green",
-  show: false,
-  text: "",
-});
+const { notify } = useSnackbar();
 
 const breadcrumbs = computed(() => [
   { title: "Logs", to: "/logs", disabled: false },
@@ -238,13 +229,10 @@ async function saveLog() {
       method: "PATCH",
       body,
     });
-    snackbar.value.text = `Log saved`;
-    snackbar.value.show = true;
+    notify("Log saved");
   } catch (error) {
     console.error(error);
-    snackbar.value.color = `error`;
-    snackbar.value.text = `Log save failed`;
-    snackbar.value.show = true;
+    notify("Log save failed", "error");
   } finally {
     saving.value = false;
   }
@@ -261,8 +249,7 @@ async function addFoodToLog(input: { food: FoodT; quantity: number }) {
   );
   if (found_food) found_food.quantity++;
   else log.value.foods.push({ food: new_food, quantity });
-  snackbar.value.text = `${new_food.name} added`;
-  snackbar.value.show = true;
+  notify(`${new_food.name} added`);
 }
 
 function remove_food_from_log(index: number) {
@@ -311,9 +298,7 @@ async function duplicate_log() {
     await navigateTo(`/logs/${_id}`);
   } catch (error) {
     console.error(error);
-    snackbar.value.color = `error`;
-    snackbar.value.text = `Duplication failed`;
-    snackbar.value.show = true;
+    notify("Duplication failed", "error");
   } finally {
     duplicating.value = false;
   }

@@ -74,10 +74,6 @@
       </v-col>
     </v-row>
   </v-form>
-
-  <v-snackbar :color="snackbar.color" v-model="snackbar.show">
-    {{ snackbar.text }}
-  </v-snackbar>
 </template>
 
 <script setup lang="ts">
@@ -90,6 +86,7 @@ const props = defineProps<{
 }>();
 
 const emit = defineEmits(["submission"]);
+const { notify } = useSnackbar();
 
 const quantity = ref(1);
 const food = ref<FoodT | null>(null);
@@ -119,12 +116,6 @@ function loadFood() {
 
 onMounted(async () => {
   loadFood();
-});
-
-const snackbar = ref({
-  show: false,
-  text: "",
-  color: "green",
 });
 
 function submit() {
@@ -158,14 +149,10 @@ async function registerFoodInDb() {
   registering.value = true;
   try {
     await $fetch("/api/foods", { method: "POST", body: food.value });
-    snackbar.value.show = true;
-    snackbar.value.text = "Food saved";
-    snackbar.value.color = "success";
+    notify("Food saved");
   } catch (error) {
     console.error(error);
-    snackbar.value.show = true;
-    snackbar.value.text = "Failed to save food";
-    snackbar.value.color = "error";
+    notify("Failed to save food", "error");
   } finally {
     registering.value = false;
   }
