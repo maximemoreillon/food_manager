@@ -3,12 +3,11 @@ import { Schema } from "mongoose";
 import { z } from "zod";
 import {
   foodSchema,
-  FoodT,
-  Macros,
   macrosInputSchema,
   nullishNumber,
   servingInputSchema,
 } from "./food.schema";
+import type { FoodT, Macros } from "./food.schema";
 
 export type LogRecord = { food: FoodT; quantity: number };
 

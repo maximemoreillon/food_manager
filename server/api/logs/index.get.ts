@@ -1,7 +1,7 @@
 import { z } from "zod";
-import { LogT } from "~~/server/models/log.schema";
+import type { LogT } from "~~/server/models/log.schema";
 import getUserId from "~~/server/utils/getUserId";
-import { QueryOptions } from "mongoose";
+import type { QueryOptions } from "mongoose";
 
 const querySchema = z.object({
   itemsPerPage: z.coerce.number().gt(0).lte(500).optional(),

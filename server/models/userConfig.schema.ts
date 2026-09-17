@@ -1,7 +1,8 @@
 import { defineMongooseModel } from "#nuxt/mongoose";
 import { Schema } from "mongoose";
 import { z } from "zod";
-import { Macros, macrosInputSchema, nullishNumber } from "./food.schema";
+import { macrosInputSchema, nullishNumber } from "./food.schema";
+import type { Macros } from "./food.schema";
 
 export type UserConfigurationT = {
   calories_target: number;
