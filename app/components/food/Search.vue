@@ -1,18 +1,17 @@
 <template>
   <v-form @submit.prevent="submit">
-    <v-row align="center" dense>
-      <v-col>
-        <v-text-field v-model="searchString" hide-details label="Search" />
-      </v-col>
-      <v-col cols="auto">
-        <v-btn type="submit" icon="mdi-magnify" variant="flat" />
-      </v-col>
-    </v-row>
+    <v-text-field
+      v-model="searchString"
+      hide-details
+      label="Search"
+      append-inner-icon="mdi-magnify"
+      @click:append-inner="submit"
+    />
+    <button type="submit" hidden />
   </v-form>
 </template>
 
 <script lang="ts" setup>
-// const route = useRoute();
 const props = defineProps<{ modelValue: string | undefined }>();
 const emit = defineEmits(["update:modelValue"]);
 const searchString = ref(props.modelValue);
