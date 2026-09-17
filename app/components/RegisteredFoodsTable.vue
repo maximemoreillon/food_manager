@@ -11,15 +11,10 @@
     v-model:page="queryOptions.page"
   >
     <template v-slot:top>
-      <v-form @submit.prevent="getFoods">
+      <v-form @submit.prevent="submitSearch">
         <v-row class="mt-2">
           <v-col>
-            <v-text-field
-              v-model="search"
-              clearable
-              label="Search"
-              @update:model-value="handleSearchUpdate"
-            />
+            <v-text-field v-model="search" clearable label="Search" />
           </v-col>
           <v-col cols="auto">
             <v-btn icon="mdi-magnify" type="submit" variant="plain" />
@@ -86,13 +81,7 @@ const headers = ref([
 ]);
 
 const search = ref("");
-
-const loading = ref(false);
-
-const foods = ref<FoodT[]>([]);
-const total = ref(0);
-
-let searchTimeout: NodeJS.Timeout;
+const debouncedSearch = refDebounced(search, 500);
 
 const queryOptions = ref({
   page: 1,
@@ -100,35 +89,21 @@ const queryOptions = ref({
   sortBy: [{ key: "name", order: "desc" }] as SortItem[],
 });
 
-async function getFoods() {
-  if (searchTimeout) clearTimeout(searchTimeout);
-  loading.value = true;
-  const res = await $fetch<FoodsFetchResponse>("/api/foods", {
-    query: {
-      page: queryOptions.value.page,
-      itemsPerPage: queryOptions.value.itemsPerPage,
-      sort: queryOptions.value.sortBy?.at(0)?.key,
-      order: queryOptions.value.sortBy?.at(0)?.order,
-      search: search.value,
-    },
-  });
+const query = computed(() => ({
+  page: queryOptions.value.page,
+  itemsPerPage: queryOptions.value.itemsPerPage,
+  sort: queryOptions.value.sortBy?.at(0)?.key,
+  order: queryOptions.value.sortBy?.at(0)?.order,
+  search: debouncedSearch.value,
+}));
 
-  foods.value = res.items;
-  total.value = res.total;
-  loading.value = false;
-}
-
-onMounted(async () => {
-  await getFoods();
-});
-
-watch(
-  queryOptions,
-  () => {
-    getFoods();
-  },
-  { deep: true }
+const { data, pending: loading } = useFetch<FoodsFetchResponse>(
+  "/api/foods",
+  { query }
 );
+
+const foods = computed(() => data.value?.items ?? []);
+const total = computed(() => data.value?.total ?? 0);
 
 watch(
   () => props.open,
@@ -136,6 +111,14 @@ watch(
     search.value = "";
   }
 );
+
+watch(debouncedSearch, () => {
+  queryOptions.value.page = 1;
+});
+
+function submitSearch() {
+  queryOptions.value.page = 1;
+}
 
 function item_too_calorific(calorieCount: number) {
   return calorieCount > props.log.calories_target - calorie_total.value;
@@ -154,12 +137,5 @@ function handleRowClicked(
   { item }: { item: { quantity: number; food: FoodT } }
 ) {
   emit("foodAdded", { food: item, quantity: 1 });
-}
-
-function handleSearchUpdate() {
-  if (searchTimeout) clearTimeout(searchTimeout);
-  searchTimeout = setTimeout(() => {
-    getFoods();
-  }, 500);
 }
 </script>

@@ -11,14 +11,11 @@
 
   <v-row align="baseline" dense>
     <v-col cols="12" md="6">
-      <FoodSearch
-        :model-value="queryOptions.search as string"
-        @update:model-value="handleSearch"
-      />
+      <FoodSearch :model-value="search" @update:model-value="handleSearch" />
     </v-col>
     <v-spacer />
     <v-col cols="auto">
-      <v-checkbox label="Show hidden" v-model="queryOptions.hidden" />
+      <v-checkbox label="Show hidden" v-model="hidden" />
     </v-col>
   </v-row>
 
@@ -30,9 +27,9 @@
     :headers="headers"
     :items="data.items"
     :items-length="data.total"
-    v-model:sort-by="queryOptions.sortBy"
-    v-model:items-per-page="queryOptions.itemsPerPage"
-    v-model:page="queryOptions.page"
+    v-model:sort-by="sortBy"
+    v-model:items-per-page="itemsPerPage"
+    v-model:page="page"
   >
     <template v-slot:item.name="{ item }">
       <NuxtLink :href="`/foods/${item._id}`">{{ item.name }}</NuxtLink>
@@ -65,50 +62,38 @@
 import type { SortItem } from "vuetify/lib/components/VDataTable/composables/sort.mjs";
 import type { FoodsFetchResponse } from "~~/server/api/foods/index.get";
 
+const page = useRouteQuery("page", 1, { transform: Number });
+const itemsPerPage = useRouteQuery("itemsPerPage", 10, { transform: Number });
+const hidden = useRouteQuery<string, boolean>("hidden", "false", {
+  transform: {
+    get: (v) => v === "true",
+    set: (v) => (v ? "true" : "false"),
+  },
+});
+const search = useRouteQuery<string>("search", "");
+const sort = useRouteQuery<string>("sort", "name");
+const order = useRouteQuery<"asc" | "desc">("order", "desc");
+
 const route = useRoute();
 const query = computed(() => route.query); // computed needed to trigger refetch
+
 const { data, pending, error } = await useFetch<FoodsFetchResponse>(
-  `/api/foods`,
-  {
-    query,
-  }
+  "/api/foods",
+  { query, key: JSON.stringify(query.value) }
 );
 
-const queryOptions = ref({
-  page: data.value?.page,
-  itemsPerPage: data.value?.itemsPerPage,
-  hidden: data.value?.hidden,
-  search: data.value?.search,
-  sortBy: [
-    {
-      key: data.value?.sort,
-      order: data.value?.order,
-    },
-  ] as SortItem[],
+const sortBy = computed<SortItem[]>({
+  get: () => [{ key: sort.value, order: order.value }],
+  set: (value) => {
+    sort.value = value?.at(0)?.key ?? "name";
+    order.value = (value?.at(0)?.order as "asc" | "desc") ?? "desc";
+  },
 });
 
 function handleSearch(searchString: string) {
-  queryOptions.value.search = searchString;
-  queryOptions.value.page = 1;
+  search.value = searchString;
+  page.value = 1;
 }
-
-watch(
-  queryOptions,
-  () => {
-    const { page, itemsPerPage, sortBy, hidden, search } = queryOptions.value;
-    const query: any = {
-      ...route.query,
-      page: page?.toString(),
-      itemsPerPage: itemsPerPage?.toString(),
-      sort: sortBy?.at(0)?.key,
-      order: sortBy?.at(0)?.order,
-      hidden: hidden || undefined,
-      search: search || undefined,
-    };
-    navigateTo({ query });
-  },
-  { deep: true }
-);
 
 const baseHeaders = ref([
   { title: "Image", key: "image" },
@@ -128,7 +113,7 @@ const baseHeaders = ref([
 ]);
 
 const headers = computed(() => {
-  if (query.value.hidden)
+  if (hidden.value)
     return [...baseHeaders.value, { title: "Hidden", key: "hidden" }];
   else return baseHeaders.value;
 });

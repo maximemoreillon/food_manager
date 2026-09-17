@@ -18,9 +18,9 @@
     :headers="headers"
     :items="data.items"
     :items-length="data.total"
-    v-model:sort-by="queryOptions.sortBy"
-    v-model:items-per-page="queryOptions.itemsPerPage"
-    v-model:page="queryOptions.page"
+    v-model:sort-by="sortBy"
+    v-model:items-per-page="itemsPerPage"
+    v-model:page="page"
   >
     <template v-slot:item.name="{ item }">
       <NuxtLink :href="`/logs/${item._id}`">
@@ -57,17 +57,25 @@ import type { SortItem } from "vuetify/lib/components/VDataTable/composables/sor
 import type { LogsResponse } from "~~/server/api/logs/index.get";
 import formatDate from "~/utils/formatDate";
 
+const page = useRouteQuery("page", 1, { transform: Number });
+const itemsPerPage = useRouteQuery("itemsPerPage", 10, { transform: Number });
+const sort = useRouteQuery<string>("sort", "date");
+const order = useRouteQuery<"asc" | "desc">("order", "desc");
+
 const route = useRoute();
 const query = computed(() => route.query); // computed needed to trigger refetch
-const { data, pending, error } = await useFetch<LogsResponse>(
-  `/api/logs`,
-  { query }
-);
 
-const queryOptions = ref({
-  page: data.value?.page,
-  itemsPerPage: data.value?.itemsPerPage,
-  sortBy: [{ key: data.value?.sort, order: data.value?.order }] as SortItem[],
+const { data, pending, error } = await useFetch<LogsResponse>("/api/logs", {
+  query,
+  key: JSON.stringify(query.value),
+});
+
+const sortBy = computed<SortItem[]>({
+  get: () => [{ key: sort.value, order: order.value }],
+  set: (value) => {
+    sort.value = value?.at(0)?.key ?? "date";
+    order.value = (value?.at(0)?.order as "asc" | "desc") ?? "desc";
+  },
 });
 
 const headers = ref([
@@ -77,20 +85,4 @@ const headers = ref([
   { title: "Macros", key: "macronutrients" },
   { title: "Incomplete", key: "incomplete", width: "20ch" },
 ]);
-
-watch(
-  queryOptions,
-  (newVal) => {
-    const { page, itemsPerPage, sortBy } = newVal;
-    const query: any = {
-      ...route.query,
-      page: page?.toString(),
-      itemsPerPage: itemsPerPage?.toString(),
-      sort: sortBy?.at(0)?.key,
-      order: sortBy?.at(0)?.order,
-    };
-    navigateTo({ query });
-  },
-  { deep: true }
-);
 </script>

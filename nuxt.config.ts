@@ -21,6 +21,7 @@ export default defineNuxtConfig({
     },
     "nuxt-mongoose",
     "nuxt-auth-utils",
+    "@vueuse/nuxt",
   ],
 
   vite: {
