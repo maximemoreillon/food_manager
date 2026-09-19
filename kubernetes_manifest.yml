@@ -44,37 +44,7 @@ spec:
     app.kubernetes.io/name: food-manager
   ports:
     - port: 80
----
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: food-manager
-  annotations:
-    cert-manager.io/cluster-issuer: letsencrypt
 
-    nginx.ingress.kubernetes.io/proxy-body-size: 5g
-    nginx/client_max_body_size: 5g
-
-    gethomepage.dev/enabled: "true"
-    gethomepage.dev/name: Food manager
-    gethomepage.dev/icon: mdi-food
-    gethomepage.dev/group: 1P
-spec:
-  tls:
-    - hosts:
-        - food.home.maximemoreillon.com
-      secretName: food-manager-tls
-  rules:
-    - host: food.home.maximemoreillon.com
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: food-manager
-                port:
-                  number: 80
 ---
 apiVersion: external-secrets.io/v1
 kind: ExternalSecret
