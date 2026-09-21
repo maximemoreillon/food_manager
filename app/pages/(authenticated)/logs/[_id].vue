@@ -96,6 +96,9 @@
       </v-col>
       <v-spacer />
       <v-col cols="auto">
+        <LogExportCsvButton :log="log" />
+      </v-col>
+      <v-col cols="auto">
         <LogFoodAddDialog :log="log" @add="addFoodToLog($event)" />
       </v-col>
     </v-row>
