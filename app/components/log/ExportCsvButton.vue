@@ -49,7 +49,10 @@ function exportCsv() {
     }),
   );
 
-  const name = props.log.name?.replace(/[^\w-]+/g, "_") || "log";
-  downloadCsv(`${name}.csv`, csv);
+  // Same date format as the log page's date field
+  const date = props.log.date
+    ? new Date(props.log.date).toISOString().split("T")[0]
+    : undefined;
+  downloadCsv(date ? `food-manager-${date}.csv` : "food-manager.csv", csv);
 }
 </script>
