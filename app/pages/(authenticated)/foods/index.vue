@@ -79,7 +79,7 @@ const query = computed(() => route.query); // computed needed to trigger refetch
 
 const { data, pending, error } = await useFetch<FoodsFetchResponse>(
   "/api/foods",
-  { query, key: JSON.stringify(query.value) }
+  { query, key: `foods-${JSON.stringify(query.value)}` }
 );
 
 const sortBy = computed<SortItem[]>({

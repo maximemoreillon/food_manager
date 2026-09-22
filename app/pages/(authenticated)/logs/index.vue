@@ -67,7 +67,7 @@ const query = computed(() => route.query); // computed needed to trigger refetch
 
 const { data, pending, error } = await useFetch<LogsResponse>("/api/logs", {
   query,
-  key: JSON.stringify(query.value),
+  key: `logs-${JSON.stringify(query.value)}`,
 });
 
 const sortBy = computed<SortItem[]>({
