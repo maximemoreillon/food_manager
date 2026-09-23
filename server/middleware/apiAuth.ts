@@ -11,5 +11,5 @@ export default defineEventHandler(async (event) => {
   if (!config.public.authRequired) return;
 
   const { user } = await requireUserSession(event);
-  event.context.userId = user.legacy_id || user.sub;
+  event.context.userId = user.sub;
 });
