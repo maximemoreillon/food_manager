@@ -36,7 +36,11 @@ No test or lint scripts are configured.
 ### Authentication
 Pages are protected by `middleware/auth.global.ts` (all routes except `/login` and `/auth/*`), which redirects an unauthenticated browser to `/login`. This is separate from, and doesn't enforce, API auth.
 
-All API gatekeeping lives in one place: `server/middleware/apiAuth.ts`, which runs ahead of every `/api/*` route. OIDC flow goes through `/auth/oidc`, session managed via `useUserSession()`; identity is the Keycloak `user.sub`. On success it sets `event.context.userId`; if there's no session, it throws 401. Route handlers in `server/api/` don't call anything to get the user — they just read `event.context.userId` directly, since by the time they run, auth has already been decided.
+All API gatekeeping lives in one place: `server/middleware/apiAuth.ts`, which runs ahead of every `/api/*` route and accepts two kinds of request:
+- **Browser session** — OIDC flow via `/auth/oidc`, session managed via `useUserSession()`; identity is the Keycloak `user.sub`.
+- **API key** (`X-API-Key` header, deliberately not `Authorization: Bearer` — that scheme is reserved for OAuth2 bearer tokens, and this isn't one) — validated against [api-key-manager](https://github.com/jtekt/api-key-manager) (`server/utils/validateApiKey.ts`, `POST {API_KEY_MANAGER_URL}/api/validate`), which returns the key's owning `user_id` directly, so this path is a real, non-impersonated identity, same as the session path.
+
+Either path sets `event.context.userId`; if neither succeeds, the middleware throws 401. Route handlers in `server/api/` don't call anything to get the user — they just read `event.context.userId` directly, since by the time they run, auth has already been decided.
 
 ### API pattern
 API routes at `server/api/` follow REST conventions. All routes require authentication. Query params are validated with Zod. Foods support pagination, sorting, search, and hidden filtering. MealPlan model uses Mongoose virtuals to compute total calories/macros from embedded foods.
@@ -53,6 +57,7 @@ NUXT_OAUTH_OIDC_OPENID_CONFIG  # OIDC discovery URL (Keycloak)
 NUXT_OAUTH_OIDC_CLIENT_ID      # OIDC client ID
 NUXT_OAUTH_OIDC_CLIENT_SECRET  # OIDC client secret
 OPENAI_API_KEY                 # For nutrition label parsing
+API_KEY_MANAGER_URL            # Base URL of api-key-manager, e.g. https://api-key-manager.home.maximemoreillon.com
 ```
 
 ### Deployment

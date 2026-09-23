@@ -28,6 +28,8 @@ spec:
               value: home
             - name: NUXT_PUBLIC_AUTH_REQUIRED
               value: "true"
+            - name: API_KEY_MANAGER_URL
+              value: https://api-key-manager.home.maximemoreillon.com
           envFrom:
             - secretRef:
                 name: food-manager-env-from-vault
