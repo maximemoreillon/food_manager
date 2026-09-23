@@ -1,7 +1,7 @@
 import { storeImageToS3 } from "~~/server/s3";
 
 export default defineEventHandler(async (event) => {
-  const user_id = await getUserId(event);
+  const user_id = event.context.userId;
 
   const _id = getRouterParam(event, "_id");
   if (!_id)

@@ -1,7 +1,7 @@
 import type { UserConfigurationT } from "~~/server/models/userConfig.schema";
 
 export default defineEventHandler(async (event) => {
-  const user_id = await getUserId(event);
+  const user_id = event.context.userId;
   const body = await readValidatedBody(event, logInputSchema.parse);
 
   try {

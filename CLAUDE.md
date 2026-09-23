@@ -34,7 +34,9 @@ No test or lint scripts are configured.
 - `middleware/auth.global.ts` — redirects unauthenticated users to `/login`
 
 ### Authentication
-All routes except `/login` and `/auth/*` are protected by `middleware/auth.global.ts`. OIDC flow goes through `/auth/oidc`. Session managed via `useUserSession()` composable. API routes extract the user via `getUserId(event)` (reads `user.legacy_id` or `user.sub` from session), throwing 401 if not authenticated.
+Pages are protected by `middleware/auth.global.ts` (all routes except `/login` and `/auth/*`), which redirects an unauthenticated browser to `/login`. This is separate from, and doesn't enforce, API auth.
+
+All API gatekeeping lives in one place: `server/middleware/apiAuth.ts`, which runs ahead of every `/api/*` route. OIDC flow goes through `/auth/oidc`, session managed via `useUserSession()`; identity comes from `user.legacy_id` or `user.sub`. On success it sets `event.context.userId`; if there's no session, it throws 401. Route handlers in `server/api/` don't call anything to get the user — they just read `event.context.userId` directly, since by the time they run, auth has already been decided.
 
 ### API pattern
 API routes at `server/api/` follow REST conventions. All routes require authentication. Query params are validated with Zod. Foods support pagination, sorting, search, and hidden filtering. MealPlan model uses Mongoose virtuals to compute total calories/macros from embedded foods.

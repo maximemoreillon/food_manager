@@ -1,6 +1,5 @@
 import { z } from "zod";
 import type { LogT } from "~~/server/models/log.schema";
-import getUserId from "~~/server/utils/getUserId";
 import type { QueryOptions } from "mongoose";
 
 const querySchema = z.object({
@@ -14,7 +13,7 @@ const querySchema = z.object({
 });
 
 export default defineEventHandler(async (event) => {
-  const user_id = await getUserId(event);
+  const user_id = event.context.userId;
 
   const {
     itemsPerPage = 10,

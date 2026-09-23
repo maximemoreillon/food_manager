@@ -1,7 +1,7 @@
 import { sendS3Image } from "~~/server/s3";
 
 export default defineEventHandler(async (event) => {
-  const user_id = await getUserId(event);
+  const user_id = event.context.userId;
 
   const searchParams = getQuery(event);
   const { thumbnail } = searchParams;

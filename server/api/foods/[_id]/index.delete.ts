@@ -1,7 +1,7 @@
 import { deleteImageFromS3 } from "~~/server/s3";
 
 export default defineEventHandler(async (event) => {
-  const user_id = await getUserId(event);
+  const user_id = event.context.userId;
 
   // Note: destructuring results in error
   const _id = getRouterParam(event, "_id");

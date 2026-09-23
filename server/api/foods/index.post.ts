@@ -1,5 +1,5 @@
 export default defineEventHandler(async (event) => {
-  const user_id = await getUserId(event);
+  const user_id = event.context.userId;
 
   const body = await readValidatedBody(event, foodInputSchema.parse);
 

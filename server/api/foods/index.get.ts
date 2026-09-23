@@ -12,7 +12,7 @@ const querySchema = z.object({
 });
 
 export default defineEventHandler(async (event) => {
-  const user_id = await getUserId(event);
+  const user_id = event.context.userId;
 
   const {
     itemsPerPage = 10,

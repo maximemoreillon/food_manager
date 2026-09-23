@@ -1,7 +1,6 @@
 import { openAiClient } from "../openAi";
 
 export default defineEventHandler(async (event) => {
-  await getUserId(event);
   const files = await readMultipartFormData(event);
   if (!files)
     throw createError({ statusCode: 400, statusMessage: "Missing file" });
