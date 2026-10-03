@@ -21,9 +21,9 @@ spec:
             - name: S3_BUCKET
               value: food-manager
             - name: S3_ENDPOINT
-              value: rustfs.rustfs
+              value: versitygw.versitygw
             - name: S3_PORT
-              value: "9000"
+              value: "7070"
             - name: S3_REGION
               value: home
             - name: NUXT_PUBLIC_AUTH_REQUIRED
