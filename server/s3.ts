@@ -5,34 +5,28 @@ const IMAGE_FILENAME = "image.jpg";
 const THUMBNAIL_FILENAME = "thumbnail.jpg";
 
 const {
-  S3_REGION,
-  S3_ACCESS_KEY_ID = "",
-  S3_SECRET_ACCESS_KEY = "",
-  S3_ENDPOINT = "localhost",
-  S3_BUCKET = "food-manager",
-  S3_PORT = "443",
-  S3_USE_SSL,
-} = process.env;
+  s3: { bucket, accessKeyId, secretAccessKey, endpoint, useSsl, port },
+} = useRuntimeConfig();
 
 const s3Client = new Client({
-  accessKey: S3_ACCESS_KEY_ID,
-  secretKey: S3_SECRET_ACCESS_KEY,
-  endPoint: S3_ENDPOINT,
-  port: Number(S3_PORT),
-  useSSL: !!S3_USE_SSL,
+  accessKey: accessKeyId,
+  secretKey: secretAccessKey,
+  endPoint: endpoint,
+  port: Number(port),
+  useSSL: !!useSsl,
 });
 
 export const storeImageToS3 = async (_id: string, buffer: Buffer) => {
   await s3Client.putObject(
-    S3_BUCKET,
+    bucket,
     `${_id}/${IMAGE_FILENAME}`,
-    await sharp(buffer).rotate().toBuffer()
+    await sharp(buffer).rotate().toBuffer(),
   );
 
   await s3Client.putObject(
-    S3_BUCKET,
+    bucket,
     `${_id}/${THUMBNAIL_FILENAME}`,
-    await sharp(buffer).rotate().resize(128, 128).toBuffer()
+    await sharp(buffer).rotate().resize(128, 128).toBuffer(),
   );
 
   // TODO: consider also returning thumbnail key
@@ -42,7 +36,7 @@ export const storeImageToS3 = async (_id: string, buffer: Buffer) => {
 export const deleteImageFromS3 = async (_id: string) => {
   const Prefix = _id.toString();
 
-  const objectsStream = s3Client.listObjects(S3_BUCKET, Prefix, true);
+  const objectsStream = s3Client.listObjects(bucket, Prefix, true);
   const objectsList: any[] = [];
 
   objectsStream.on("data", (obj) => {
@@ -54,7 +48,7 @@ export const deleteImageFromS3 = async (_id: string) => {
   });
 
   objectsStream.on("end", async () => {
-    await s3Client.removeObjects(S3_BUCKET, objectsList);
+    await s3Client.removeObjects(bucket, objectsList);
   });
 };
 
@@ -62,7 +56,7 @@ export const sendS3Image = async (_id: string, thumbnail: boolean = false) => {
   const filename = thumbnail ? THUMBNAIL_FILENAME : IMAGE_FILENAME;
   const Key = `${_id}/${filename}`;
 
-  const stream = await s3Client.getObject(S3_BUCKET, Key);
+  const stream = await s3Client.getObject(bucket, Key);
 
   if (!stream) throw "No stream available";
 

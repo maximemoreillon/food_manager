@@ -43,5 +43,15 @@ export default defineNuxtConfig({
       },
     },
     apiKeyManagerUrl: "",
+    openAiApiKey: "",
+    s3: {
+      bucket: "food-manager",
+      accessKeyId: "",
+      secretAccessKey: "",
+      endpoint: "localhost",
+      port: "443",
+      region: "us-east-1",
+      useSsl: "yes",
+    },
   },
 });

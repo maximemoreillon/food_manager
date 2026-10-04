@@ -18,11 +18,11 @@ spec:
         - name: food-manager
           image: ${CONTAINER_IMAGE_TAGGED}
           env:
-            - name: S3_BUCKET
+            - name: NUXT_S3_BUCKET
               value: food-manager
-            - name: S3_ENDPOINT
+            - name: NUXT_S3_ENDPOINT
               value: versitygw.versitygw
-            - name: S3_PORT
+            - name: NUXT_S3_PORT
               value: "7070"
             - name: NUXT_PUBLIC_AUTH_REQUIRED
               value: "true"
