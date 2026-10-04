@@ -1,11 +1,11 @@
 <template>
   <v-btn
-    color="#c00000"
     @click="deleteLog()"
     :loading="deleting"
     prepend-icon="mdi-delete"
     text="Delete"
-    variant="outlined"
+    variant="flat"
+    block
   />
 </template>
 

@@ -9,17 +9,6 @@
       </v-col>
       <v-spacer />
       <v-col cols="auto">
-        <LogDeleteButton />
-      </v-col>
-      <v-col cols="auto">
-        <v-btn
-          @click="duplicate_log()"
-          :loading="duplicating"
-          prepend-icon="mdi-content-copy"
-          text="Duplicate"
-        />
-      </v-col>
-      <v-col cols="auto">
         <v-btn
           @click="saveLog()"
           :loading="saving"
@@ -27,6 +16,30 @@
           text="Save"
           color="primary"
         />
+      </v-col>
+      <v-col cols="auto">
+        <v-menu>
+          <template v-slot:activator="{ props }">
+            <v-btn icon="mdi-dots-vertical" v-bind="props" variant="plain" />
+          </template>
+          <v-list>
+            <v-list-item>
+              <v-btn
+                @click="duplicate_log()"
+                :loading="duplicating"
+                prepend-icon="mdi-content-copy"
+                text="Duplicate"
+                block
+              />
+            </v-list-item>
+            <v-list-item>
+              <LogExportCsvButton :log="log" />
+            </v-list-item>
+            <v-list-item>
+              <LogDeleteButton />
+            </v-list-item>
+          </v-list>
+        </v-menu>
       </v-col>
     </v-row>
 
@@ -95,9 +108,7 @@
         />
       </v-col>
       <v-spacer />
-      <v-col cols="auto">
-        <LogExportCsvButton :log="log" />
-      </v-col>
+      <v-col cols="auto"> </v-col>
       <v-col cols="auto">
         <LogFoodAddDialog :log="log" @add="addFoodToLog($event)" />
       </v-col>

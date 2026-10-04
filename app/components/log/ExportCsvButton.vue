@@ -3,6 +3,7 @@
     @click="exportCsv"
     prepend-icon="mdi-file-delimited-outline"
     text="Export"
+    block
   />
 </template>
 
