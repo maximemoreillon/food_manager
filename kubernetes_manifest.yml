@@ -24,11 +24,9 @@ spec:
               value: versitygw.versitygw
             - name: S3_PORT
               value: "7070"
-            - name: S3_REGION
-              value: home
             - name: NUXT_PUBLIC_AUTH_REQUIRED
               value: "true"
-            - name: API_KEY_MANAGER_URL
+            - name: NUXT_API_KEY_MANAGER_URL
               value: https://api-key-manager.home.maximemoreillon.com
           envFrom:
             - secretRef:
