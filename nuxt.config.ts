@@ -51,7 +51,7 @@ export default defineNuxtConfig({
       endpoint: "localhost",
       port: "443",
       region: "us-east-1",
-      useSsl: "yes",
+      useSsl: "",
     },
   },
 });
