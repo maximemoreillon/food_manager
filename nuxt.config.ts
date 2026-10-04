@@ -43,7 +43,7 @@ export default defineNuxtConfig({
       },
     },
     apiKeyManagerUrl: "",
-    openAiApiKey: "",
+    openaiApiKey: "",
     s3: {
       bucket: "food-manager",
       accessKeyId: "",

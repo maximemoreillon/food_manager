@@ -1,9 +1,9 @@
 import OpenAI from "openai";
 
-const { openaiApiKey } = useRuntimeConfig();
 export let openAiClient: OpenAI;
 
+const { openaiApiKey } = useRuntimeConfig();
 if (openaiApiKey) {
   console.log("\x1b[32m✔\x1b[0m OpenAI API key provided");
-  openAiClient = new OpenAI();
+  openAiClient = new OpenAI({ apiKey: openaiApiKey });
 }
