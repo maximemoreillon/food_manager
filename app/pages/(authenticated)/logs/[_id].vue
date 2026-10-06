@@ -4,7 +4,7 @@
   <template v-else-if="log">
     <v-breadcrumbs v-if="breadcrumbs" :items="breadcrumbs" />
     <v-row align="center">
-      <v-col cols="12" md="6">
+      <v-col>
         <h2>Log</h2>
       </v-col>
       <v-spacer />
